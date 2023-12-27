@@ -5,7 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import Topbar from '@/components/shared/Topbar';
 import LeftSidebar from '@/components/shared/LeftSidebar';
 import RightSidebar from '@/components/shared/RightSidebar';
-import Bottombar from '@/components/shared/Bottombar';
+import BottomBar from '@/components/shared/BottomBar';
 
 import '../globals.css';
 
@@ -33,7 +33,7 @@ export default function RootLayout({
             </section>
             <RightSidebar />
           </main>
-          <Bottombar />
+          <BottomBar />
         </body>
       </html>
     </ClerkProvider>

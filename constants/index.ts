@@ -1,10 +1,10 @@
-type TSidebarLink = {
+type TMainMenuLink = {
   imgURL: string;
   route: string;
   label: string;
 };
 
-export const sidebarLinks: TSidebarLink[] = [
+export const mainMenu: TMainMenuLink[] = [
   {
     imgURL: '/assets/home.svg',
     route: '/',
@@ -23,7 +23,7 @@ export const sidebarLinks: TSidebarLink[] = [
   {
     imgURL: '/assets/create.svg',
     route: '/create-thread',
-    label: 'Create Thread',
+    label: 'New Thread',
   },
   {
     imgURL: '/assets/community.svg',

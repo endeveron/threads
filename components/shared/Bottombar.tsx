@@ -1,11 +1,13 @@
-interface BottombarProps {}
+import MainMenuLinks from '@/components/shared/MainMenuLinks';
 
-const Bottombar = () => {
+const BottomBar = () => {
   return (
-    <div className="bottombar">
-      <h1>Bottom Bar</h1>
-    </div>
+    <section className="bottom-bar">
+      <div className="bottom-bar_container">
+        <MainMenuLinks />
+      </div>
+    </section>
   );
 };
 
-export default Bottombar;
+export default BottomBar;
