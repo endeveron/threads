@@ -165,6 +165,14 @@
 }
 
 /* Account Profile  */
+.account-form_item {
+  @apply flex w-full flex-col gap-3;
+}
+
+.account-form_label {
+  @apply text-base-semibold text-light-2;
+}
+
 .account-form_image-label {
   @apply flex h-24 w-24 items-center justify-center rounded-full bg-dark-4 !important;
 }
