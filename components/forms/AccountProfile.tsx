@@ -18,12 +18,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-
 import { useUploadThing } from '@/lib/uploadthing';
-import { isBase64Image } from '@/lib/utils';
-
 import { UserValidation } from '@/lib/validations/user';
-// import { updateUser } from "@/lib/actions/user.actions";
+import { isBase64Image } from '@/lib/utils/format';
+import { updateUser } from '@/lib/actions/user.actions';
 
 interface IAccountProfileProps {
   user: {
@@ -59,27 +57,28 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
     const hasImageChanged = isBase64Image(blob);
     if (hasImageChanged) {
       const imgRes = await startUpload(files);
-      console.log('imgRes', imgRes);
+      // console.log('imgRes', imgRes);
 
-      // TODO: Check for Uploadthings !
+      // TODO: Check for Uploadthings
+      // '/api/uploadthing' is added to clerk auth middleware ignore
 
-      // if (imgRes && imgRes[0].url) {
-      //   values.profile_photo = imgRes[0].url;
-      // }
+      if (imgRes?.length && imgRes[0].url) {
+        values.profile_photo = imgRes[0].url;
+      }
     }
-    // await updateUser({
-    //   name: values.name,
-    //   path: pathname,
-    //   username: values.username,
-    //   userId: user.id,
-    //   bio: values.bio,
-    //   image: values.profile_photo,
-    // });
-    // if (pathname === '/profile/edit') {
-    //   router.back();
-    // } else {
-    //   router.push('/');
-    // }
+    await updateUser({
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      path: pathname,
+    });
+    if (pathname === '/profile/edit') {
+      router.back();
+    } else {
+      router.push('/');
+    }
   };
 
   const handleImage = (
