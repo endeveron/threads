@@ -160,29 +160,37 @@
   @apply flex min-h-[50px] flex-1 items-center gap-3 bg-dark-2 text-light-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
 }
 
-.no-focus {
-  @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
+/* Form */
+.form {
+  @apply flex flex-col justify-start gap-10;
 }
 
-/* Account Profile  */
-.account-form_item {
+.form-card {
+  @apply p-10 bg-dark-2;
+}
+
+.form_item {
   @apply flex w-full flex-col gap-3;
 }
 
-.account-form_label {
+.form_input {
+  @apply border border-dark-4 bg-dark-3 text-light-1 !important;
+}
+
+.form_label {
   @apply text-base-semibold text-light-2;
 }
 
-.account-form_image-label {
+.form_image-label {
   @apply flex h-24 w-24 items-center justify-center rounded-full bg-dark-4 !important;
 }
 
-.account-form_image-input {
+.form_image-input {
   @apply cursor-pointer border-none bg-transparent outline-none file:text-blue !important;
 }
 
-.account-form_input {
-  @apply border border-dark-4 bg-dark-3 text-light-1 !important;
+.no-focus {
+  @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
 }
 
 /* Comment Form */

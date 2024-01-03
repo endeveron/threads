@@ -23,7 +23,7 @@ import { UserValidation } from '@/lib/validations/user';
 import { isBase64Image } from '@/lib/utils/format';
 import { updateUser } from '@/lib/actions/user.actions';
 
-interface IAccountProfileProps {
+type TAccountProfileProps = {
   user: {
     id: string;
     objectId: string;
@@ -33,9 +33,9 @@ interface IAccountProfileProps {
     image: string;
   };
   btnTitle: string;
-}
+};
 
-const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
+const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { startUpload } = useUploadThing('media');
@@ -66,18 +66,23 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
         values.profile_photo = imgRes[0].url;
       }
     }
-    await updateUser({
-      userId: user.id,
-      username: values.username,
-      name: values.name,
-      bio: values.bio,
-      image: values.profile_photo,
-      path: pathname,
-    });
-    if (pathname === '/profile/edit') {
-      router.back();
-    } else {
-      router.push('/');
+    try {
+      await updateUser({
+        userId: user.id,
+        username: values.username,
+        name: values.name,
+        bio: values.bio,
+        image: values.profile_photo,
+        path: pathname,
+      });
+      if (pathname === '/profile/edit') {
+        router.back();
+      } else {
+        router.push('/');
+      }
+    } catch (err) {
+      // TODO: Handle error
+      console.error(err);
     }
   };
 
@@ -104,14 +109,10 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log('form', form);
-  // }, [form]);
-
   return (
     <Form {...form}>
       <form
-        className="flex flex-col justify-start gap-10"
+        className="form form-card mt-9"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -119,7 +120,7 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
           name="profile_photo"
           render={({ field }) => (
             <FormItem className="flex items-center gap-4">
-              <FormLabel className="account-form_image-label">
+              <FormLabel className="form_image-label">
                 {field.value ? (
                   <Image
                     src={field.value}
@@ -144,7 +145,7 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
                   type="file"
                   accept="image/*"
                   placeholder="Add profile photo"
-                  className="account-form_image-input"
+                  className="form_image-input"
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
@@ -156,14 +157,10 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="account-form_item">
-              <FormLabel className="account-form_label">Name</FormLabel>
+            <FormItem className="form_item">
+              <FormLabel className="form_label">Name</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
-                  className="account-form_input no-focus"
-                  {...field}
-                />
+                <Input type="text" className="form_input no-focus" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -174,14 +171,10 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="account-form_item">
-              <FormLabel className="account-form_label">Username</FormLabel>
+            <FormItem className="form_item">
+              <FormLabel className="form_label">Username</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
-                  className="account-form_input no-focus"
-                  {...field}
-                />
+                <Input type="text" className="form_input no-focus" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -192,12 +185,12 @@ const AccountProfile = ({ user, btnTitle }: IAccountProfileProps) => {
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem className="account-form_item">
-              <FormLabel className="account-form_label">Bio</FormLabel>
+            <FormItem className="form_item">
+              <FormLabel className="form_label">Bio</FormLabel>
               <FormControl>
                 <Textarea
                   rows={10}
-                  className="account-form_input no-focus"
+                  className="form_input no-focus"
                   {...field}
                 />
               </FormControl>

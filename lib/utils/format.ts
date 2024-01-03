@@ -5,7 +5,7 @@ export function isBase64Image(imageData: string) {
 }
 
 // created by chatgpt
-export function formatDateString(dateString: string) {
+export const formatDateString = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'short',
@@ -21,10 +21,10 @@ export function formatDateString(dateString: string) {
   });
 
   return `${time} - ${formattedDate}`;
-}
+};
 
 // created by chatgpt
-export function formatThreadCount(count: number): string {
+export const formatThreadCount = (count: number): string => {
   if (count === 0) {
     return 'No Threads';
   } else {
@@ -32,4 +32,4 @@ export function formatThreadCount(count: number): string {
     const threadWord = count === 1 ? 'Thread' : 'Threads';
     return `${threadCount} ${threadWord}`;
   }
-}
+};

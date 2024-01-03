@@ -1,4 +1,4 @@
-export type TUserData = {
+export type TUpdateUserParams = {
   bio: string;
   image: string;
   name: string;
