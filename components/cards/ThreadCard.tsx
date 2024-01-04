@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils/cn';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -38,9 +39,9 @@ const ThreadCard = ({
 }: ThreadCardProps) => {
   return (
     <article className="thread-card flex w-full flex-col rounded-xl bg-dark-2 p-7">
-      <div className="flex items-start justify-between">
-        <div className="flex w-full flex-1 flex-row gap-4">
-          <div className="flex flex-col items-center">
+      <div className="thread-card_content-wrapper flex items-start justify-between">
+        <div className="thread-card_content flex w-full flex-1 flex-row gap-4">
+          <div className="thread-card_column flex flex-col items-center">
             <Link
               href={`/profile/${author._id}`}
               className="relative h-11 w-11"
@@ -48,6 +49,7 @@ const ThreadCard = ({
               <Image
                 src={author.image}
                 fill
+                sizes=""
                 className="cursor-pointer rounded-full"
                 alt="Profile image"
               />
@@ -56,17 +58,26 @@ const ThreadCard = ({
             <div className="thread-card_bar" />
           </div>
 
-          <div className="flex flex-col w-full">
-            <Link href={`/profile/${author._id}`} className="w-fit">
-              <h4 className="cursor-pointer text-base-semibold text-light-1">
+          <div className="thread-card_column flex flex-col w-full">
+            <Link
+              className="thread-card_profile-link w-fit"
+              href={`/profile/${author._id}`}
+            >
+              <h4 className="thread-card_author-name cursor-pointer text-base-semibold text-light-1">
                 {author.name}
               </h4>
             </Link>
 
-            <p className="mt-1 text-small-regular text-light-2">{content}</p>
+            <p className="thread-card_text-content mt-1 text-small-regular text-light-2">
+              {content}
+            </p>
 
-            <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
-              <div className="flex gap-3.5">
+            <div
+              className={cn('thread-card_toolbar mt-5 flex flex-col gap-3', {
+                'mb-10': isComment,
+              })}
+            >
+              <div className="thread-card_actions flex gap-3.5">
                 <Image
                   src="/assets/heart-gray.svg"
                   alt="heart"
@@ -101,14 +112,12 @@ const ThreadCard = ({
 
               {isComment && comments.length > 0 && (
                 <Link href={`/thread/${id}`}>
-                  <p className="mt-1 text-subtle-medium text-gray-1">
+                  <p className="thread-card_comments mt-1 text-subtle-medium text-gray-1">
                     {comments.length} repl{comments.length > 1 ? 'ies' : 'y'}
                   </p>
                 </Link>
               )}
             </div>
-
-            <div className="mt-5 flex flex-col gap-3">{}</div>
           </div>
         </div>
       </div>
