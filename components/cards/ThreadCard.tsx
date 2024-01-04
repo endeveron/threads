@@ -22,7 +22,7 @@ interface ThreadCardProps {
   createdAt: string;
   currentUserId: string;
   id: string;
-  parrentId: string | null;
+  parentId: string | null;
   isComment?: boolean;
 }
 
@@ -34,7 +34,7 @@ const ThreadCard = ({
   createdAt,
   currentUserId,
   id,
-  parrentId,
+  parentId,
   isComment,
 }: ThreadCardProps) => {
   return (

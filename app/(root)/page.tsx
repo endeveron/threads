@@ -5,7 +5,6 @@ import ThreadCard from '@/components/cards/ThreadCard';
 
 const Home = async () => {
   const { threads, isNext } = await fetchThreads({});
-  // console.log('threads', threads);
 
   const user = await currentUser();
 
@@ -26,7 +25,7 @@ const Home = async () => {
               currentUserId={user?.id || ''}
               id={thread._id}
               key={thread._id}
-              parrentId={thread.parentId}
+              parentId={thread.parentId}
             />
           ))
         )}

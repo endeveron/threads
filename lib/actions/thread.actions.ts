@@ -1,14 +1,15 @@
 'use server';
 
+import { connectToDB } from '@/lib/mongoose';
 import { revalidatePath } from 'next/cache';
 
-import { connectToDB } from '@/lib/mongoose';
 import {
   TCreateThreadParams,
   TFetchThreadsParams,
 } from '@/lib/types/thread.types';
 import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
+import CommunityModel from '@/lib/models/community.model';
 
 export const createThread = async ({
   text,
@@ -59,14 +60,14 @@ export const fetchThreads = async ({
       .limit(pageSize)
       .populate({
         path: 'author',
-        model: 'User',
+        model: UserModel,
         select: '_id image name username',
       })
       .populate({
         path: 'children',
         populate: {
           path: 'author',
-          model: 'User',
+          model: UserModel,
           select: '_id image name username',
         },
       });
@@ -87,3 +88,44 @@ export const fetchThreads = async ({
     throw new Error(`Failed to fetch threads: ${err.message}`);
   }
 };
+
+export async function fetchThreadById(threadId: string) {
+  try {
+    connectToDB();
+
+    const threadQuery = ThreadModel.findById(threadId)
+      .populate({
+        path: 'author',
+        model: UserModel,
+        select: '_id name image',
+      })
+      // .populate({
+      //   path: 'community',
+      //   model: CommunityModel,
+      //   select: '_id id image name username',
+      // })
+      .populate({
+        path: 'children',
+        populate: [
+          {
+            path: 'author',
+            model: UserModel,
+            select: '_id image name username',
+          },
+          {
+            path: 'children',
+            model: ThreadModel,
+            populate: {
+              path: 'author',
+              model: UserModel,
+              select: '_id image name username',
+            },
+          },
+        ],
+      });
+
+    return await threadQuery.exec();
+  } catch (err: any) {
+    throw new Error(`Failed to fetch thread: ${err.message}`);
+  }
+}

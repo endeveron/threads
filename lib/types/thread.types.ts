@@ -5,7 +5,7 @@ type TThreadParams = {
   children: string;
   community: string;
   createdAt: string;
-  parrentId: string;
+  parentId: string;
   text: string;
   _id: string | ObjectId;
 };
