@@ -13,11 +13,11 @@ const Page = async () => {
   const userId = userData._id.toString();
 
   return (
-    <main className="mx-auto flex max-w-3xl flex-col justify-start">
+    <div className="mx-auto flex max-w-3xl flex-col justify-start">
       <h1 className="head-text">Create Thread</h1>
 
       <PostThread userId={userId} />
-    </main>
+    </div>
   );
 };
 
