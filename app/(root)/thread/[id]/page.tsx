@@ -17,11 +17,11 @@ interface PageProps {
 const Page = async ({ params }: PageProps) => {
   if (!params.id) return null;
 
-  const user = await currentUser();
-  if (!user) return null;
+  const authUser = await currentUser();
+  if (!authUser) return null;
 
-  const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onboarded) redirect('/onboarding');
+  const user = await fetchUser(authUser.id);
+  if (!user?.onboarded) redirect('/onboarding');
 
   const thread = await fetchThreadById(params.id);
   // console.log('thread', thread);
@@ -30,7 +30,7 @@ const Page = async ({ params }: PageProps) => {
     <div className="relative">
       <ThreadCard
         id={thread._id}
-        currentUserId={user.id}
+        userId={authUser.id}
         parentId={thread.parentId}
         content={thread.text}
         author={thread.author}
@@ -42,8 +42,8 @@ const Page = async ({ params }: PageProps) => {
       <div className="mt-10">
         <Comment
           threadId={params.id}
-          currentUserImg={userInfo.image}
-          currentUserId={JSON.stringify(userInfo._id)}
+          userImg={user.image}
+          userId={JSON.stringify(user.id)}
         />
       </div>
 
@@ -52,7 +52,7 @@ const Page = async ({ params }: PageProps) => {
           <ThreadCard
             key={childItem._id}
             id={childItem._id}
-            currentUserId={user.id}
+            userId={user.id}
             parentId={childItem.parentId}
             content={childItem.text}
             author={childItem.author}

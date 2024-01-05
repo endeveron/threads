@@ -20,6 +20,7 @@ const Topbar = () => {
                   alt="logout"
                   width={24}
                   height={24}
+                  sizes=""
                 />
               </div>
             </SignOutButton>

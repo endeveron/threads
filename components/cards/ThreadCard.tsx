@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 interface ThreadCardProps {
   author: {
-    _id: string;
+    id: string;
     name: string;
     image: string;
   };
@@ -20,7 +20,7 @@ interface ThreadCardProps {
   } | null;
   content: string;
   createdAt: string;
-  currentUserId: string;
+  userId: string;
   id: string;
   parentId: string | null;
   isComment?: boolean;
@@ -32,7 +32,7 @@ const ThreadCard = ({
   community,
   content,
   createdAt,
-  currentUserId,
+  userId,
   id,
   parentId,
   isComment,
@@ -47,10 +47,7 @@ const ThreadCard = ({
       <div className="thread-card_content-wrapper flex items-start justify-between">
         <div className="thread-card_content flex w-full flex-1 flex-row gap-4">
           <div className="thread-card_column flex flex-col items-center">
-            <Link
-              href={`/profile/${author._id}`}
-              className="relative h-11 w-11"
-            >
+            <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
               <Image
                 src={author.image}
                 fill
@@ -66,7 +63,7 @@ const ThreadCard = ({
           <div className="thread-card_column flex flex-col w-full">
             <Link
               className="thread-card_profile-link w-fit"
-              href={`/profile/${author._id}`}
+              href={`/profile/${author.id}`}
             >
               <h4 className="thread-card_author-name cursor-pointer text-base-semibold text-light-1">
                 {author.name}
@@ -89,6 +86,7 @@ const ThreadCard = ({
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
+                  sizes=""
                 />
                 <Link href={`/thread/${id}`}>
                   <Image
@@ -97,6 +95,7 @@ const ThreadCard = ({
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
+                    sizes=""
                   />
                 </Link>
                 <Image
@@ -105,6 +104,7 @@ const ThreadCard = ({
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
+                  sizes=""
                 />
                 <Image
                   src="/assets/share.svg"
@@ -112,6 +112,7 @@ const ThreadCard = ({
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
+                  sizes=""
                 />
               </div>
 

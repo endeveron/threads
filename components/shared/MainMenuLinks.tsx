@@ -22,7 +22,13 @@ const MainMenuLinks = (props: MainMenuLinksProps) => {
         key={link.label}
         className={`main-menu_link${isActive ? ' bg-primary-500' : ''}`}
       >
-        <Image src={link.imgURL} alt={link.label} width={24} height={24} />
+        <Image
+          src={link.imgURL}
+          alt={link.label}
+          width={24}
+          height={24}
+          sizes=""
+        />
         <p>{link.label}</p>
       </Link>
     );

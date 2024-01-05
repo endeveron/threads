@@ -22,7 +22,7 @@ const Home = async () => {
               community={thread.community}
               content={thread.text}
               createdAt={thread.createdAt}
-              currentUserId={user?.id || ''}
+              userId={user?.id || ''}
               id={thread._id}
               key={thread._id}
               parentId={thread.parentId}

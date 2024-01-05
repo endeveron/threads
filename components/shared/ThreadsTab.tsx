@@ -39,7 +39,7 @@ type TThreadsTabProps = {
 };
 
 /**
- * @param authUserId ClerkId of the authenticated user / currentUserId
+ * @param authUserId ClerkId of the authenticated user / userId
  * @param userId ClerkId of the current profile user / accountId
  * @param accountType 'User' | 'Community'
  */
@@ -66,7 +66,7 @@ const ThreadsTab = async ({
         <ThreadCard
           key={thread._id}
           id={thread._id}
-          currentUserId={currentUserId}
+          userId={userId}
           parentId={thread.parentId}
           content={thread.text}
           author={

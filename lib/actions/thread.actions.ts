@@ -62,14 +62,14 @@ export const fetchThreads = async ({
       .populate({
         path: 'author',
         model: UserModel,
-        select: '_id image name username',
+        select: 'id image name username',
       })
       .populate({
         path: 'children',
         populate: {
           path: 'author',
           model: UserModel,
-          select: '_id image name username',
+          select: 'id image name username',
         },
       });
 
@@ -98,12 +98,12 @@ export const fetchThreadById = async (threadId: string) => {
       .populate({
         path: 'author',
         model: UserModel,
-        select: '_id name image',
+        select: 'id name image',
       })
       // .populate({
       //   path: 'community',
       //   model: CommunityModel,
-      //   select: '_id id image name username',
+      //   select: 'id image name username',
       // })
       .populate({
         path: 'children',
@@ -111,7 +111,7 @@ export const fetchThreadById = async (threadId: string) => {
           {
             path: 'author',
             model: UserModel,
-            select: '_id image name username',
+            select: 'id image name username',
           },
           {
             path: 'children',
@@ -119,7 +119,7 @@ export const fetchThreadById = async (threadId: string) => {
             populate: {
               path: 'author',
               model: UserModel,
-              select: '_id image name username',
+              select: 'id image name username',
             },
           },
         ],

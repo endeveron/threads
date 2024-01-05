@@ -12,7 +12,7 @@ const Page = async () => {
 
   const userData = await fetchUser(user.id);
   if (!userData?.onboarded) redirect('/onboarding');
-  const userId = userData._id.toString();
+  const userId = userData.id.toString();
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col justify-start">

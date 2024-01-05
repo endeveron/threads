@@ -20,11 +20,11 @@ import { Input } from '../ui/input';
 
 interface CommentProps {
   threadId: string;
-  currentUserImg: string;
-  currentUserId: string;
+  userImg: string;
+  userId: string;
 }
 
-const Comment = ({ threadId, currentUserImg, currentUserId }: CommentProps) => {
+const Comment = ({ threadId, userImg, userId }: CommentProps) => {
   const pathname = usePathname();
 
   const form = useForm<zod.infer<typeof CommentValidation>>({
@@ -38,7 +38,7 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: CommentProps) => {
     await addCommentToThread({
       threadId: threadId,
       commentText: values.thread,
-      userId: JSON.parse(currentUserId),
+      userId: JSON.parse(userId),
       path: pathname,
     });
 
@@ -55,11 +55,12 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: CommentProps) => {
             <FormItem className="flex w-full items-center gap-3">
               <FormLabel>
                 <Image
-                  src={currentUserImg}
+                  src={userImg}
                   alt="current_user"
                   width={48}
                   height={48}
                   className="rounded-full object-cover"
+                  sizes=""
                 />
               </FormLabel>
               <FormControl className="border-none bg-transparent">

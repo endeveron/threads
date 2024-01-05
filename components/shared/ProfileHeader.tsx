@@ -30,6 +30,7 @@ const ProfileHeader = ({
               alt="logo"
               fill
               className="rounded-full object-cover shadow-2xl"
+              sizes=""
             />
           </div>
 
@@ -48,6 +49,7 @@ const ProfileHeader = ({
                 alt="logout"
                 width={16}
                 height={16}
+                sizes=""
               />
 
               <p className="text-light-2 max-sm:hidden">Edit</p>

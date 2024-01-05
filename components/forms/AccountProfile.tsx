@@ -125,6 +125,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
                     height={96}
                     priority
                     className="rounded-full object-contain"
+                    sizes=""
                   />
                 ) : (
                   <Image
@@ -133,6 +134,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
                     width={24}
                     height={24}
                     className="object-contain"
+                    sizes=""
                   />
                 )}
               </FormLabel>

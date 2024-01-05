@@ -12,7 +12,7 @@ const Page = async (props: PageProps) => {
 
   // TEMP
   const userInfo = {
-    _id: '',
+    id: '',
     objectId: '',
     username: user.username || '',
     name: user.firstName || '',
@@ -25,7 +25,7 @@ const Page = async (props: PageProps) => {
 
   const userData = {
     id: user.id,
-    objectId: userInfo?._id,
+    objectId: userInfo?.id,
     username: userInfo ? userInfo?.username : user.username ?? '',
     name: userInfo ? userInfo?.name : user.firstName ?? '',
     bio: userInfo ? userInfo?.bio : '',
