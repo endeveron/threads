@@ -19,3 +19,10 @@ export type TFetchThreadsParams = {
   pageNumber?: number;
   pageSize?: number;
 };
+
+export type TAddCommentToThreadParams = {
+  threadId: string;
+  commentText: string;
+  userId: string;
+  path: string;
+};

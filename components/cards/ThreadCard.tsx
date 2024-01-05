@@ -38,7 +38,12 @@ const ThreadCard = ({
   isComment,
 }: ThreadCardProps) => {
   return (
-    <article className="thread-card flex w-full flex-col rounded-xl bg-dark-2 p-7">
+    <article
+      className={cn('thread-card flex w-full flex-col rounded-xl', {
+        'mt-2 px-0 xs:px-7': isComment,
+        'bg-dark-2 p-7': !isComment,
+      })}
+    >
       <div className="thread-card_content-wrapper flex items-start justify-between">
         <div className="thread-card_content flex w-full flex-1 flex-row gap-4">
           <div className="thread-card_column flex flex-col items-center">
@@ -74,7 +79,7 @@ const ThreadCard = ({
 
             <div
               className={cn('thread-card_toolbar mt-5 flex flex-col gap-3', {
-                'mb-10': isComment,
+                'mb-5': isComment,
               })}
             >
               <div className="thread-card_actions flex gap-3.5">
