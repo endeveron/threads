@@ -57,10 +57,6 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
     const hasImageChanged = isBase64Image(blob);
     if (hasImageChanged) {
       const imgRes = await startUpload(files);
-      // console.log('imgRes', imgRes);
-
-      // TODO: Check for Uploadthings
-      // '/api/uploadthing' is added to clerk auth middleware ignore
 
       if (imgRes?.length && imgRes[0].url) {
         values.profile_photo = imgRes[0].url;

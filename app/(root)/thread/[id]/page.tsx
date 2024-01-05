@@ -24,25 +24,22 @@ const Page = async ({ params }: PageProps) => {
   if (!userInfo?.onboarded) redirect('/onboarding');
 
   const thread = await fetchThreadById(params.id);
-
-  console.log('thread', thread);
+  // console.log('thread', thread);
 
   return (
-    <section className="relative">
-      <div>
-        <ThreadCard
-          id={thread._id}
-          currentUserId={user.id}
-          parentId={thread.parentId}
-          content={thread.text}
-          author={thread.author}
-          community={thread.community}
-          createdAt={thread.createdAt}
-          comments={thread.children}
-        />
-      </div>
+    <div className="relative">
+      <ThreadCard
+        id={thread._id}
+        currentUserId={user.id}
+        parentId={thread.parentId}
+        content={thread.text}
+        author={thread.author}
+        community={thread.community}
+        createdAt={thread.createdAt}
+        comments={thread.children}
+      />
 
-      <div className="mt-7">
+      <div className="mt-10">
         <Comment
           threadId={params.id}
           currentUserImg={userInfo.image}
@@ -66,7 +63,7 @@ const Page = async ({ params }: PageProps) => {
           />
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 

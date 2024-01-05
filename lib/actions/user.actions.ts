@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
 import { TUpdateUserParams } from '@/lib/types/user.types';
+import { getUserIdPropName } from '@/lib/utils/userId';
 
 export const updateUser = async ({
   bio,
@@ -44,7 +45,14 @@ export const updateUser = async ({
 export const fetchUser = async (userId: string) => {
   try {
     connectToDB();
-    return await UserModel.findOne({ id: userId });
+
+    // We can fetch user by MongoDB ObjectId or Clerk Id
+    // '_id' prop for the MongoId, 'id' for the ClerkId
+    const userIdPropName = getUserIdPropName(userId);
+    if (!userIdPropName)
+      throw new Error(`Failed to fetch user. Invalid userId: ${userId}`);
+
+    return await UserModel.findOne().where(userIdPropName).equals(userId);
     // .populate({
     //   path: 'communities',
     //   model: CommunityModel,
