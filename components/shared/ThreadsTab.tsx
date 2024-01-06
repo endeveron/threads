@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation';
 
 // import { fetchCommunityPosts } from "@/lib/actions/community.actions";
-// import { fetchUserPosts } from "@/lib/actions/user.actions";
+// import { fetchUserThreads } from "@/lib/actions/user.actions";
 
 import ThreadCard from '../cards/ThreadCard';
+import { fetchUserThreads } from '@/lib/actions/user.actions';
 
 type TThreadsTabContent = {
   name: string;
@@ -38,31 +39,30 @@ type TThreadsTabProps = {
   accountType: string;
 };
 
-/**
- * @param authUserId ClerkId of the authenticated user / userId
- * @param userId ClerkId of the current profile user / accountId
- * @param accountType 'User' | 'Community'
- */
 const ThreadsTab = async ({
   authUserId,
   userId,
   accountType,
 }: TThreadsTabProps) => {
-  let content: TThreadsTabContent;
+  // let content: TThreadsTabContent;
 
   // if (accountType === 'Community') {
   //   content = await fetchCommunityPosts(accountId);
   // } else {
-  //   content = await fetchUserPosts(accountId);
+  //   content = await fetchUserThreads(accountId);
   // }
 
-  // if (!content) {
-  //   redirect('/');
-  // }
+  const content: TThreadsTabContent = await fetchUserThreads(userId);
+
+  if (!content) {
+    redirect('/');
+  }
+
+  console.log('content', content);
 
   return (
     <section className="mt-9 flex flex-col gap-10">
-      {/* {content.threads.map((thread) => (
+      {content.threads.map((thread) => (
         <ThreadCard
           key={thread._id}
           id={thread._id}
@@ -86,7 +86,7 @@ const ThreadsTab = async ({
           createdAt={thread.createdAt}
           comments={thread.children}
         />
-      ))} */}
+      ))}
     </section>
   );
 };

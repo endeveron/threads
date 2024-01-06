@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
 import { TUpdateUserParams } from '@/lib/types/user.types';
+import ThreadModel from '@/lib/models/thread.model';
 
 export const updateUser = async ({
   bio,
@@ -52,5 +53,29 @@ export const fetchUser = async (userId: string) => {
     // });
   } catch (err: any) {
     throw new Error(`Failed to fetch user: ${err.message}`);
+  }
+};
+
+export const fetchUserThreads = async (userId: string) => {
+  try {
+    connectToDB();
+
+    const threadsQuery = UserModel.findOne({ id: userId }).populate({
+      path: 'threads',
+      model: ThreadModel,
+      populate: {
+        path: 'children',
+        model: ThreadModel,
+        populate: {
+          path: 'author',
+          model: UserModel,
+          select: '_id id image name',
+        },
+      },
+    });
+
+    return await threadsQuery.exec();
+  } catch (err: any) {
+    throw new Error(`Failed to fetch user threads: ${err.message}`);
   }
 };

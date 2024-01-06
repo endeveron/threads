@@ -8,11 +8,9 @@ const Page = async () => {
   const user = await currentUser();
   if (!user) return null;
 
-  console.log('user', user);
-
   const userData = await fetchUser(user.id);
   if (!userData?.onboarded) redirect('/onboarding');
-  const userId = userData.id.toString();
+  const userId = userData._id.toString(); // Mongo ObjectId
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col justify-start">

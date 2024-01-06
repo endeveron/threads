@@ -2,7 +2,7 @@ import * as zod from 'zod';
 
 export const ThreadValidation = zod.object({
   thread: zod.string().min(3, { message: 'Minimum 3 characters.' }),
-  accountId: zod.string(),
+  userId: zod.string(),
 });
 
 export const CommentValidation = zod.object({

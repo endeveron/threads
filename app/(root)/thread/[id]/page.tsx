@@ -21,10 +21,9 @@ const Page = async ({ params }: PageProps) => {
   if (!authUser) return null;
 
   const user = await fetchUser(authUser.id);
-  if (!user?.onboarded) redirect('/onboarding');
+  const userId = JSON.stringify(user._id); // MongoDb ObjectId
 
   const thread = await fetchThreadById(params.id);
-  // console.log('thread', thread);
 
   return (
     <div className="relative">
@@ -40,11 +39,7 @@ const Page = async ({ params }: PageProps) => {
       />
 
       <div className="mt-10">
-        <Comment
-          threadId={params.id}
-          userImg={user.image}
-          userId={JSON.stringify(user.id)}
-        />
+        <Comment threadId={params.id} userImg={user.image} userId={userId} />
       </div>
 
       <div className="mt-10">

@@ -197,7 +197,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
           )}
         />
 
-        <Button type="submit" className="bg-primary-500">
+        <Button type="submit" className="bg-primary-900">
           {btnTitle}
         </Button>
       </form>

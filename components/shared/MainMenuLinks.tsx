@@ -5,22 +5,33 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 import { mainMenu } from '@/constants';
+import { useAuth } from '@clerk/nextjs';
+import { cn } from '@/lib/utils/cn';
 
 interface MainMenuLinksProps {}
 
 const MainMenuLinks = (props: MainMenuLinksProps) => {
   const pathname = usePathname();
+  const profilePath = '/profile';
 
   return mainMenu.map((link) => {
-    const route = link.route;
+    let route = link.route;
     const isActive =
       (pathname.includes(route) && route.length > 1) || pathname === route;
 
+    // Add user id to profile route
+    if (route === profilePath) {
+      const user = useAuth();
+      route = `${profilePath}/${user.userId}`;
+    }
+
     return (
       <Link
-        href={link.route}
+        href={route}
         key={link.label}
-        className={`main-menu_link${isActive ? ' bg-primary-500' : ''}`}
+        className={cn('main-menu_link transition', {
+          'bg-primary-900 hover:bg-primary-950': isActive,
+        })}
       >
         <Image
           src={link.imgURL}

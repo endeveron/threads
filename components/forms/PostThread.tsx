@@ -23,7 +23,7 @@ import { ThreadValidation } from '@/lib/validations/thread';
 import { createThread } from '@/lib/actions/thread.actions';
 
 interface PostThreadProps {
-  userId: string;
+  userId: string; // Mongo ObjectId
 }
 
 const PostThread = ({ userId }: PostThreadProps) => {
@@ -34,7 +34,7 @@ const PostThread = ({ userId }: PostThreadProps) => {
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
       thread: '',
-      accountId: userId,
+      userId: userId,
     },
   });
 
@@ -75,7 +75,10 @@ const PostThread = ({ userId }: PostThreadProps) => {
           )}
         />
 
-        <Button type="submit" className="bg-primary-500">
+        <Button
+          type="submit"
+          className="bg-primary-900 hover:bg-primary-950 p-7"
+        >
           Create Thread
         </Button>
       </form>

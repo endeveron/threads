@@ -173,11 +173,11 @@ module.exports = {
     },
     extend: {
       colors: {
-        'primary-500': '#877EFF',
-        'secondary-500': '#FFB620',
-        blue: '#0095F6',
-        'logout-btn': '#FF5A5A',
-        'navbar-menu': 'rgba(16, 16, 18, 0.6)',
+        'primary-500': '#8b5cf6',
+        'primary-900': '#4c1d95',
+        'primary-950': '#2e1065',
+        // 'logout-btn': '#FF5A5A',
+        // 'navbar-menu': 'rgba(16, 16, 18, 0.6)',
         'dark-1': '#000000',
         'dark-2': '#121417',
         'dark-3': '#101012',

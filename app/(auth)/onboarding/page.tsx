@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 // import { fetchUser } from "@/lib/actions/user.actions";
 import AccountProfile from '@/components/forms/AccountProfile';
+import { fetchUser } from '@/lib/actions/user.actions';
 
 interface PageProps {}
 
@@ -10,18 +11,8 @@ const Page = async (props: PageProps) => {
   const user = await currentUser();
   if (!user) return null; // to avoid typescript warnings
 
-  // TEMP
-  const userInfo = {
-    id: '',
-    objectId: '',
-    username: user.username || '',
-    name: user.firstName || '',
-    bio: '',
-    image: user.imageUrl || '',
-  };
-
-  // const userInfo = await fetchUser(user.id);
-  // if (userInfo?.onboarded) redirect("/");
+  const userInfo = await fetchUser(user.id);
+  if (userInfo?.onboarded) redirect('/');
 
   const userData = {
     id: user.id,
