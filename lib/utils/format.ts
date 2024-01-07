@@ -1,10 +1,22 @@
-// created by chatgpt
+/**
+ * Checks if a given string is a valid base64 encoded image data.
+ *
+ * @param {string} imageData a string that represents the image data in base64 format.
+ * @returns a boolean value indicating whether the provided imageData is a base64 encoded image.
+ */
 export function isBase64Image(imageData: string) {
   const base64Regex = /^data:image\/(png|jpe?g|gif|webp);base64,/;
   return base64Regex.test(imageData);
 }
 
-// created by chatgpt
+/**
+ * Takes a date string as input and returns a formatted string with the time and date.
+ *
+ * @param {string} dateString a string representing a date in a specific format.
+ * @returns a formatted string that includes the time and date.
+ * The format of the string is "time - date", where the time is in the format "hour:minute" and the
+ * date is in the format "month day, year".
+ */
 export const formatDateString = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -23,7 +35,12 @@ export const formatDateString = (dateString: string) => {
   return `${time} - ${formattedDate}`;
 };
 
-// created by chatgpt
+/**
+ * Takes a number as input and returns a formatted string indicating the number of threads.
+ *
+ * @param {number} count a number that represents the number of threads.
+ * @returns a string that represents the formatted thread count.
+ */
 export const formatThreadCount = (count: number): string => {
   if (count === 0) {
     return 'No Threads';

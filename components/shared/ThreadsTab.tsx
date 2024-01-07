@@ -58,7 +58,7 @@ const ThreadsTab = async ({
     redirect('/');
   }
 
-  console.log('content', content);
+  // console.log('content', content);
 
   return (
     <section className="mt-9 flex flex-col gap-10">

@@ -12,16 +12,24 @@ import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
 import CommunityModel from '@/lib/models/community.model';
 
+/**
+ * Creates thread object in MongoDb
+ *
+ * @param author user MongoDb ObjectId
+ * @param communityId
+ * @param path the pathname to revalidate cached data (i.e. '/profile/edit')
+ * @param text the thread text content
+ */
 export const createThread = async ({
-  text,
   author,
   communityId,
   path,
+  text,
 }: TCreateThreadParams) => {
   try {
     connectToDB();
 
-    // Create a new thread
+    // Create new thread
     const thread = await ThreadModel.create({
       text,
       author,
@@ -40,6 +48,16 @@ export const createThread = async ({
   }
 };
 
+/**
+ * The function fetchThreads fetches a specified number of top-level threads from a database, along
+ * with their authors and any child threads, and returns them along with a flag indicating if there are
+ * more threads available.
+ *
+ * @param pageNumber is used to specify the page number of the threads to fetch. The default value is 1.
+ * @param pageSize is used to specify the amount of threads per page. The default value is 20.
+ * @returns an object { threads, isNext }. The `threads` property contains an array of fetched threads,
+ * and the `isNext` property is a boolean value indicating whether there are more threads available to fetch.
+ */
 export const fetchThreads = async ({
   pageNumber = 1,
   pageSize = 20,
@@ -90,6 +108,13 @@ export const fetchThreads = async ({
   }
 };
 
+/**
+ * The function fetches a thread by its _id from a database, populating it with related author and child
+ * thread information.
+ *
+ * @param {string} threadId the thread._id MongoDb ObjectId parameter.
+ * @returns a promise that resolves to the fetched thread object.
+ */
 export const fetchThreadById = async (threadId: string) => {
   try {
     connectToDB();
@@ -131,6 +156,14 @@ export const fetchThreadById = async (threadId: string) => {
   }
 };
 
+/**
+ * The function adds a comment to a thread by creating a new comment thread, linking it to the original
+ * thread, and updating the original thread's children array.
+ * @param threadId the thread._id MongoDb ObjectId parameter.
+ * @param commentText the text of the comment.
+ * @param userId the author's _id MongoDb ObjectId.
+ * @param path the pathname to revalidate cached data.
+ */
 export const addCommentToThread = async ({
   threadId,
   commentText,
@@ -140,7 +173,7 @@ export const addCommentToThread = async ({
   try {
     connectToDB();
 
-    // Find the original thread by its ID
+    // Find the original thread by its ObjectId
     const originalThread = await ThreadModel.findById(threadId);
 
     if (!originalThread) {

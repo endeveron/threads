@@ -20,8 +20,8 @@ const Page = async ({ params }: PageProps) => {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const user = await fetchUser(authUser.id);
-  const userId = JSON.stringify(user._id); // MongoDb ObjectId
+  const fetchedUser = await fetchUser(authUser.id);
+  const userId = JSON.stringify(fetchedUser._id); // MongoDb ObjectId
 
   const thread = await fetchThreadById(params.id);
 
@@ -39,7 +39,11 @@ const Page = async ({ params }: PageProps) => {
       />
 
       <div className="mt-10">
-        <Comment threadId={params.id} userImg={user.image} userId={userId} />
+        <Comment
+          threadId={params.id}
+          userImg={fetchedUser.image}
+          userId={userId}
+        />
       </div>
 
       <div className="mt-10">
@@ -47,7 +51,7 @@ const Page = async ({ params }: PageProps) => {
           <ThreadCard
             key={childItem._id}
             id={childItem._id}
-            userId={user.id}
+            userId={fetchedUser.id}
             parentId={childItem.parentId}
             content={childItem.text}
             author={childItem.author}

@@ -7,6 +7,16 @@ import { connectToDB } from '@/lib/mongoose';
 import { TUpdateUserParams } from '@/lib/types/user.types';
 import ThreadModel from '@/lib/models/thread.model';
 
+/**
+ * Updates user object in MongoDb
+ *
+ * @param bio user bio
+ * @param image user avatar image path
+ * @param name user name
+ * @param path pathname to revalidate cached data (i.e. '/profile/edit')
+ * @param userId user._id, MongoDb ObjectId
+ * @param username username
+ */
 export const updateUser = async ({
   bio,
   image,
@@ -42,6 +52,11 @@ export const updateUser = async ({
   }
 };
 
+/**
+ * Fetches user data from MongoDb
+ *
+ * @param userId user.id in MongoDb user object, clerk user identifier
+ */
 export const fetchUser = async (userId: string) => {
   try {
     connectToDB();
@@ -56,6 +71,12 @@ export const fetchUser = async (userId: string) => {
   }
 };
 
+/**
+ * Fetches user threads from MongoDb.
+ * Populates children threads and author data.
+ *
+ * @param userId user.id in MongoDb user object, clerk user identifier
+ */
 export const fetchUserThreads = async (userId: string) => {
   try {
     connectToDB();

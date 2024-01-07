@@ -11,16 +11,16 @@ const Page = async (props: PageProps) => {
   const user = await currentUser();
   if (!user) return null; // to avoid typescript warnings
 
-  const userInfo = await fetchUser(user.id);
-  if (userInfo?.onboarded) redirect('/');
+  const fetchedUser = await fetchUser(user.id);
+  if (fetchedUser?.onboarded) redirect('/');
 
   const userData = {
     id: user.id,
-    objectId: userInfo?.id,
-    username: userInfo ? userInfo?.username : user.username ?? '',
-    name: userInfo ? userInfo?.name : user.firstName ?? '',
-    bio: userInfo ? userInfo?.bio : '',
-    image: userInfo ? userInfo?.image : user.imageUrl,
+    objectId: fetchedUser?.id,
+    username: fetchedUser ? fetchedUser?.username : user.username ?? '',
+    name: fetchedUser ? fetchedUser?.name : user.firstName ?? '',
+    bio: fetchedUser ? fetchedUser?.bio : '',
+    image: fetchedUser ? fetchedUser?.image : user.imageUrl,
   };
 
   return (

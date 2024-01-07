@@ -10,9 +10,11 @@ const colors = {
 };
 
 /**
- * @param  {string} color  message color
- * @param  {string} msg    message text
- * @param  {any} data      data for logging
+ * Logs a message to the console with an optional color and data.
+ *
+ * @param {string} color a string that represents the color of the log message.
+ * @param {string} msg a string that represents the message you want to log to the console.
+ * @param {any} data an optional parameter. If a value is provided, it will be logged to the console along with the msg
  */
 const logToConsole = (color: string, msg: string, data: any) => {
   console.log(color, msg, data ? data : '');

@@ -21,7 +21,7 @@ import { Input } from '../ui/input';
 interface CommentProps {
   threadId: string;
   userImg: string;
-  userId: string;
+  userId: string; // MongoDb ObjectId
 }
 
 const Comment = ({ threadId, userImg, userId }: CommentProps) => {
