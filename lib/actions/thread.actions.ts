@@ -52,8 +52,8 @@ export const createThread = async ({
  * Fetches a specified number of top-level threads from a database, along with their authors and any
  * child threads, and returns them along with a flag indicating if there are more threads available.
  *
- * @param pageNumber is used to specify the page number of the threads to fetch. The default value is 1.
- * @param pageSize is used to specify the amount of threads per page. The default value is 20.
+ * @param pageNumber a number is used to specify the page number of the threads to fetch. The default value is 1.
+ * @param pageSize a number is used to specify the amount of threads per page. The default value is 20.
  * @returns an object { threads, isNext }. The `threads` property contains an array of fetched threads,
  * and the `isNext` property is a boolean value indicating whether there are more threads available to fetch.
  */
@@ -64,12 +64,10 @@ export const fetchThreads = async ({
   try {
     connectToDB();
 
-    // Calculate the number of threads to skip
-    // based on the page number and page size.
+    // Calculate the number of threads to skip based on the page number and page size
     const skipAmount = (pageNumber - 1) * pageSize;
 
-    // Fetch the threads that have no parents
-    // (top level threads that is not a comment/reply)
+    // Fetch the threads that have no parents (top level threads that is not a comment/reply)
     const threadsQuery = ThreadModel.find({
       parentId: { $in: [null, undefined] },
     })
@@ -90,15 +88,15 @@ export const fetchThreads = async ({
         },
       });
 
-    // Count the total number of top-level threads that are not comments.
+    // Count the total number of top-level threads that are not comments
     const totalThreadsCount = await ThreadModel.countDocuments({
       parentId: { $in: [null, undefined] },
     });
 
-    // Returns exactly a promise. Allows to get
-    // a better stack trace if any error happened
+    // Fetch the threads
     const threads = await threadsQuery.exec();
 
+    // Calculating whether there are more threads available to fetch
     const isNext = totalThreadsCount > skipAmount + threads.length;
 
     return { threads, isNext };

@@ -5,7 +5,7 @@ import { currentUser } from '@clerk/nextjs';
 // import Searchbar from "@/components/shared/Searchbar";
 // import Pagination from "@/components/shared/Pagination";
 
-import { fetchUser } from '@/lib/actions/user.actions';
+import { fetchUser, fetchUsers } from '@/lib/actions/user.actions';
 
 interface PageProps {
   searchParams: {
@@ -20,12 +20,14 @@ const Page = async ({ searchParams }: PageProps) => {
   const fetchedUser = await fetchUser(authUser.id);
   if (!fetchedUser?.onboarded) redirect('/onboarding');
 
-  // const result = await fetchUsers({
-  //   userId: user.id,
-  //   searchString: searchParams.q,
-  //   pageNumber: searchParams?.page ? +searchParams.page : 1,
-  //   pageSize: 25,
-  // });
+  const result = await fetchUsers({
+    userId: fetchedUser.id,
+    searchQuery: searchParams.q,
+    pageNumber: searchParams?.page ? +searchParams.page : 1,
+    pageSize: 25,
+  });
+
+  console.log('result', result);
 
   return (
     <section>
