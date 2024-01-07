@@ -13,7 +13,7 @@ import UserModel from '@/lib/models/user.model';
 import CommunityModel from '@/lib/models/community.model';
 
 /**
- * Creates thread object in MongoDb
+ * Creates a new thread object in MongoDb, updates the user model, and revalidates the cached data.
  *
  * @param author user MongoDb ObjectId
  * @param communityId
@@ -49,9 +49,8 @@ export const createThread = async ({
 };
 
 /**
- * The function fetchThreads fetches a specified number of top-level threads from a database, along
- * with their authors and any child threads, and returns them along with a flag indicating if there are
- * more threads available.
+ * Fetches a specified number of top-level threads from a database, along with their authors and any
+ * child threads, and returns them along with a flag indicating if there are more threads available.
  *
  * @param pageNumber is used to specify the page number of the threads to fetch. The default value is 1.
  * @param pageSize is used to specify the amount of threads per page. The default value is 20.
@@ -109,8 +108,7 @@ export const fetchThreads = async ({
 };
 
 /**
- * The function fetches a thread by its _id from a database, populating it with related author and child
- * thread information.
+ * Fetches a thread by its _id from a database, populating it with related author and child thread information.
  *
  * @param {string} threadId the thread._id MongoDb ObjectId parameter.
  * @returns a promise that resolves to the fetched thread object.
@@ -157,8 +155,9 @@ export const fetchThreadById = async (threadId: string) => {
 };
 
 /**
- * The function adds a comment to a thread by creating a new comment thread, linking it to the original
- * thread, and updating the original thread's children array.
+ * Adds a comment to a thread by creating a new comment thread, linking it to the original thread,
+ * and updating the original thread's children array.
+ *
  * @param threadId the thread._id MongoDb ObjectId parameter.
  * @param commentText the text of the comment.
  * @param userId the author's _id MongoDb ObjectId.

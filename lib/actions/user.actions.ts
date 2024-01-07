@@ -8,14 +8,14 @@ import { TUpdateUserParams } from '@/lib/types/user.types';
 import ThreadModel from '@/lib/models/thread.model';
 
 /**
- * Updates user object in MongoDb
+ * Updates a user's information in a database and revalidates the cache if the path is '/profile/edit'.
  *
- * @param bio user bio
- * @param image user avatar image path
- * @param name user name
- * @param path pathname to revalidate cached data (i.e. '/profile/edit')
- * @param userId user._id, MongoDb ObjectId
- * @param username username
+ * @param bio biography of the user.
+ * @param image user avatar image path.
+ * @param name user name.
+ * @param path pathname to revalidate cached data.
+ * @param userId user._id, MongoDb ObjectId.
+ * @param username username.
  */
 export const updateUser = async ({
   bio,
@@ -53,9 +53,10 @@ export const updateUser = async ({
 };
 
 /**
- * Fetches user data from MongoDb
+ * Fetches a user from a database using their ObjectId.
  *
- * @param userId user.id in MongoDb user object, clerk user identifier
+ * @param {string} userId user.id property in MongoDb user object.
+ * @returns the user object.
  */
 export const fetchUser = async (userId: string) => {
   try {
@@ -76,6 +77,14 @@ export const fetchUser = async (userId: string) => {
  * Populates children threads and author data.
  *
  * @param userId user.id in MongoDb user object, clerk user identifier
+ */
+
+/**
+ * Fetches user threads from a database, populating the threads with their children and the author information.
+ *
+ * @param {string} userId user.id property in MongoDb user object, is used to find the user in the database and
+ * retrieve their associated threads.
+ * @returns a promise that resolves to the user threads data.
  */
 export const fetchUserThreads = async (userId: string) => {
   try {
