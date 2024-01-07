@@ -120,7 +120,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
                 {field.value ? (
                   <Image
                     src={field.value}
-                    alt="profile_icon"
+                    alt="user avatar"
                     width={96}
                     height={96}
                     priority
@@ -130,7 +130,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
                 ) : (
                   <Image
                     src="/assets/profile.svg"
-                    alt="profile_icon"
+                    alt="profile icon"
                     width={24}
                     height={24}
                     className="object-contain"
@@ -197,7 +197,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
           )}
         />
 
-        <Button type="submit" className="bg-primary-900">
+        <Button type="submit" className="button">
           {btnTitle}
         </Button>
       </form>

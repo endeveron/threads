@@ -53,7 +53,7 @@ const ThreadCard = ({
                 fill
                 sizes=""
                 className="cursor-pointer rounded-full"
-                alt="Profile image"
+                alt="user avatar"
               />
             </Link>
 
@@ -91,7 +91,7 @@ const ThreadCard = ({
                 <Link href={`/thread/${id}`}>
                   <Image
                     src="/assets/reply.svg"
-                    alt="heart"
+                    alt="reply"
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
@@ -100,7 +100,7 @@ const ThreadCard = ({
                 </Link>
                 <Image
                   src="/assets/repost.svg"
-                  alt="heart"
+                  alt="repost"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
@@ -108,7 +108,7 @@ const ThreadCard = ({
                 />
                 <Image
                   src="/assets/share.svg"
-                  alt="heart"
+                  alt="share"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"

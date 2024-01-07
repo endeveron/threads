@@ -6,6 +6,7 @@ import { currentUser } from '@clerk/nextjs';
 // import Pagination from "@/components/shared/Pagination";
 
 import { fetchUser, fetchUsers } from '@/lib/actions/user.actions';
+import UserCard from '@/components/cards/UserCard';
 
 interface PageProps {
   searchParams: {
@@ -36,22 +37,22 @@ const Page = async ({ searchParams }: PageProps) => {
       {/* <Searchbar routeType='search' /> */}
 
       <div className="mt-14 flex flex-col gap-9">
-        {/* {result.users.length === 0 ? (
-          <p className='no-result'>No Result</p>
+        {result.users.length === 0 ? (
+          <p className="no-result">No Result</p>
         ) : (
           <>
-            {result.users.map((person) => (
+            {result.users.map((user) => (
               <UserCard
-                key={person.id}
-                id={person.id}
-                name={person.name}
-                username={person.username}
-                imgUrl={person.image}
-                personType='User'
+                key={user.id}
+                userId={user.id}
+                name={user.name}
+                username={user.username}
+                image={user.image}
+                type="user"
               />
             ))}
           </>
-        )} */}
+        )}
       </div>
 
       {/* <Pagination

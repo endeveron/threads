@@ -16,3 +16,13 @@ export type TUpdateUserParams = {
   userId: string;
   username: string;
 };
+
+export type TUserCardType = 'user' | 'community';
+
+export type TUserCardProps = {
+  userId: string;
+  name: string;
+  username: string;
+  image: string;
+  type: TUserCardType;
+};

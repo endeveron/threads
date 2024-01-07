@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer components {
+  /* Button */
+  .button {
+    @apply max-xs:w-full rounded-xl p-4;
+    @apply bg-primary-900 hover:bg-primary-950 transition !important;
+  }
+
   /* Main */
   .main-container {
     @apply flex min-h-screen flex-1 flex-col items-center bg-dark-1 px-6 pb-10 pt-28 max-md:pb-32 sm:px-10;
@@ -44,10 +50,6 @@
 
   .user-card_avatar {
     @apply flex flex-1 items-start justify-start gap-3 xs:items-center;
-  }
-
-  .user-card_btn {
-    @apply h-auto min-w-[74px] rounded-lg bg-primary-900 text-[12px] text-light-1 !important;
   }
 
   /* Search Bar */
@@ -196,10 +198,6 @@
 /* Comment Form */
 .comment-form {
   @apply mt-10 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
-}
-
-.comment-form_btn {
-  @apply rounded-3xl bg-primary-900 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
 }
 
 /* Fixes */

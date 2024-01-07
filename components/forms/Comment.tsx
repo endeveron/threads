@@ -56,7 +56,7 @@ const Comment = ({ threadId, userImg, userId }: CommentProps) => {
               <FormLabel>
                 <Image
                   src={userImg}
-                  alt="current_user"
+                  alt="user avatar"
                   width={48}
                   height={48}
                   className="rounded-full object-cover"
@@ -75,7 +75,7 @@ const Comment = ({ threadId, userImg, userId }: CommentProps) => {
           )}
         />
 
-        <Button type="submit" className="comment-form_btn">
+        <Button type="submit" className="button px-7 max-sm:px-4">
           Reply
         </Button>
       </form>

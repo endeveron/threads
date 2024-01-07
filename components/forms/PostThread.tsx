@@ -75,10 +75,7 @@ const PostThread = ({ userId }: PostThreadProps) => {
           )}
         />
 
-        <Button
-          type="submit"
-          className="bg-primary-900 hover:bg-primary-950 p-7"
-        >
+        <Button type="submit" className="button py-7">
           Create Thread
         </Button>
       </form>
