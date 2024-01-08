@@ -21,17 +21,21 @@
 
   /* Activity */
   .activity-card {
-    @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;
+    @apply bg-2 flex items-center gap-2 rounded-md px-7 py-4;
   }
 
   /* No Result */
   .no-result {
-    @apply text-center !text-base-regular text-light-3;
+    @apply text-center !text-base-regular text-light-4;
+  }
+
+  .bg-2 {
+    @apply bg-dark-2;
   }
 
   /* Community Card */
   .community-card {
-    @apply w-full rounded-lg bg-dark-3 px-4 py-5 sm:w-96;
+    @apply bg-2 w-full rounded-lg px-4 py-5 sm:w-96;
   }
 
   .community-card_btn {
@@ -45,7 +49,7 @@
 
   /* User card */
   .user-card {
-    @apply flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:bg-dark-3 max-xs:p-4 xs:flex-row xs:items-center;
+    @apply flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:bg-2 max-xs:p-4 xs:flex-row xs:items-center;
   }
 
   .user-card_avatar {
@@ -54,22 +58,21 @@
 
   /* Search Bar */
   .search-bar {
-    @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
+    @apply bg-2 flex gap-1 rounded-lg px-4 py-2;
   }
 
   .search-bar_input {
-    @apply border-none bg-dark-3 text-base-regular text-light-4 outline-none !important;
+    @apply border-none text-base-medium text-light-1 outline-none;
   }
 
   /* Top Bar */
   .top-bar {
-    @apply fixed top-0 z-30 flex w-full items-center justify-between bg-dark-2 px-6 py-3;
+    @apply bg-2 fixed top-0 z-30 flex w-full items-center justify-between px-6 py-3;
   }
 
   /* Bottom Bar */
   .bottom-bar {
-    /* @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-lg xs:px-7 md:hidden; */
-    @apply fixed bottom-0 z-10 w-full p-4 xs:px-7 md:hidden bg-dark-2;
+    @apply bg-2 fixed bottom-0 z-10 w-full p-4 xs:px-7 md:hidden;
   }
 
   .bottom-bar_container {
@@ -86,7 +89,7 @@
 
   /* Left Sidebar */
   .left-sidebar {
-    @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-2 pb-5 pt-28 max-md:hidden;
+    @apply bg-2 sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto pb-5 pt-28 max-md:hidden border-r border-r-dark-3;
   }
 
   .left-sidebar_container {
@@ -103,7 +106,7 @@
 
   /* Right Sidebar */
   .right-sidebar {
-    @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-dark-2 px-10 pb-6 pt-28 max-xl:hidden;
+    @apply bg-2 sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-3 px-10 pb-6 pt-28 max-xl:hidden;
   }
 
   .right-sidebar_content-box {
@@ -111,7 +114,7 @@
   }
 
   .right-sidebar_title {
-    @apply text-heading4-medium text-light-1;
+    @apply text-heading4-semibold text-light-1;
   }
 
   .pagination {
@@ -159,7 +162,7 @@
 
 /* Tab */
 .tab {
-  @apply flex min-h-[50px] flex-1 items-center gap-3 bg-dark-2 text-light-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
+  @apply bg-2 flex min-h-[50px] flex-1 items-center gap-3 text-light-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
 }
 
 /* Form */
@@ -168,7 +171,7 @@
 }
 
 .form-card {
-  @apply p-10 bg-dark-2;
+  @apply bg-2 p-10;
 }
 
 .form_item {
@@ -176,15 +179,15 @@
 }
 
 .form_input {
-  @apply border border-dark-4 bg-dark-3 text-light-1 !important;
+  @apply bg-2 p-4 border border-dark-3 text-light-1 text-base-medium;
 }
 
 .form_label {
-  @apply text-base-semibold text-light-2;
+  @apply text-base-semibold text-light-3;
 }
 
 .form_image-label {
-  @apply flex h-24 w-24 items-center justify-center rounded-full bg-dark-4 !important;
+  @apply flex h-24 w-24 items-center justify-center rounded-full bg-dark-3 !important;
 }
 
 .form_image-input {
@@ -197,7 +200,7 @@
 
 /* Comment Form */
 .comment-form {
-  @apply mt-10 flex items-center gap-4 border-y border-y-dark-4 py-5 max-xs:flex-col !important;
+  @apply mt-10 flex items-center gap-4 border-y border-y-dark-3 py-5 max-xs:flex-col !important;
 }
 
 /* Fixes */

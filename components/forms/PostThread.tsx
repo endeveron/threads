@@ -62,11 +62,12 @@ const PostThread = ({ userId }: PostThreadProps) => {
           name="thread"
           render={({ field }) => (
             <FormItem className="form_item">
-              <FormLabel className="form_label">Content</FormLabel>
+              {/* <FormLabel className="form_label">Content</FormLabel> */}
               <FormControl>
                 <Textarea
                   rows={15}
                   className="form_input no-focus"
+                  placeholder="Type something..."
                   {...field}
                 />
               </FormControl>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 
-import Topbar from '@/components/shared/Topbar';
+import Topbar from '@/components/shared/TopBar';
 import LeftSidebar from '@/components/shared/LeftSidebar';
 import RightSidebar from '@/components/shared/RightSidebar';
 import BottomBar from '@/components/shared/BottomBar';

@@ -45,52 +45,38 @@ module.exports = {
         },
       ],
       'heading3-bold': [
-        '24px',
+        '22px',
         {
           lineHeight: '140%',
           fontWeight: '700',
         },
       ],
-      'heading4-medium': [
-        '20px',
+      'heading3-medium': [
+        '22px',
         {
           lineHeight: '140%',
           fontWeight: '500',
         },
       ],
-      'body-bold': [
+      'heading4-bold': [
         '18px',
         {
           lineHeight: '140%',
           fontWeight: '700',
         },
       ],
-      'body-semibold': [
+      'heading4-semibold': [
         '18px',
         {
           lineHeight: '140%',
           fontWeight: '600',
         },
       ],
-      'body-medium': [
+      'heading4-medium': [
         '18px',
         {
           lineHeight: '140%',
           fontWeight: '500',
-        },
-      ],
-      'body-normal': [
-        '18px',
-        {
-          lineHeight: '140%',
-          fontWeight: '400',
-        },
-      ],
-      'body1-bold': [
-        '18px',
-        {
-          lineHeight: '140%',
-          fontWeight: '700',
         },
       ],
       'base-regular': [
@@ -114,13 +100,6 @@ module.exports = {
           fontWeight: '600',
         },
       ],
-      'base1-semibold': [
-        '16px',
-        {
-          lineHeight: '140%',
-          fontWeight: '600',
-        },
-      ],
       'small-regular': [
         '14px',
         {
@@ -135,13 +114,13 @@ module.exports = {
           fontWeight: '500',
         },
       ],
-      'small-semibold': [
-        '14px',
-        {
-          lineHeight: '140%',
-          fontWeight: '600',
-        },
-      ],
+      // 'small-semibold': [
+      //   '14px',
+      //   {
+      //     lineHeight: '140%',
+      //     fontWeight: '600',
+      //   },
+      // ],
       'subtle-medium': [
         '12px',
         {
@@ -149,45 +128,45 @@ module.exports = {
           fontWeight: '500',
         },
       ],
-      'subtle-semibold': [
-        '12px',
-        {
-          lineHeight: '16px',
-          fontWeight: '600',
-        },
-      ],
-      'tiny-medium': [
-        '10px',
-        {
-          lineHeight: '140%',
-          fontWeight: '500',
-        },
-      ],
-      'x-small-semibold': [
-        '7px',
-        {
-          lineHeight: '9.318px',
-          fontWeight: '600',
-        },
-      ],
+      // 'subtle-semibold': [
+      //   '12px',
+      //   {
+      //     lineHeight: '16px',
+      //     fontWeight: '600',
+      //   },
+      // ],
+      // 'tiny-medium': [
+      //   '10px',
+      //   {
+      //     lineHeight: '140%',
+      //     fontWeight: '500',
+      //   },
+      // ],
+      // 'x-small-semibold': [
+      //   '7px',
+      //   {
+      //     lineHeight: '9.318px',
+      //     fontWeight: '600',
+      //   },
+      // ],
     },
     extend: {
       colors: {
-        'primary-300': '#a78bfa',
-        'primary-500': '#8b5cf6',
-        'primary-900': '#4c1d95',
-        'primary-950': '#2e1065',
-        // 'logout-btn': '#FF5A5A',
-        // 'navbar-menu': 'rgba(16, 16, 18, 0.6)',
-        'dark-1': '#000000',
-        'dark-2': '#121417',
-        'dark-3': '#101012',
-        'dark-4': '#1F1F22',
+        // 'primary-500': '#8b5cf6', // Violet 500
+        // 'primary-900': '#4c1d95', // Violet 900
+        // 'primary-950': '#2e1065', // Violet 950
+        'primary-500': '#a855f7', // Purple 500
+        'primary-900': '#581c87', // Purple 900
+        'primary-950': '#3b0764', // Purple 950
+
+        'dark-1': '#000000', // bg-1 body
+        'dark-2': '#121417', // bg-2 bar tab card
+        'dark-3': '#1F1F22', // border
+
         'light-1': '#FFFFFF',
-        'light-2': '#94a3b8',
-        'light-3': '#475569',
-        'light-4': '#1e293b',
-        glassmorphism: 'rgba(16, 16, 18, 0.60)',
+        'light-2': '#cbd5e1', // Slate 300
+        'light-3': '#64748b', // Slate 500
+        'light-4': '#475569', // Slate 600
       },
       boxShadow: {
         'count-badge': '0px 0px 6px 2px rgba(219, 188, 159, 0.30)',

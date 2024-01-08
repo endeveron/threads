@@ -14,7 +14,7 @@ const Page = async () => {
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col justify-start">
-      <h1 className="head-text">Create Thread</h1>
+      <h1 className="head-text">Create a New Thread</h1>
 
       <PostThread userId={userId} />
     </div>

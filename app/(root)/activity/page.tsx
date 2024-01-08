@@ -1,18 +1,9 @@
-import { redirect } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-// import Searchbar from "@/components/shared/Searchbar";
-// import Pagination from "@/components/shared/Pagination";
-
-import {
-  fetchActivity,
-  fetchUser,
-  fetchUserReplies,
-  fetchUsers,
-} from '@/lib/actions/user.actions';
-import UserCard from '@/components/cards/UserCard';
+import { fetchActivity, fetchUser } from '@/lib/actions/user.actions';
 
 interface PageProps {}
 
@@ -55,7 +46,7 @@ const Page = async (props: PageProps) => {
             ))}
           </>
         ) : (
-          <p className="!text-base-regular text-light-3">No activity yet</p>
+          <p className="no-result">No activity yet</p>
         )}
       </section>
     </section>

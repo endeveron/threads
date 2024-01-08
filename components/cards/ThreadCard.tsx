@@ -41,7 +41,7 @@ const ThreadCard = ({
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {
         'mt-2 px-0 xs:px-7': isComment,
-        'bg-dark-2 p-7': !isComment,
+        'bg-2 p-7': !isComment,
       })}
     >
       <div className="thread-card_content-wrapper flex items-start justify-between">
