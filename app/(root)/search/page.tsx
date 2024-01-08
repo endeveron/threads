@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs';
 
-// import UserCard from "@/components/cards/UserCard";
 // import Searchbar from "@/components/shared/Searchbar";
 // import Pagination from "@/components/shared/Pagination";
 
@@ -18,11 +17,12 @@ const Page = async ({ searchParams }: PageProps) => {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const fetchedUser = await fetchUser(authUser.id);
-  if (!fetchedUser?.onboarded) redirect('/onboarding');
+  const authUserData = await fetchUser(authUser.id);
+  if (!authUserData?.onboarded) redirect('/onboarding');
+  // const userId = authUserData._id.toString(); // Mongo ObjectId
 
   const result = await fetchUsers({
-    userId: fetchedUser.id,
+    userId: authUser.id, // Clerk user id
     searchQuery: searchParams.q,
     pageNumber: searchParams?.page ? +searchParams.page : 1,
     pageSize: 25,

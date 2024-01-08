@@ -134,18 +134,11 @@ export const fetchUsers = async ({
 };
 
 /**
- * Fetches user threads from MongoDb.
- * Populates children threads and author data.
- *
- * @param userId user.id in MongoDb user object, clerk user identifier
- */
-
-/**
  * Fetches user threads from a database, populating the threads with their children and the author information.
  *
  * @param {string} userId user.id property in MongoDb user object, is used to find the user in the database and
  * retrieve their associated threads.
- * @returns a promise that resolves to the user threads data.
+ * @returns a promise that resolves to the user threads objects.
  */
 export const fetchUserThreads = async (userId: string) => {
   try {
@@ -168,5 +161,75 @@ export const fetchUserThreads = async (userId: string) => {
     return await threadsQuery.exec();
   } catch (err: any) {
     throw new Error(`Failed to fetch user threads: ${err.message}`);
+  }
+};
+
+/**
+ * Retrieves all replies on the user threads, excluding user own threads, and populates the author information for each reply.
+ *
+ * @param userId user._id, MongoDb ObjectId.
+ * @returns a promise that resolves to an array of thread objects.
+ */
+export const fetchActivity = async (userId: string) => {
+  try {
+    connectToDB();
+
+    // Get all threads created by the user
+    const userThreads = await ThreadModel.find({ author: userId });
+
+    // Iterate over the user threads and collect all the child thread ids (replies) from the `thread.children` property.
+    const childThreadIds = userThreads.reduce((acc, thread) => {
+      return acc.concat(thread.children);
+    }, []);
+
+    // Get all replies on the user threads
+    const activityQuery = ThreadModel.find({
+      _id: { $in: childThreadIds },
+      author: { $ne: userId },
+    }).populate({
+      path: 'author',
+      model: UserModel,
+      select: '_id image name',
+    });
+
+    return await activityQuery.exec();
+  } catch (err: any) {
+    throw new Error(`Failed to fetch user activity: ${err.message}`);
+  }
+};
+
+// TODO: Implement the fetching user replies
+
+/**
+ * Retrieves all the threads that a user has replied to, excluding their own threads, and populates the author information for each reply.
+ *
+ * @param userId user._id, MongoDb ObjectId.
+ * @returns a promise that resolves to an array of thread objects.
+ */
+export const fetchUserReplies = async (userId: string) => {
+  try {
+    connectToDB();
+
+    // Get all threads created by the user
+    const userThreads = await ThreadModel.find({ author: userId });
+
+    // Iterate over the user threads and collect all the child thread ids (replies) from the `thread.children` property.
+    const childThreadIds = userThreads.reduce((acc, thread) => {
+      return acc.concat(thread.children);
+    }, []);
+
+    // Get all threads that the user replied, but exclude the user own threads
+    const repliesQuery = ThreadModel.find({
+      _id: { $in: childThreadIds },
+      author: { $ne: userId },
+    }).populate({
+      path: 'author',
+      model: UserModel,
+      select: '_id image name',
+    });
+
+    return await repliesQuery.exec();
+  } catch (err: any) {
+    throw new Error(`Failed to fetch user activity: ${err.message}`);
   }
 };

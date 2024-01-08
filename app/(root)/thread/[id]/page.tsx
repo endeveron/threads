@@ -20,8 +20,10 @@ const Page = async ({ params }: PageProps) => {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const fetchedUser = await fetchUser(authUser.id);
-  const userId = JSON.stringify(fetchedUser._id); // MongoDb ObjectId
+  const authUserData = await fetchUser(authUser.id);
+  if (!authUserData?.onboarded) redirect('/onboarding');
+  // const userId = JSON.stringify(authUserData._id); // MongoDb ObjectId
+  const userId = authUserData._id.toString(); // MongoDb ObjectId
 
   const thread = await fetchThreadById(params.id);
 
@@ -29,7 +31,7 @@ const Page = async ({ params }: PageProps) => {
     <div className="relative">
       <ThreadCard
         id={thread._id}
-        userId={authUser.id}
+        userId={authUser.id} // Clerk user id
         parentId={thread.parentId}
         content={thread.text}
         author={thread.author}
@@ -41,7 +43,7 @@ const Page = async ({ params }: PageProps) => {
       <div className="mt-10">
         <Comment
           threadId={params.id}
-          userImg={fetchedUser.image}
+          userImg={authUserData.image}
           userId={userId}
         />
       </div>
@@ -51,7 +53,7 @@ const Page = async ({ params }: PageProps) => {
           <ThreadCard
             key={childItem._id}
             id={childItem._id}
-            userId={fetchedUser.id}
+            userId={authUser.id} // Clerk user id
             parentId={childItem.parentId}
             content={childItem.text}
             author={childItem.author}

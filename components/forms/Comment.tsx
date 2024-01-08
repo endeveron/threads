@@ -38,7 +38,7 @@ const Comment = ({ threadId, userImg, userId }: CommentProps) => {
     await addCommentToThread({
       threadId: threadId,
       commentText: values.thread,
-      userId: JSON.parse(userId),
+      userId,
       path: pathname,
     });
 
