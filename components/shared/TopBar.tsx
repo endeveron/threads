@@ -6,8 +6,8 @@ import Link from 'next/link';
 const TopBar = () => {
   return (
     <nav className="top-bar">
-      <Link href="/" className="flex items-center gap-4">
-        <Image src="/assets/logo.svg" alt="logo" width={28} height={28} />
+      <Link href="/" className="flex items-center gap-3 ml-2">
+        <Image src="/assets/logo.svg" alt="logo" width={33} height={32} />
         <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
       </Link>
       <div className="flex items-center gap-1">
