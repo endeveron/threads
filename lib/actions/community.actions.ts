@@ -6,6 +6,7 @@ import CommunityModel from '@/lib/models/community.model';
 import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
+import logger from '@/lib/utils/logger';
 
 export async function createCommunity(
   id: string,
@@ -42,8 +43,7 @@ export async function createCommunity(
 
     return createdCommunity;
   } catch (error) {
-    // Handle any errors
-    console.error('Error creating community:', error);
+    logger.r('Error creating community:', error);
     throw error;
   }
 }
@@ -63,8 +63,7 @@ export async function fetchCommunityDetails(id: string) {
 
     return communityDetails;
   } catch (error) {
-    // Handle any errors
-    console.error('Error fetching community details:', error);
+    logger.r('Error fetching community details:', error);
     throw error;
   }
 }
@@ -96,8 +95,7 @@ export async function fetchCommunityPosts(id: string) {
 
     return communityPosts;
   } catch (error) {
-    // Handle any errors
-    console.error('Error fetching community posts:', error);
+    logger.r('Error fetching community posts:', error);
     throw error;
   }
 }
@@ -153,7 +151,7 @@ export async function fetchCommunities({
 
     return { communities, isNext };
   } catch (error) {
-    console.error('Error fetching communities:', error);
+    logger.r('Error fetching communities:', error);
     throw error;
   }
 }
@@ -194,8 +192,7 @@ export async function addMemberToCommunity(
 
     return community;
   } catch (error) {
-    // Handle any errors
-    console.error('Error adding member to community:', error);
+    logger.r('Error adding member to community:', error);
     throw error;
   }
 }
@@ -235,8 +232,7 @@ export async function removeUserFromCommunity(
 
     return { success: true };
   } catch (error) {
-    // Handle any errors
-    console.error('Error removing user from community:', error);
+    logger.r('Error removing user from community:', error);
     throw error;
   }
 }
@@ -262,8 +258,7 @@ export async function updateCommunityInfo(
 
     return updatedCommunity;
   } catch (error) {
-    // Handle any errors
-    console.error('Error updating community information:', error);
+    logger.r('Error updating community information:', error);
     throw error;
   }
 }
@@ -297,7 +292,7 @@ export async function deleteCommunity(communityId: string) {
 
     return deletedCommunity;
   } catch (error) {
-    console.error('Error deleting community: ', error);
+    logger.r('Error deleting community: ', error);
     throw error;
   }
 }

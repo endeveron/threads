@@ -16,7 +16,7 @@ import CommunityModel from '@/lib/models/community.model';
  * Creates a new thread object in MongoDb, updates the user model, and revalidates the cached data.
  *
  * @param author user MongoDb ObjectId
- * @param communityId
+ * @param communityId Clerk community id
  * @param path the pathname to revalidate cached data (i.e. '/profile/edit')
  * @param text the thread text content
  */
@@ -28,12 +28,21 @@ export const createThread = async ({
 }: TCreateThreadParams) => {
   try {
     connectToDB();
+    let community = null;
+
+    // The 'communityId' prop is the ID given by the Clerk service.
+    // But the 'community' prop of the thread object must be an MongoDb ObjectId type.
+    // Therefore if 'communityId' is provided, we must fetch the community ObjectId from the MongoDb
+    if (communityId !== null) {
+      const fetchedCommunity = await CommunityModel.find({ id: communityId });
+      community = fetchedCommunity[0]?._id?.toString();
+    }
 
     // Create new thread
     const thread = await ThreadModel.create({
       text,
       author,
-      community: null,
+      community, // MongoDb ObjectId
     });
 
     // Update user model
@@ -86,6 +95,11 @@ export const fetchThreads = async ({
           model: UserModel,
           select: 'id image name username',
         },
+      })
+      .populate({
+        path: 'community',
+        model: CommunityModel,
+        select: 'id image name',
       });
 
     // Count the total number of top-level threads that are not comments

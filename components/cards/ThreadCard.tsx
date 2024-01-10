@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils/cn';
+import { formatDateString } from '@/lib/utils/format';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -37,6 +38,8 @@ const ThreadCard = ({
   parentId,
   isComment,
 }: ThreadCardProps) => {
+  console.log('community', community);
+
   return (
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {
@@ -44,7 +47,7 @@ const ThreadCard = ({
         'bg-2 p-7': !isComment,
       })}
     >
-      <div className="thread-card_content-wrapper flex items-start justify-between">
+      <div className="thread-card_content-wrapper flex  flex-col items-start justify-between">
         <div className="thread-card_content flex w-full flex-1 flex-row gap-4">
           <div className="thread-card_column flex flex-col items-center">
             <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
@@ -116,6 +119,7 @@ const ThreadCard = ({
                 />
               </div>
 
+              {/* Comments */}
               {isComment && comments.length > 0 && (
                 <Link href={`/thread/${id}`}>
                   <p className="thread-card_comments mt-1 text-subtle-medium text-light-2">
@@ -126,6 +130,33 @@ const ThreadCard = ({
             </div>
           </div>
         </div>
+        {/* TODO: Delete thread */}
+        {/* TODO: Show comment logos */}
+
+        {!isComment && community && (
+          <div className="mt-5 flex items-center text-subtle-medium text-light-3">
+            <div className="flex items-center cursor-default">
+              {formatDateString(createdAt)}
+            </div>
+            {community && (
+              <Link
+                href={`/communities/${community.id}`}
+                className=" flex items-center"
+              >
+                <Image
+                  src={community.image}
+                  alt={community.name}
+                  width={14}
+                  height={14}
+                  className="mx-2 rounded-full object-cover"
+                />
+                <span className="thread-card_community">
+                  {community.name} Community
+                </span>
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
