@@ -124,14 +124,14 @@ module.exports = {
       'subtle-medium': [
         '12px',
         {
-          lineHeight: '16px',
+          lineHeight: '1.5',
           fontWeight: '500',
         },
       ],
       // 'subtle-semibold': [
       //   '12px',
       //   {
-      //     lineHeight: '16px',
+      //     lineHeight: '1.5',
       //     fontWeight: '600',
       //   },
       // ],
