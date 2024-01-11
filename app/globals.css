@@ -6,7 +6,7 @@
   /* Button */
   .button {
     @apply max-xs:w-full rounded-xl p-4;
-    @apply bg-primary-800 hover:bg-primary-900 transition !important;
+    @apply bg-primary-800 !important;
   }
 
   /* Main */
@@ -161,11 +161,20 @@
 /* Shadcn Component Styles */
 
 /* Tab */
-.tab {
-  @apply bg-2 flex min-h-[50px] flex-1 items-center gap-3 text-light-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
+.tabs-list {
+  @apply bg-2 flex min-h-[50px] flex-1 items-center gap-1 p-0 text-light-3;
 }
 
-.tabs_content {
+.tabs-trigger {
+  @apply gap-3 flex-1 min-h-[50px];
+}
+
+.tabs-trigger:hover,
+.tabs-trigger[data-state='active'] {
+  @apply text-light-1 bg-dark-2-active !important;
+}
+
+.tabs-content {
   @apply w-full text-light-1;
 }
 
@@ -210,4 +219,8 @@
 /* Fixes */
 .no-mt {
   margin-top: 0 !important;
+}
+
+.bg-hover:hover {
+  @apply bg-dark-2-active;
 }

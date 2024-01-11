@@ -29,8 +29,8 @@ const MainMenuLinks = (props: MainMenuLinksProps) => {
       <Link
         href={route}
         key={link.label}
-        className={cn('main-menu_link transition', {
-          'bg-primary-800 hover:bg-primary-900': isActive,
+        className={cn('main-menu_link bg-hover', {
+          'bg-primary-800 hover:bg-primary-800': isActive,
         })}
       >
         <Image

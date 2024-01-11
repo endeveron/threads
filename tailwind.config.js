@@ -166,6 +166,7 @@ module.exports = {
 
         'dark-1': '#0b0c0c', // bg-1 body
         'dark-2': '#121417', // bg-2 bar tab card
+        'dark-2-active': '#1a1c1e',
         'dark-3': '#1F1F22', // border
 
         'light-1': '#FFFFFF',

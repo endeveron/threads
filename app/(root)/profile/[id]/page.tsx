@@ -34,9 +34,13 @@ const Page = async ({ params }: TPageProps) => {
 
       <div className="mt-10">
         <Tabs className="w-full" defaultValue="threads">
-          <TabsList className="tab">
+          <TabsList className="tabs-list">
             {profileTabs.map((tab) => (
-              <TabsTrigger key={tab.label} value={tab.value} className="tab">
+              <TabsTrigger
+                key={tab.label}
+                value={tab.value}
+                className="tabs-trigger"
+              >
                 <Image
                   src={tab.icon}
                   alt={tab.label}
@@ -56,7 +60,7 @@ const Page = async ({ params }: TPageProps) => {
             ))}
           </TabsList>
 
-          <TabsContent value="threads" className="tabs_content">
+          <TabsContent value="threads" className="tabs-content">
             <ThreadsTab
               authUserId={authUser.id}
               id={fetchedUser.id} // user ObjectId

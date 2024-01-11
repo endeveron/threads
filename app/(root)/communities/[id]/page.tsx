@@ -34,9 +34,13 @@ const Page = async ({ params }: TPageProps) => {
 
       <div className="mt-10">
         <Tabs className="w-full" defaultValue="threads">
-          <TabsList className="tab">
+          <TabsList className="tabs-list">
             {communityTabs.map((tab) => (
-              <TabsTrigger key={tab.label} value={tab.value} className="tab">
+              <TabsTrigger
+                key={tab.label}
+                value={tab.value}
+                className="tabs-trigger"
+              >
                 <Image
                   src={tab.icon}
                   alt={tab.label}
@@ -56,7 +60,7 @@ const Page = async ({ params }: TPageProps) => {
             ))}
           </TabsList>
 
-          <TabsContent value="threads" className="tabs_content">
+          <TabsContent value="threads" className="tabs-content">
             <ThreadsTab
               authUserId={authUser.id}
               id={communityDetails._id} // community ObjectId
@@ -64,7 +68,7 @@ const Page = async ({ params }: TPageProps) => {
             />
           </TabsContent>
 
-          <TabsContent value="members" className="tabs_content">
+          <TabsContent value="members" className="tabs-content">
             {/* <section className="mt-9 flex flex-col gap-10">
               {communityDetails.members.map((member: any) => (
                 <UserCard
@@ -79,7 +83,7 @@ const Page = async ({ params }: TPageProps) => {
             </section> */}
           </TabsContent>
 
-          <TabsContent value="requests" className="tabs_content">
+          <TabsContent value="requests" className="tabs-content">
             {/* <ThreadsTab
               authUserId={authUser.id}
               userId={communityDetails._id}
