@@ -8,7 +8,7 @@ interface ProfileHeaderProps {
   username: string;
   imgUrl: string;
   bio: string;
-  type?: string;
+  type?: 'user' | 'community';
 }
 
 const ProfileHeader = ({
@@ -23,7 +23,7 @@ const ProfileHeader = ({
   return (
     <div className="profile-header flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="relative h-20 w-20 object-cover">
             <Image
               src={imgUrl}
@@ -41,7 +41,7 @@ const ProfileHeader = ({
             <p className="text-base-medium text-light-3">@{username}</p>
           </div>
         </div>
-        {accountId === authUserId && type !== 'Community' && (
+        {accountId === authUserId && type !== 'community' && (
           <Link href="/profile/edit">
             <div className="bg-2 flex cursor-pointer gap-3 rounded-lg px-4 py-2">
               <Image
@@ -59,7 +59,7 @@ const ProfileHeader = ({
       </div>
 
       {/* max-w-lg */}
-      <p className="mt-6 text-base-regular text-light-2">{bio}</p>
+      <p className="mt-6 sm:ml-24 text-base-regular text-light-2">{bio}</p>
 
       <div className="bg-2 mt-12 h-0.5 w-full" />
     </div>

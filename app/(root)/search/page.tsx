@@ -28,8 +28,6 @@ const Page = async ({ searchParams }: PageProps) => {
     pageSize: 25,
   });
 
-  console.log('result', result);
-
   return (
     <section>
       <h1 className="head-text mb-10">Search</h1>

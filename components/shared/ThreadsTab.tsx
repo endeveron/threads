@@ -1,10 +1,12 @@
 import { redirect } from 'next/navigation';
 
-// import { fetchCommunityPosts } from "@/lib/actions/community.actions";
+// import { fetchCommunityThreads } from "@/lib/actions/community.actions";
 // import { fetchUserThreads } from "@/lib/actions/user.actions";
 
 import ThreadCard from '../cards/ThreadCard';
 import { fetchUserThreads } from '@/lib/actions/user.actions';
+import { fetchCommunityThreads } from '@/lib/actions/community.actions';
+import { TAccountType } from '@/lib/types/account';
 
 type TThreadsTabContent = {
   name: string;
@@ -35,30 +37,26 @@ type TThreadsTabContent = {
 
 type TThreadsTabProps = {
   authUserId: string;
-  userId: string;
-  accountType: string;
+  id: string;
+  accountType: TAccountType;
 };
 
 const ThreadsTab = async ({
   authUserId,
-  userId,
+  id, // user ObjectId or community ObjectId
   accountType,
 }: TThreadsTabProps) => {
-  // let content: TThreadsTabContent;
+  let content: TThreadsTabContent;
 
-  // if (accountType === 'Community') {
-  //   content = await fetchCommunityPosts(accountId);
-  // } else {
-  //   content = await fetchUserThreads(accountId);
-  // }
-
-  const content: TThreadsTabContent = await fetchUserThreads(userId);
-
-  if (!content) {
-    redirect('/');
+  switch (accountType) {
+    case 'user':
+      content = await fetchUserThreads(id);
+      break;
+    case 'community':
+      content = await fetchCommunityThreads(id);
   }
 
-  // console.log('content', content);
+  if (!content) redirect('/');
 
   return (
     <section className="mt-9 flex flex-col gap-10">
@@ -66,11 +64,11 @@ const ThreadsTab = async ({
         <ThreadCard
           key={thread._id}
           id={thread._id}
-          userId={userId}
+          userId={authUserId}
           parentId={thread.parentId}
           content={thread.text}
           author={
-            accountType === 'User'
+            accountType === 'user'
               ? { name: content.name, image: content.image, id: content.id }
               : {
                   name: thread.author.name,
@@ -79,7 +77,7 @@ const ThreadsTab = async ({
                 }
           }
           community={
-            accountType === 'Community'
+            accountType === 'community'
               ? { name: content.name, id: content.id, image: content.image }
               : thread.community
           }

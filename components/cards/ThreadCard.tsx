@@ -38,8 +38,6 @@ const ThreadCard = ({
   parentId,
   isComment,
 }: ThreadCardProps) => {
-  console.log('community', community);
-
   return (
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {

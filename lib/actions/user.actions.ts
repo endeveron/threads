@@ -1,12 +1,13 @@
 'use server';
 
+import { FilterQuery } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 
+import CommunityModel from '@/lib/models/community.model';
+import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
 import { TFetchUsersParams, TUpdateUserParams } from '@/lib/types/user.types';
-import ThreadModel from '@/lib/models/thread.model';
-import { FilterQuery } from 'mongoose';
 
 /**
  * Updates a user's information in a database and revalidates the cache if the path is '/profile/edit'.
@@ -63,11 +64,11 @@ export const fetchUser = async (userId: string) => {
   try {
     connectToDB();
 
-    return await UserModel.findOne({ id: userId });
-    // .populate({
-    //   path: 'communities',
-    //   model: CommunityModel,
-    // });
+    return await UserModel.findOne({ id: userId }).populate({
+      path: 'communities',
+      model: CommunityModel,
+      select: '_id id image name',
+    });
   } catch (err: any) {
     throw new Error(`Failed to fetch user: ${err.message}`);
   }
@@ -147,15 +148,24 @@ export const fetchUserThreads = async (userId: string) => {
     const threadsQuery = UserModel.findOne({ id: userId }).populate({
       path: 'threads',
       model: ThreadModel,
-      populate: {
-        path: 'children',
-        model: ThreadModel,
-        populate: {
-          path: 'author',
-          model: UserModel,
+      populate: [
+        {
+          path: 'children',
+          model: ThreadModel,
+          populate: [
+            {
+              path: 'author',
+              model: UserModel,
+              select: '_id id image name',
+            },
+          ],
+        },
+        {
+          path: 'community',
+          model: CommunityModel,
           select: '_id id image name',
         },
-      },
+      ],
     });
 
     return await threadsQuery.exec();

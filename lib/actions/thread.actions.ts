@@ -28,27 +28,34 @@ export const createThread = async ({
 }: TCreateThreadParams) => {
   try {
     connectToDB();
-    let community = null;
+    let community;
+    let communityObjId = null;
 
     // The 'communityId' prop is the ID given by the Clerk service.
     // But the 'community' prop of the thread object must be an MongoDb ObjectId type.
     // Therefore if 'communityId' is provided, we must fetch the community ObjectId from the MongoDb
     if (communityId !== null) {
-      const fetchedCommunity = await CommunityModel.find({ id: communityId });
-      community = fetchedCommunity[0]?._id?.toString();
+      community = await CommunityModel.findOne({ id: communityId });
+      communityObjId = community?._id?.toString();
     }
 
     // Create new thread
     const thread = await ThreadModel.create({
       text,
       author,
-      community, // MongoDb ObjectId
+      community: communityObjId,
     });
 
     // Update user model
     await UserModel.findByIdAndUpdate(author, {
       $push: { threads: thread._id },
     });
+
+    // if 'communityId' is provided, add thread to community 'threads' prop
+    if (community) {
+      community.threads.push(thread._id);
+      await community.save();
+    }
 
     // Update cached data
     revalidatePath(path);

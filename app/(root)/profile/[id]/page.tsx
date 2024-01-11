@@ -55,19 +55,14 @@ const Page = async ({ params }: TPageProps) => {
               </TabsTrigger>
             ))}
           </TabsList>
-          {profileTabs.map((tab) => (
-            <TabsContent
-              key={`content-${tab.label}`}
-              value={tab.value}
-              className="w-full text-light-1"
-            >
-              <ThreadsTab
-                authUserId={authUser.id}
-                userId={fetchedUser.id}
-                accountType="User"
-              />
-            </TabsContent>
-          ))}
+
+          <TabsContent value="threads" className="tabs_content">
+            <ThreadsTab
+              authUserId={authUser.id}
+              id={fetchedUser.id} // user ObjectId
+              accountType="user"
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </section>

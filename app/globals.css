@@ -165,6 +165,10 @@
   @apply bg-2 flex min-h-[50px] flex-1 items-center gap-3 text-light-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
 }
 
+.tabs_content {
+  @apply w-full text-light-1;
+}
+
 /* Form */
 .form {
   @apply flex flex-col justify-start gap-10;

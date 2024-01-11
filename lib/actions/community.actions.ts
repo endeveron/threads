@@ -68,18 +68,18 @@ export async function fetchCommunityDetails(id: string) {
   }
 }
 
-export async function fetchCommunityPosts(id: string) {
+export async function fetchCommunityThreads(communityId: string) {
   try {
     connectToDB();
 
-    const communityPosts = await CommunityModel.findById(id).populate({
+    const communityPosts = await CommunityModel.findById(communityId).populate({
       path: 'threads',
       model: ThreadModel,
       populate: [
         {
           path: 'author',
           model: UserModel,
-          select: 'name image id', // Select the "name" and "_id" fields from the "User" model
+          select: '_id id image name',
         },
         {
           path: 'children',
@@ -87,7 +87,7 @@ export async function fetchCommunityPosts(id: string) {
           populate: {
             path: 'author',
             model: UserModel,
-            select: 'image _id', // Select the "name" and "_id" fields from the "User" model
+            select: '_id id image',
           },
         },
       ],
