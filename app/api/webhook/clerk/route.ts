@@ -69,16 +69,14 @@ export const POST = async (request: Request) => {
       evnt?.data ?? {};
 
     try {
-      // @ts-ignore
-      await createCommunity(
-        // @ts-ignore
-        id,
-        name,
-        slug,
-        logo_url || image_url,
-        'org bio',
-        created_by
-      );
+      await createCommunity({
+        id: id as string,
+        name: name as string,
+        username: slug as string,
+        image: (logo_url || image_url) as string,
+        bio: 'A new organization',
+        createdById: created_by as string,
+      });
 
       return NextResponse.json({ message: 'User created' }, { status: 201 });
     } catch (err) {
@@ -167,8 +165,12 @@ export const POST = async (request: Request) => {
       const { id, logo_url, name, slug } = evnt?.data;
       console.log('updated', evnt?.data);
 
-      // @ts-ignore
-      await updateCommunityInfo(id, name, slug, logo_url);
+      await updateCommunityInfo({
+        id: id as string,
+        name: name as string,
+        username: slug as string,
+        image: logo_url as string,
+      });
 
       return NextResponse.json({ message: 'Member removed' }, { status: 201 });
     } catch (err) {

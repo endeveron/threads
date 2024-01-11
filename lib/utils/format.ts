@@ -13,6 +13,7 @@ export function isBase64Image(imageData: string) {
  * Takes a date string as input and returns a formatted string with the time and date.
  *
  * @param {string} dateString a string representing a date in a specific format.
+ *
  * @returns a formatted string that includes the time and date.
  * The format of the string is "time - date", where the time is in the format "hour:minute" and the
  * date is in the format "month day, year".
@@ -39,6 +40,7 @@ export const formatDateString = (dateString: string) => {
  * Takes a number as input and returns a formatted string indicating the number of threads.
  *
  * @param {number} count a number that represents the number of threads.
+ *
  * @returns a string that represents the formatted thread count.
  */
 export const formatThreadCount = (count: number): string => {

@@ -7,15 +7,31 @@ import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
 import logger from '@/lib/utils/logger';
+import {
+  TCreateCommunityParams,
+  TUpdateCommunityParams,
+} from '@/lib/types/community.types';
 
-export async function createCommunity(
-  id: string,
-  name: string,
-  username: string,
-  image: string,
-  bio: string,
-  createdById: string // Change the parameter name to reflect it's an id
-) {
+/**
+ * The function creates a new community with the provided details and associates it with a user.
+ *
+ * @param {string} params.id community.id, ClerkId of the community.
+ * @param {string} params.name name of the community.
+ * @param {string} params.username username of the community.
+ * @param {string} params.image community avatar image path.
+ * @param {string} params.bio about the community.
+ * @param {string} params.createdById author's user._id, MongoDb ObjectId.
+ *
+ * @returns the createdCommunity object.
+ */
+export const createCommunity = async ({
+  id,
+  name,
+  username,
+  image,
+  bio,
+  createdById,
+}: TCreateCommunityParams) => {
   try {
     connectToDB();
 
@@ -46,8 +62,16 @@ export async function createCommunity(
     logger.r('Error creating community:', error);
     throw error;
   }
-}
+};
 
+/**
+ * The function fetches community details by connecting to a database and retrieving information about
+ * the community and its members.
+ *
+ * @param {string} id community.id, ClerkId of the community.
+ *
+ * @returns the community details, which is an object containing information about the community.
+ */
 export async function fetchCommunityDetails(id: string) {
   try {
     connectToDB();
@@ -68,11 +92,20 @@ export async function fetchCommunityDetails(id: string) {
   }
 }
 
-export async function fetchCommunityThreads(communityId: string) {
+/**
+ * The function fetches community threads from a database, populating the author and children fields
+ * with additional information.
+ *
+ * @param {string} id community._id, MongoDb ObjectId of the community.
+ *
+ * @returns the community posts with their associated threads. The threads are populated with the
+ * author information and any child threads are also populated with their author information.
+ */
+export async function fetchCommunityThreads(id: string) {
   try {
     connectToDB();
 
-    const communityPosts = await CommunityModel.findById(communityId).populate({
+    const communityPosts = await CommunityModel.findById(id).populate({
       path: 'threads',
       model: ThreadModel,
       populate: [
@@ -100,13 +133,25 @@ export async function fetchCommunityThreads(communityId: string) {
   }
 }
 
+/**
+ * The function fetchCommunities fetches a list of communities based on search criteria, pagination,
+ * and sorting options.
+ * @param {number} params.searchQuery string used to search for communities. It is optional and defaults to an empty string.
+ * @param {number} params.pageNumber a number is used to specify the page number of the communities to fetch. The default value is 1.
+ * @param {number} params.pageSize a number is used to specify the amount of communities per page. The default value is 20.
+ * @param {Mongoose.SortOrder} params.sortBy is used to specify the sorting order of the fetched communities. The default value is `'desc'` stands for descending order, meaning that the communities will be sorted in reverse chronological order based on their `createdAt` property.
+ *
+ * @returns an object with two properties: "communities" and "isNext". The "communities" property
+ * contains an array of fetched communities that match the search and sort criteria. The "isNext"
+ * property is a boolean value indicating whether there are more communities beyond the current page.
+ */
 export async function fetchCommunities({
-  searchString = '',
+  searchQuery = '',
   pageNumber = 1,
   pageSize = 20,
   sortBy = 'desc',
 }: {
-  searchString?: string;
+  searchQuery?: string;
   pageNumber?: number;
   pageSize?: number;
   sortBy?: SortOrder;
@@ -118,13 +163,13 @@ export async function fetchCommunities({
     const skipAmount = (pageNumber - 1) * pageSize;
 
     // Create a case-insensitive regular expression for the provided search string.
-    const regex = new RegExp(searchString, 'i');
+    const regex = new RegExp(searchQuery, 'i');
 
     // Create an initial query object to filter communities.
     const query: FilterQuery<typeof CommunityModel> = {};
 
     // If the search string is not empty, add the $or operator to match either username or name fields.
-    if (searchString.trim() !== '') {
+    if (searchQuery.trim() !== '') {
       query.$or = [
         { username: { $regex: regex } },
         { name: { $regex: regex } },
@@ -156,6 +201,14 @@ export async function fetchCommunities({
   }
 }
 
+/**
+ * Adds a member to a community by updating the community's members array and the user's communities array.
+ *
+ * @param {string} communityId community.id, ClerkId of the community.
+ * @param {string} memberId user.id, ClerkId of the member.
+ *
+ * @returns the community object after adding a member to it.
+ */
 export async function addMemberToCommunity(
   communityId: string,
   memberId: string
@@ -197,6 +250,15 @@ export async function addMemberToCommunity(
   }
 }
 
+/**
+ * The function removes a user from a community by updating the members array in the community and the
+ * communities array in the user.
+ *
+ * @param {string} userId user.id, ClerkId of the user which will be removed.
+ * @param {string} communityId community.id, ClerkId of the community from the user will be removed.
+ *
+ * @returns an object with a property "success" set to true.
+ */
 export async function removeUserFromCommunity(
   userId: string,
   communityId: string
@@ -237,18 +299,28 @@ export async function removeUserFromCommunity(
   }
 }
 
-export async function updateCommunityInfo(
-  communityId: string,
-  name: string,
-  username: string,
-  image: string
-) {
+/**
+ * Updates the information of a community in a database.
+ *
+ * @param {string} params.id community.id, ClerkId of the community that needs to be updated.
+ * @param {string} params.name name of the community.
+ * @param {string} params.username username of the community.
+ * @param {string} params.params.image community avatar image path.
+ *
+ * @returns the updated community object.
+ */
+export async function updateCommunityInfo({
+  id,
+  name,
+  username,
+  image,
+}: TUpdateCommunityParams) {
   try {
     connectToDB();
 
     // Find the community by its _id and update the information
     const updatedCommunity = await CommunityModel.findOneAndUpdate(
-      { id: communityId },
+      { id },
       { name, username, image }
     );
 
@@ -263,18 +335,22 @@ export async function updateCommunityInfo(
   }
 }
 
-export async function deleteCommunity(communityId: string) {
+/**
+ * Deletes a community and all associated threads, removes the community from the 'communities' array for each user, and returns the deleted community.
+ *
+ * @param {string} id community.id, ClerkId of the community.
+ *
+ * @returns the deleted community object.
+ */
+export async function deleteCommunity(id: string) {
   try {
     connectToDB();
 
-    // Find the community by its ID and delete it
-    const deletedCommunity = await CommunityModel.findOneAndDelete({
-      id: communityId,
-    });
+    const communityResult = await CommunityModel.find({ id });
+    if (!communityResult?.length) throw new Error('Community not found');
 
-    if (!deletedCommunity) {
-      throw new Error('Community not found');
-    }
+    const community = communityResult[0];
+    const communityId = community._id;
 
     // Delete all threads associated with the community
     await ThreadModel.deleteMany({ community: communityId });
@@ -289,6 +365,9 @@ export async function deleteCommunity(communityId: string) {
     });
 
     await Promise.all(updateUserPromises);
+
+    // Delete the community
+    const deletedCommunity = await community.deleteOne();
 
     return deletedCommunity;
   } catch (error) {

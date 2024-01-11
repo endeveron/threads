@@ -12,12 +12,12 @@ import { TFetchUsersParams, TUpdateUserParams } from '@/lib/types/user.types';
 /**
  * Updates a user's information in a database and revalidates the cache if the path is '/profile/edit'.
  *
- * @param bio biography of the user.
- * @param image user avatar image path.
- * @param name user name.
- * @param path pathname to revalidate cached data.
- * @param userId user._id, MongoDb ObjectId.
- * @param username username.
+ * @param {string} params.bio biography of the user.
+ * @param {string} params.image user avatar image path.
+ * @param {string} params.name user name.
+ * @param {string} params.path pathname to revalidate cached data.
+ * @param {string} params.userId user._id, MongoDb ObjectId of the user.
+ * @param {string} params.username username.
  */
 export const updateUser = async ({
   bio,
@@ -58,6 +58,7 @@ export const updateUser = async ({
  * Fetches a user from a database using their ObjectId.
  *
  * @param userId the user.id property in MongoDb user object.
+ *
  * @returns the user object.
  */
 export const fetchUser = async (userId: string) => {
@@ -77,11 +78,12 @@ export const fetchUser = async (userId: string) => {
 /**
  * Retrieves a list of users from a database based on search criteria, pagination, and sorting options.
  *
- * @param searchQuery a string representing the search query to filter the users. It is optional and defaults to an empty string.
- * @param pageNumber a number is used to specify the page number of the users to fetch. The default value is 1.
- * @param pageSize a number is used to specify the amount of users per page. The default value is 20.
- * @param sortBy is used to specify the sorting order of the fetched users. The default value is `'desc'` stands for descending order, meaning that the users will be sorted in reverse chronological order based on their `createdAt` property.
- * @param userId the user.id property in MongoDb user object.
+ * @param {string} params.searchQuery a string representing the search query to filter the users. It is optional and defaults to an empty string.
+ * @param {number} params.pageNumber a number is used to specify the page number of the users to fetch. The default value is 1.
+ * @param {number} params.pageSize a number is used to specify the amount of users per page. The default value is 20.
+ * @param {Mongoose.SortOrder} params.sortBy is used to specify the sorting order of the fetched users. The default value is `'desc'` stands for descending order, meaning that the users will be sorted in reverse chronological order based on their `createdAt` property.
+ * @param {string} params.userId the user.id property in MongoDb user object.
+ *
  * @returns an object { users, isNext }. The `users` property contains an array of user objects that match the search criteria and pagination settings. The `isNext` property is a boolean value indicating whether there are more users available to fetch.
  */
 export const fetchUsers = async ({
@@ -137,8 +139,8 @@ export const fetchUsers = async ({
 /**
  * Fetches user threads from a database, populating the threads with their children and the author information.
  *
- * @param {string} userId user.id property in MongoDb user object, is used to find the user in the database and
- * retrieve their associated threads.
+ * @param {string} userId user.id property in MongoDb user object.
+ *
  * @returns a promise that resolves to the user threads objects.
  */
 export const fetchUserThreads = async (userId: string) => {
@@ -177,7 +179,8 @@ export const fetchUserThreads = async (userId: string) => {
 /**
  * Retrieves all replies on the user threads, excluding user own threads, and populates the author information for each reply.
  *
- * @param userId user._id, MongoDb ObjectId.
+ * @param {string} userId user._id, MongoDb ObjectId of the user.
+ *
  * @returns a promise that resolves to an array of thread objects.
  */
 export const fetchActivity = async (userId: string) => {
@@ -213,7 +216,8 @@ export const fetchActivity = async (userId: string) => {
 /**
  * Retrieves all the threads that a user has replied to, excluding their own threads, and populates the author information for each reply.
  *
- * @param userId user._id, MongoDb ObjectId.
+ * @param {string} userId user._id, MongoDb ObjectId of the user.
+ *
  * @returns a promise that resolves to an array of thread objects.
  */
 export const fetchUserReplies = async (userId: string) => {
