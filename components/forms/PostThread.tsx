@@ -24,10 +24,10 @@ import { ThreadValidation } from '@/lib/validations/thread';
 import { createThread } from '@/lib/actions/thread.actions';
 
 interface PostThreadProps {
-  userId: string; // Mongo ObjectId
+  userObjectIdStr: string; // Mongo ObjectId
 }
 
-const PostThread = ({ userId }: PostThreadProps) => {
+const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { organization } = useOrganization();
@@ -36,7 +36,7 @@ const PostThread = ({ userId }: PostThreadProps) => {
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
       thread: '',
-      userId: userId,
+      userId: userObjectIdStr,
     },
   });
 
@@ -44,7 +44,7 @@ const PostThread = ({ userId }: PostThreadProps) => {
     try {
       await createThread({
         text: values.thread,
-        author: userId,
+        author: userObjectIdStr,
         path: pathname,
         communityId: organization ? organization.id : null,
       });
@@ -79,7 +79,7 @@ const PostThread = ({ userId }: PostThreadProps) => {
         />
 
         <div className="form_button-wrapper flex justify-center">
-          <Button type="submit" className="button w-full sm:w-64 py-7">
+          <Button type="submit" className="button button--large">
             Create Thread
           </Button>
         </div>

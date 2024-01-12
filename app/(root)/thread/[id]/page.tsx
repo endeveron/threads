@@ -5,6 +5,7 @@ import { fetchUser } from '@/lib/actions/user.actions';
 import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreadById } from '@/lib/actions/thread.actions';
 import Comment from '@/components/forms/Comment';
+import { TUser } from '@/lib/types/user.types';
 
 export const revalidate = 0;
 
@@ -20,10 +21,11 @@ const Page = async ({ params }: PageProps) => {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const authUserData = await fetchUser(authUser.id);
-  if (!authUserData?.onboarded) redirect('/onboarding');
-  // const userId = JSON.stringify(authUserData._id); // MongoDb ObjectId
-  const userId = authUserData._id.toString(); // MongoDb ObjectId
+  const user: TUser = await fetchUser(authUser.id);
+  if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
+  const userId = authUser.id;
+  const userObjectId = user._id;
 
   const thread = await fetchThreadById(params.id);
 
@@ -31,36 +33,40 @@ const Page = async ({ params }: PageProps) => {
     <div className="relative">
       <ThreadCard
         id={thread._id}
-        userId={authUser.id} // Clerk user id
-        parentId={thread.parentId}
-        content={thread.text}
         author={thread.author}
+        content={thread.text}
         community={thread.community}
+        replies={thread.children}
+        likes={thread.likes}
+        parentId={thread.parentId}
         createdAt={thread.createdAt}
-        comments={thread.children}
+        userId={userId} // Clerk user id
+        userObjectId={userObjectId}
       />
 
       <div className="mt-10">
         <Comment
           threadId={params.id}
-          userImg={authUserData.image}
-          userId={userId}
+          userImg={user.image}
+          userObjectIdStr={userObjectId?.toString()}
         />
       </div>
 
       <div className="mt-10">
-        {thread.children.map((childItem: any) => (
+        {thread.children.map((reply: any) => (
           <ThreadCard
-            key={childItem._id}
-            id={childItem._id}
-            userId={authUser.id} // Clerk user id
-            parentId={childItem.parentId}
-            content={childItem.text}
-            author={childItem.author}
-            community={childItem.community}
-            createdAt={childItem.createdAt}
-            comments={childItem.children}
-            isComment
+            id={reply._id}
+            author={reply.author}
+            content={reply.text}
+            community={reply.community}
+            replies={reply.children}
+            likes={reply.likes}
+            parentId={reply.parentId}
+            createdAt={reply.createdAt}
+            isReply
+            userId={userId} // Clerk user id
+            userObjectId={userObjectId}
+            key={reply._id}
           />
         ))}
       </div>

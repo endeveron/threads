@@ -1,12 +1,20 @@
 import { currentUser } from '@clerk/nextjs';
 
-import { fetchThreads } from '@/lib/actions/thread.actions';
 import ThreadCard from '@/components/cards/ThreadCard';
+import { fetchThreads } from '@/lib/actions/thread.actions';
+import { fetchUser } from '@/lib/actions/user.actions';
+import { TUser } from '@/lib/types/user.types';
 
 const Home = async () => {
-  const { threads, isNext } = await fetchThreads({});
+  const authUser = await currentUser();
+  let user: TUser | undefined;
 
-  const user = await currentUser();
+  if (authUser) {
+    user = await fetchUser(authUser.id);
+    if (!user) throw new Error('Error fetching user data.');
+  }
+
+  const { threads, isNext } = await fetchThreads({});
 
   return (
     <>
@@ -17,15 +25,17 @@ const Home = async () => {
         ) : (
           threads.map((thread) => (
             <ThreadCard
-              author={thread.author}
-              comments={thread.comments}
-              community={thread.community}
-              content={thread.text}
-              createdAt={thread.createdAt}
-              userId={user?.id || ''}
               id={thread._id}
-              key={thread._id}
+              author={thread.author}
+              content={thread.text}
+              community={thread.community}
+              replies={thread.children}
+              likes={thread.likes}
               parentId={thread.parentId}
+              createdAt={thread.createdAt}
+              key={thread._id}
+              userId={authUser?.id ?? null}
+              userObjectId={user?._id ?? null}
             />
           ))
         )}

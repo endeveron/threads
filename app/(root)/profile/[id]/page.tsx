@@ -1,11 +1,12 @@
+import Image from 'next/image';
 import { currentUser } from '@clerk/nextjs';
 
 import ProfileHeader from '@/components/shared/ProfileHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { profileTabs } from '@/constants';
 import { fetchUser } from '@/lib/actions/user.actions';
-import Image from 'next/image';
 import ThreadsTab from '@/components/shared/ThreadsTab';
+import { TUser } from '@/lib/types/user.types';
 
 type TPageProps = {
   params: {
@@ -14,22 +15,21 @@ type TPageProps = {
 };
 
 const Page = async ({ params }: TPageProps) => {
-  // Authenticated user
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  // The user whose profile we receive
-  const fetchedUser = await fetchUser(params.id);
+  const user: TUser = await fetchUser(params.id);
+  if (!user) throw new Error('Error fetching user data.');
 
   return (
     <section>
       <ProfileHeader
-        accountId={fetchedUser.id}
+        accountId={user.id}
         authUserId={authUser.id}
-        name={fetchedUser.name}
-        username={fetchedUser.username}
-        imgUrl={fetchedUser.image}
-        bio={fetchedUser.bio}
+        name={user.name}
+        username={user.username}
+        imgUrl={user.image}
+        bio={user.bio}
       />
 
       <div className="mt-10">
@@ -53,7 +53,7 @@ const Page = async ({ params }: TPageProps) => {
 
                 {tab.label === 'Threads' && (
                   <p className="ml-1 font-semibold text-primary-500">
-                    {fetchedUser.threads.length}
+                    {user.threads.length}
                   </p>
                 )}
               </TabsTrigger>
@@ -62,8 +62,9 @@ const Page = async ({ params }: TPageProps) => {
 
           <TabsContent value="threads" className="tabs-content">
             <ThreadsTab
-              authUserId={authUser.id}
-              id={fetchedUser.id} // user ObjectId
+              userId={authUser.id}
+              userObjectId={user._id}
+              id={user.id} // user ClerkId
               accountType="user"
             />
           </TabsContent>

@@ -1,6 +1,7 @@
+import { TThread } from '@/lib/types/thread.types';
 import { Schema, model, models } from 'mongoose';
 
-const threadSchema = new Schema({
+const threadSchema = new Schema<TThread>({
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -19,6 +20,12 @@ const threadSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  likes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   parentId: {
     type: String,
   },

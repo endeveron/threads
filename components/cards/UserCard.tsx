@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { TUserCardProps } from '@/lib/types/user.types';
 import { Button } from '../ui/button';
+import { SignedIn } from '@clerk/nextjs';
 
 const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
   const router = useRouter();
@@ -32,16 +33,18 @@ const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
 
         <div className="flex-1 text-ellipsis">
           <h4 className="text-base-semibold text-light-1">{name}</h4>
-          <p className="text-small-medium text-light-2">@{username}</p>
+          <p className="text-small-medium text-light-3">@{username}</p>
         </div>
       </div>
 
-      <Button
-        className="button px-7"
-        onClick={() => router.push(navigatePath + userId)}
-      >
-        View
-      </Button>
+      <SignedIn>
+        <Button
+          className="button button--small"
+          onClick={() => router.push(navigatePath + userId)}
+        >
+          View
+        </Button>
+      </SignedIn>
     </article>
   );
 };

@@ -1,12 +1,10 @@
+import { ObjectId } from 'mongoose';
 import { redirect } from 'next/navigation';
-
-// import { fetchCommunityThreads } from "@/lib/actions/community.actions";
-// import { fetchUserThreads } from "@/lib/actions/user.actions";
 
 import ThreadCard from '../cards/ThreadCard';
 import { fetchUserThreads } from '@/lib/actions/user.actions';
 import { fetchCommunityThreads } from '@/lib/actions/community.actions';
-import { TAccountType } from '@/lib/types/account';
+import { TAccountType } from '@/lib/types/account.types';
 
 type TThreadsTabContent = {
   name: string;
@@ -32,18 +30,21 @@ type TThreadsTabContent = {
         image: string;
       };
     }[];
+    likes: ObjectId[];
   }[];
 };
 
 type TThreadsTabProps = {
-  authUserId: string;
   id: string;
+  userId: string;
+  userObjectId: ObjectId;
   accountType: TAccountType;
 };
 
 const ThreadsTab = async ({
-  authUserId,
-  id, // user ObjectId or community ObjectId
+  id, // user ClerkId or community ClerkId
+  userId,
+  userObjectId,
   accountType,
 }: TThreadsTabProps) => {
   let content: TThreadsTabContent;
@@ -64,7 +65,8 @@ const ThreadsTab = async ({
         <ThreadCard
           key={thread._id}
           id={thread._id}
-          userId={authUserId}
+          userId={userId}
+          userObjectId={userObjectId}
           parentId={thread.parentId}
           content={thread.text}
           author={
@@ -82,7 +84,8 @@ const ThreadsTab = async ({
               : thread.community
           }
           createdAt={thread.createdAt}
-          comments={thread.children}
+          replies={thread.children}
+          likes={thread.likes}
         />
       ))}
     </section>

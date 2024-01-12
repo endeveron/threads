@@ -1,10 +1,27 @@
 import { ObjectId } from 'mongoose';
 
+export type TThread = {
+  _id: ObjectId;
+  author: ObjectId;
+  children: TThread[];
+  createdAt: Date;
+  likes: ObjectId[];
+  text: string;
+  community?: ObjectId;
+  parentId?: string;
+};
+
+export type TThreadAuthor = {
+  id: string;
+  name: string;
+  image: string;
+};
+
 type TThreadParams = {
   author: string;
   children: string;
   community: string;
-  createdAt: string;
+  createdAt: Date;
   parentId: string;
   text: string;
   _id: string | ObjectId;
@@ -23,30 +40,28 @@ export type TFetchThreadsParams = {
 export type TAddCommentToThreadParams = {
   threadId: string;
   commentText: string;
-  userId: string;
+  userObjectIdStr: string;
   path: string;
 };
 
 export type TThreadCardProps = {
-  author: {
-    id: string;
-    name: string;
-    image: string;
-  };
-  comments: {
-    author: {
-      image: string;
-    };
-  }[];
+  id: string;
+  userId: string | null;
+  userObjectId: ObjectId | null;
+  author: TThreadAuthor;
   community: {
     id: string;
     name: string;
     image: string;
   } | null;
   content: string;
-  createdAt: string;
-  userId: string;
-  id: string;
+  replies: {
+    author: {
+      image: string;
+    };
+  }[];
+  likes: ObjectId[];
   parentId: string | null;
-  isComment?: boolean;
+  createdAt: string;
+  isReply?: boolean;
 };

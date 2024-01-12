@@ -1,10 +1,11 @@
+import { TUser } from '@/lib/types/user.types';
 import { Schema, model, models } from 'mongoose';
 
-const userSchema = new Schema({
+const userSchema = new Schema<TUser>({
   id: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  image: { type: String },
+  username: { type: String, required: true, unique: true },
+  image: { type: String, required: true },
   bio: { type: String },
   threads: [
     {

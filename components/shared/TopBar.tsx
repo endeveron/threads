@@ -1,4 +1,10 @@
-import { OrganizationSwitcher, SignOutButton, SignedIn } from '@clerk/nextjs';
+import { Button } from '@/components/ui/button';
+import {
+  OrganizationSwitcher,
+  SignOutButton,
+  SignedIn,
+  SignedOut,
+} from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -35,6 +41,12 @@ const TopBar = () => {
             },
           }}
         />
+
+        <SignedOut>
+          <Link href="/sign-in">
+            <Button className="button px-6">Sign In</Button>
+          </Link>
+        </SignedOut>
       </div>
     </nav>
   );

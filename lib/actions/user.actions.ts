@@ -1,6 +1,6 @@
 'use server';
 
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, ObjectId } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 
 import CommunityModel from '@/lib/models/community.model';
@@ -179,16 +179,16 @@ export const fetchUserThreads = async (userId: string) => {
 /**
  * Retrieves all replies on the user threads, excluding user own threads, and populates the author information for each reply.
  *
- * @param {string} userId user._id, MongoDb ObjectId of the user.
+ * @param {string} userObjectId user._id, MongoDb ObjectId of the user.
  *
  * @returns a promise that resolves to an array of thread objects.
  */
-export const fetchActivity = async (userId: string) => {
+export const fetchActivity = async (userObjectId?: ObjectId) => {
   try {
     connectToDB();
 
     // Get all threads created by the user
-    const userThreads = await ThreadModel.find({ author: userId });
+    const userThreads = await ThreadModel.find({ author: userObjectId });
 
     // Iterate over the user threads and collect all the child thread ids (replies) from the `thread.children` property.
     const childThreadIds = userThreads.reduce((acc, thread) => {
@@ -198,7 +198,7 @@ export const fetchActivity = async (userId: string) => {
     // Get all replies on the user threads
     const activityQuery = ThreadModel.find({
       _id: { $in: childThreadIds },
-      author: { $ne: userId },
+      author: { $ne: userObjectId },
     }).populate({
       path: 'author',
       model: UserModel,

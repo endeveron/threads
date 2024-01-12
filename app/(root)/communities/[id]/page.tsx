@@ -1,4 +1,5 @@
 import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 import Image from 'next/image';
 
 import ProfileHeader from '@/components/shared/ProfileHeader';
@@ -7,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { communityTabs } from '@/constants';
 import { fetchCommunityDetails } from '@/lib/actions/community.actions';
 import UserCard from '@/components/cards/UserCard';
+import { TUser } from '@/lib/types/user.types';
+import { fetchUser } from '@/lib/actions/user.actions';
 
 type TPageProps = {
   params: {
@@ -18,6 +21,10 @@ const Page = async ({ params }: TPageProps) => {
   // Authenticated user
   const authUser = await currentUser();
   if (!authUser) return null;
+
+  const user: TUser = await fetchUser(authUser.id);
+  if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const communityDetails = await fetchCommunityDetails(params.id);
 
@@ -63,9 +70,10 @@ const Page = async ({ params }: TPageProps) => {
 
           <TabsContent value="threads" className="tabs-content">
             <ThreadsTab
-              authUserId={authUser.id}
-              id={communityDetails._id} // community ObjectId
               accountType="community"
+              id={communityDetails._id} // community ObjectId
+              userId={authUser.id}
+              userObjectId={user._id}
             />
           </TabsContent>
 
@@ -86,9 +94,10 @@ const Page = async ({ params }: TPageProps) => {
 
           <TabsContent value="requests" className="tabs-content">
             <ThreadsTab
-              authUserId={authUser.id}
-              id={communityDetails._id}
               accountType="community"
+              id={communityDetails._id}
+              userId={authUser.id}
+              userObjectId={user._id}
             />
           </TabsContent>
         </Tabs>

@@ -1,7 +1,19 @@
-import { SortOrder } from 'mongoose';
+import { ObjectId, SortOrder } from 'mongoose';
+
+export type TUser = {
+  _id: ObjectId;
+  id: string;
+  name: string;
+  username: string;
+  image: string;
+  threads: [];
+  onboarded: boolean;
+  communities: [];
+  bio?: string;
+};
 
 export type TFetchUsersParams = {
-  userId: string;
+  userId?: string;
   searchQuery?: string;
   sortBy?: SortOrder;
   pageNumber?: number;

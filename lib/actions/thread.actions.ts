@@ -7,6 +7,7 @@ import {
   TAddCommentToThreadParams,
   TCreateThreadParams,
   TFetchThreadsParams,
+  TThread,
 } from '@/lib/types/thread.types';
 import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
@@ -181,13 +182,13 @@ export const fetchThreadById = async (threadId: string) => {
  *
  * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of the thread.
  * @param {string} params.commentText the text of the comment.
- * @param {string} params.userId the author's _id MongoDb ObjectId.
+ * @param {string} params.userObjectId the author's _id MongoDb ObjectId.
  * @param {string} params.path the pathname to revalidate cached data.
  */
 export const addCommentToThread = async ({
   threadId,
   commentText,
-  userId,
+  userObjectIdStr,
   path,
 }: TAddCommentToThreadParams) => {
   try {
@@ -203,7 +204,7 @@ export const addCommentToThread = async ({
     // Create the new comment thread
     const commentThread = new ThreadModel({
       text: commentText,
-      author: userId,
+      author: userObjectIdStr,
       parentId: threadId, // Set the parentId to the original thread's ID
     });
 
@@ -215,6 +216,38 @@ export const addCommentToThread = async ({
 
     // Save the updated original thread to the database
     await originalThread.save();
+
+    revalidatePath(path);
+  } catch (err: any) {
+    throw new Error(`Failed to add comment to thread: ${err.message}`);
+  }
+};
+
+/**
+ * Adds a user reaction on the thread by adding or removing userId to the 'thread.likes' property of the thread MongoDb object.
+ *
+ * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of the thread.
+ * @param {string} params.userId the author's _id MongoDb ObjectId.
+ * @param {string} params.path the pathname to revalidate cached data.
+ */
+export const reactToThread = async ({
+  threadId,
+  userObjectIdStr,
+  path,
+}: TAddCommentToThreadParams) => {
+  try {
+    connectToDB();
+
+    // Find the original thread by its ObjectId
+    const thread = await ThreadModel.findById(threadId);
+
+    if (!thread) throw new Error('Thread not found');
+
+    // Add / remove the user ID to the thread's 'likes' list
+    // thread.children.push(savedCommentThread._id);
+
+    // Save the updated original thread to the database
+    await thread.save();
 
     revalidatePath(path);
   } catch (err: any) {

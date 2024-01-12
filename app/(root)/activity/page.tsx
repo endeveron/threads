@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { fetchActivity, fetchUser } from '@/lib/actions/user.actions';
+import { TUser } from '@/lib/types/user.types';
 
 interface PageProps {}
 
@@ -11,12 +12,12 @@ const Page = async (props: PageProps) => {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const authUserData = await fetchUser(authUser.id);
-  if (!authUserData?.onboarded) redirect('/onboarding');
-  const userId = authUserData._id.toString(); // Mongo ObjectId
+  const user: TUser = await fetchUser(authUser.id);
+  if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   // Fetch all replies on the user threads
-  const replies = await fetchActivity(userId);
+  const replies = await fetchActivity(user._id);
 
   return (
     <section>

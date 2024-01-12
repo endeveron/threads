@@ -7,7 +7,7 @@ interface ProfileHeaderProps {
   name: string;
   username: string;
   imgUrl: string;
-  bio: string;
+  bio?: string;
   type?: 'user' | 'community';
 }
 
@@ -58,8 +58,9 @@ const ProfileHeader = ({
         )}
       </div>
 
-      {/* max-w-lg */}
-      <p className="mt-6 sm:ml-24 text-base-regular text-light-2">{bio}</p>
+      {bio ? (
+        <p className="mt-6 sm:ml-24 text-base-regular text-light-2">{bio}</p>
+      ) : null}
 
       <div className="bg-2 mt-12 h-0.5 w-full" />
     </div>

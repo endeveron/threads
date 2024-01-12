@@ -1,7 +1,12 @@
+import { TCommunity } from '@/lib/types/community.types';
 import { Schema, model, models } from 'mongoose';
 
-const communitySchema = new Schema({
+const communitySchema = new Schema<TCommunity>({
   id: {
+    type: String,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
@@ -10,14 +15,10 @@ const communitySchema = new Schema({
     unique: true,
     required: true,
   },
-  name: {
+  bio: {
     type: String,
-    required: true,
   },
   image: {
-    type: String,
-  },
-  bio: {
     type: String,
   },
   createdBy: {

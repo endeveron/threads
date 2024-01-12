@@ -1,26 +1,25 @@
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
-// import { fetchUser } from "@/lib/actions/user.actions";
 import AccountProfile from '@/components/forms/AccountProfile';
 import { fetchUser } from '@/lib/actions/user.actions';
+import { TUser } from '@/lib/types/user.types';
 
 interface PageProps {}
 
 const Page = async (props: PageProps) => {
-  const user = await currentUser();
-  if (!user) return null; // to avoid typescript warnings
+  const authUser = await currentUser();
+  if (!authUser) return null;
 
-  const fetchedUser = await fetchUser(user.id);
-  if (fetchedUser?.onboarded) redirect('/');
+  const user: TUser = await fetchUser(authUser.id);
+  if (user?.onboarded) redirect('/');
 
   const userData = {
-    id: user.id,
-    objectId: fetchedUser?.id,
-    username: fetchedUser ? fetchedUser?.username : user.username ?? '',
-    name: fetchedUser ? fetchedUser?.name : user.firstName ?? '',
-    bio: fetchedUser ? fetchedUser?.bio : '',
-    image: fetchedUser ? fetchedUser?.image : user.imageUrl,
+    id: authUser.id,
+    username: user?.username || authUser.username || '',
+    name: user?.name || authUser.firstName || '',
+    bio: user?.bio || '',
+    image: user?.image || authUser.imageUrl,
   };
 
   return (

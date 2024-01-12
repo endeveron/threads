@@ -4,23 +4,26 @@ import Link from 'next/link';
 import { TThreadCardProps } from '@/lib/types/thread.types';
 import { cn } from '@/lib/utils/cn';
 import { formatDateString } from '@/lib/utils/format';
+import LikeButton from '@/components/shared/LikeButton';
 
 const ThreadCard = ({
+  id,
   author,
-  comments,
   community,
   content,
-  createdAt,
-  userId, // Clerk user id
-  id,
+  replies,
+  likes,
   parentId,
-  isComment,
+  isReply,
+  createdAt,
+  userObjectId,
+  userId,
 }: TThreadCardProps) => {
   return (
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {
-        'mt-2 px-0 xs:px-7': isComment,
-        'bg-2 p-7': !isComment,
+        'mt-2 px-0 xs:px-7': isReply,
+        'bg-2 p-7': !isReply,
       })}
     >
       <div className="thread-card_content-wrapper flex  flex-col items-start justify-between">
@@ -58,19 +61,18 @@ const ThreadCard = ({
               className={cn(
                 'thread-card_toolbar mt-5 flex flex-wrap items-center gap-5',
                 {
-                  'mb-5': isComment,
+                  'mb-5': isReply,
+                },
+                {
+                  'mb-4 ': !isReply && replies?.length,
                 }
               )}
             >
               {/* Action buttons (icons) */}
-              <div className="thread-card_actions flex gap-3.5 mr-3">
-                <Image
-                  src="/assets/heart-gray.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                  sizes=""
+              <div className="thread-card_actions flex gap-5 mr-3">
+                <LikeButton
+                  userObjectIdStr={userObjectId?.toString()}
+                  likeList={likes}
                 />
                 <Link href={`/thread/${id}`}>
                   <Image
@@ -83,14 +85,6 @@ const ThreadCard = ({
                   />
                 </Link>
                 <Image
-                  src="/assets/repost.svg"
-                  alt="repost"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                  sizes=""
-                />
-                <Image
                   src="/assets/share.svg"
                   alt="share"
                   width={24}
@@ -101,7 +95,7 @@ const ThreadCard = ({
               </div>
 
               {/* Time / Date / Communities */}
-              {!isComment && (
+              {!isReply && (
                 <p className="flex items-center flex-wrap text-subtle-medium text-light-3">
                   <span className="flex items-center cursor-default mr-7">
                     {formatDateString(createdAt)}
@@ -125,18 +119,33 @@ const ThreadCard = ({
                   )}
                 </p>
               )}
-
-              {/* Comments */}
-              {isComment && comments.length > 0 && (
-                <Link href={`/thread/${id}`}>
-                  <p className="thread-card_comments mt-1 text-subtle-medium text-light-2">
-                    {comments.length} repl{comments.length > 1 ? 'ies' : 'y'}
-                  </p>
-                </Link>
-              )}
             </div>
           </div>
         </div>
+
+        {/* Replies */}
+        {replies?.length && replies.length > 0 ? (
+          <Link href={`/thread/${id}`}>
+            <div className="thread-card_replies flex items-center pl-1.5 mt-2">
+              {replies.map((reply, index) => (
+                <Image
+                  key={index}
+                  src={reply.author.image}
+                  alt={`user_${index}`}
+                  width={32}
+                  height={32}
+                  className={`${
+                    index !== 0 && '-ml-3'
+                  } rounded-full object-cover`}
+                />
+              ))}
+              <p className="thread-card_replies-text relative text-subtle-medium text-light-3 ml-4">
+                {replies.length} repl{replies.length > 1 ? 'ies' : 'y'}
+              </p>
+            </div>
+          </Link>
+        ) : null}
+
         {/* TODO: Delete thread */}
         {/* TODO: Show comment logos */}
       </div>

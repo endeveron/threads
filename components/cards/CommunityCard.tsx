@@ -13,8 +13,8 @@ function CommunityCard({
   members,
 }: TCommunityCardProps) {
   return (
-    <article className="community-card w-full">
-      <div className="flex flex-wrap items-center gap-3">
+    <article className="community-card">
+      <div className="flex flex-wrap items-center gap-5">
         <Link href={`/communities/${id}`} className="relative h-12 w-12">
           <Image
             src={image}
@@ -32,11 +32,11 @@ function CommunityCard({
         </div>
       </div>
 
-      <p className="mt-4 text-subtle-medium text-light-3">{bio}</p>
+      <p className="mt-5 text-subtle-medium text-light-3">{bio}</p>
 
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-5">
         <Link href={`/communities/${id}`}>
-          <Button size="sm" className="community-card_btn">
+          <Button size="sm" className="button button--small">
             View
           </Button>
         </Link>
@@ -48,10 +48,10 @@ function CommunityCard({
                 key={index}
                 src={member.image}
                 alt={`user_${index}`}
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 className={`${
-                  index !== 0 && '-ml-2'
+                  index !== 0 && '-ml-3'
                 } rounded-full object-cover`}
               />
             ))}

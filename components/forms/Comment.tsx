@@ -17,14 +17,15 @@ import { addCommentToThread } from '@/lib/actions/thread.actions';
 import { CommentValidation } from '@/lib/validations/thread';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { ObjectId } from 'mongoose';
 
 interface CommentProps {
   threadId: string;
   userImg: string;
-  userId: string; // MongoDb ObjectId
+  userObjectIdStr: string;
 }
 
-const Comment = ({ threadId, userImg, userId }: CommentProps) => {
+const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
   const pathname = usePathname();
 
   const form = useForm<zod.infer<typeof CommentValidation>>({
@@ -38,7 +39,7 @@ const Comment = ({ threadId, userImg, userId }: CommentProps) => {
     await addCommentToThread({
       threadId: threadId,
       commentText: values.thread,
-      userId,
+      userObjectIdStr: userObjectIdStr,
       path: pathname,
     });
 
@@ -67,7 +68,7 @@ const Comment = ({ threadId, userImg, userId }: CommentProps) => {
                 <Input
                   type="text"
                   {...field}
-                  placeholder="Comment..."
+                  placeholder="Reply to the thread..."
                   className="no-focus text-light-1 outline-none no-mt"
                 />
               </FormControl>

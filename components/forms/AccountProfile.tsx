@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useUploadThing } from '@/lib/uploadthing';
@@ -26,11 +27,10 @@ import { updateUser } from '@/lib/actions/user.actions';
 type TAccountProfileProps = {
   user: {
     id: string;
-    objectId: string;
     username: string;
     name: string;
-    bio: string;
     image: string;
+    bio?: string;
   };
   btnTitle: string;
 };
@@ -197,7 +197,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
           )}
         />
 
-        <Button type="submit" className="button">
+        <Button type="submit" className="button button--large">
           {btnTitle}
         </Button>
       </form>

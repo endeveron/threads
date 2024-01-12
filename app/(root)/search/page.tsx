@@ -6,6 +6,7 @@ import { currentUser } from '@clerk/nextjs';
 import { fetchUser, fetchUsers } from '@/lib/actions/user.actions';
 import UserCard from '@/components/cards/UserCard';
 import Searchbar from '@/components/shared/SearchBar';
+import { TUser } from '@/lib/types/user.types';
 
 interface PageProps {
   searchParams: {
@@ -15,14 +16,15 @@ interface PageProps {
 
 const Page = async ({ searchParams }: PageProps) => {
   const authUser = await currentUser();
-  if (!authUser) return null;
+  let user: TUser;
 
-  const authUserData = await fetchUser(authUser.id);
-  if (!authUserData?.onboarded) redirect('/onboarding');
-  // const userId = authUserData._id.toString(); // Mongo ObjectId
+  if (authUser) {
+    user = await fetchUser(authUser.id);
+    if (!user) throw new Error('Error fetching user data.');
+  }
 
   const result = await fetchUsers({
-    userId: authUser.id, // Clerk user id
+    userId: authUser?.id, // Clerk user id
     searchQuery: searchParams.q,
     pageNumber: searchParams?.page ? +searchParams.page : 1,
     pageSize: 25,

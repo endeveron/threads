@@ -1,13 +1,11 @@
-import { redirect } from 'next/navigation';
 import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
-// import Pagination from "@/components/shared/Pagination";
-
-import { fetchUser, fetchUsers } from '@/lib/actions/user.actions';
-import UserCard from '@/components/cards/UserCard';
+import CommunityCard from '@/components/cards/CommunityCard';
 import Searchbar from '@/components/shared/SearchBar';
 import { fetchCommunities } from '@/lib/actions/community.actions';
-import CommunityCard from '@/components/cards/CommunityCard';
+import { fetchUser } from '@/lib/actions/user.actions';
+import { TUser } from '@/lib/types/user.types';
 
 interface PageProps {
   searchParams: {
@@ -19,17 +17,15 @@ const Page = async ({ searchParams }: PageProps) => {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const authUserData = await fetchUser(authUser.id);
-  if (!authUserData?.onboarded) redirect('/onboarding');
-  // const userId = authUserData._id.toString(); // Mongo ObjectId
+  const user: TUser = await fetchUser(authUser.id);
+  if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const result = await fetchCommunities({
     searchQuery: searchParams.q,
     pageNumber: searchParams?.page ? +searchParams.page : 1,
     pageSize: 25,
   });
-
-  console.log('result', result);
 
   return (
     <section>
