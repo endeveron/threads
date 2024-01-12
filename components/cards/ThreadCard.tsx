@@ -1,31 +1,9 @@
-import { cn } from '@/lib/utils/cn';
-import { formatDateString } from '@/lib/utils/format';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface ThreadCardProps {
-  author: {
-    id: string;
-    name: string;
-    image: string;
-  };
-  comments: {
-    author: {
-      image: string;
-    };
-  }[];
-  community: {
-    id: string;
-    name: string;
-    image: string;
-  } | null;
-  content: string;
-  createdAt: string;
-  userId: string;
-  id: string;
-  parentId: string | null;
-  isComment?: boolean;
-}
+import { TThreadCardProps } from '@/lib/types/thread.types';
+import { cn } from '@/lib/utils/cn';
+import { formatDateString } from '@/lib/utils/format';
 
 const ThreadCard = ({
   author,
@@ -37,7 +15,7 @@ const ThreadCard = ({
   id,
   parentId,
   isComment,
-}: ThreadCardProps) => {
+}: TThreadCardProps) => {
   return (
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {

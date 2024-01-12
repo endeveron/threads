@@ -26,3 +26,27 @@ export type TAddCommentToThreadParams = {
   userId: string;
   path: string;
 };
+
+export type TThreadCardProps = {
+  author: {
+    id: string;
+    name: string;
+    image: string;
+  };
+  comments: {
+    author: {
+      image: string;
+    };
+  }[];
+  community: {
+    id: string;
+    name: string;
+    image: string;
+  } | null;
+  content: string;
+  createdAt: string;
+  userId: string;
+  id: string;
+  parentId: string | null;
+  isComment?: boolean;
+};

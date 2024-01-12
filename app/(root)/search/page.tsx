@@ -30,7 +30,7 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <section>
-      <h1 className="head-text mb-10">Search</h1>
+      <h1 className="head-text">Search</h1>
 
       <Searchbar routeType="search" />
 

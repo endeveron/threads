@@ -58,7 +58,7 @@ const PostThread = ({ userId }: PostThreadProps) => {
 
   return (
     <Form {...form}>
-      <form className="form mt-9" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="form" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="thread"
@@ -67,9 +67,9 @@ const PostThread = ({ userId }: PostThreadProps) => {
               {/* <FormLabel className="form_label">Content</FormLabel> */}
               <FormControl>
                 <Textarea
-                  rows={15}
+                  rows={10}
                   className="form_input no-focus"
-                  placeholder="Type something..."
+                  placeholder="Share your thoughts..."
                   {...field}
                 />
               </FormControl>
@@ -78,9 +78,11 @@ const PostThread = ({ userId }: PostThreadProps) => {
           )}
         />
 
-        <Button type="submit" className="button py-7">
-          Create Thread
-        </Button>
+        <div className="form_button-wrapper flex justify-center">
+          <Button type="submit" className="button w-full sm:w-64 py-7">
+            Create Thread
+          </Button>
+        </div>
       </form>
     </Form>
   );

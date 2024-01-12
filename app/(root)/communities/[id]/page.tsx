@@ -6,6 +6,7 @@ import ThreadsTab from '@/components/shared/ThreadsTab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { communityTabs } from '@/constants';
 import { fetchCommunityDetails } from '@/lib/actions/community.actions';
+import UserCard from '@/components/cards/UserCard';
 
 type TPageProps = {
   params: {
@@ -69,7 +70,7 @@ const Page = async ({ params }: TPageProps) => {
           </TabsContent>
 
           <TabsContent value="members" className="tabs-content">
-            {/* <section className="mt-9 flex flex-col gap-10">
+            <section className="mt-9 flex flex-col gap-9">
               {communityDetails.members.map((member: any) => (
                 <UserCard
                   key={member.id}
@@ -80,15 +81,15 @@ const Page = async ({ params }: TPageProps) => {
                   type="user"
                 />
               ))}
-            </section> */}
+            </section>
           </TabsContent>
 
           <TabsContent value="requests" className="tabs-content">
-            {/* <ThreadsTab
+            <ThreadsTab
               authUserId={authUser.id}
-              userId={communityDetails._id}
-              accountType="Community"
-            /> */}
+              id={communityDetails._id}
+              accountType="community"
+            />
           </TabsContent>
         </Tabs>
       </div>

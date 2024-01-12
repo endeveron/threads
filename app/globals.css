@@ -16,7 +16,7 @@
 
   /* Head Text */
   .head-text {
-    @apply text-heading2-bold text-light-1;
+    @apply text-heading2-bold text-light-1 mb-10;
   }
 
   /* Activity */
