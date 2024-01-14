@@ -5,6 +5,7 @@ import { TThreadCardProps } from '@/lib/types/thread.types';
 import { cn } from '@/lib/utils/cn';
 import { formatDateString } from '@/lib/utils/format';
 import LikeButton from '@/components/shared/LikeButton';
+import { SignedIn } from '@clerk/nextjs';
 
 const ThreadCard = ({
   id,
@@ -69,30 +70,33 @@ const ThreadCard = ({
               )}
             >
               {/* Action buttons (icons) */}
-              <div className="thread-card_actions flex gap-5 mr-3">
-                <LikeButton
-                  userObjectIdStr={userObjectId?.toString()}
-                  likeList={likes}
-                />
-                <Link href={`/thread/${id}`}>
+              <SignedIn>
+                <div className="thread-card_actions flex gap-5 mr-3">
+                  <LikeButton
+                    threadId={id.toString()}
+                    userObjectIdStr={userObjectId?.toString()}
+                    likes={likes}
+                  />
+                  <Link href={`/thread/${id}`}>
+                    <Image
+                      src="/assets/reply.svg"
+                      alt="reply"
+                      width={24}
+                      height={24}
+                      className="cursor-pointer object-contain"
+                      sizes=""
+                    />
+                  </Link>
                   <Image
-                    src="/assets/reply.svg"
-                    alt="reply"
+                    src="/assets/share.svg"
+                    alt="share"
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
                     sizes=""
                   />
-                </Link>
-                <Image
-                  src="/assets/share.svg"
-                  alt="share"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
-                  sizes=""
-                />
-              </div>
+                </div>
+              </SignedIn>
 
               {/* Time / Date / Communities */}
               {!isReply && (

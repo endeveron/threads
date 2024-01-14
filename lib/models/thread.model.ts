@@ -22,8 +22,7 @@ const threadSchema = new Schema<TThread>({
   },
   likes: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: String,
     },
   ],
   parentId: {

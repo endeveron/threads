@@ -1,27 +1,22 @@
 'use client';
 
-import * as zod from 'zod';
-import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import { usePathname, useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useOrganization } from '@clerk/nextjs';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname, useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import * as zod from 'zod';
 
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { updateUser } from '@/lib/actions/user.actions';
-import { ThreadValidation } from '@/lib/validations/thread';
 import { createThread } from '@/lib/actions/thread.actions';
+import { ThreadValidation } from '@/lib/validations/thread';
 
 interface PostThreadProps {
   userObjectIdStr: string; // Mongo ObjectId

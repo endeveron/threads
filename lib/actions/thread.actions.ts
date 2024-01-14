@@ -3,15 +3,16 @@
 import { connectToDB } from '@/lib/mongoose';
 import { revalidatePath } from 'next/cache';
 
+import CommunityModel from '@/lib/models/community.model';
+import ThreadModel from '@/lib/models/thread.model';
+import UserModel from '@/lib/models/user.model';
 import {
   TAddCommentToThreadParams,
   TCreateThreadParams,
   TFetchThreadsParams,
-  TThread,
+  TReactToThreadParams,
 } from '@/lib/types/thread.types';
-import ThreadModel from '@/lib/models/thread.model';
-import UserModel from '@/lib/models/user.model';
-import CommunityModel from '@/lib/models/community.model';
+import logger from '@/lib/utils/logger';
 
 /**
  * Creates a new thread object in MongoDb, updates the user model, and revalidates the cached data.
@@ -145,11 +146,11 @@ export const fetchThreadById = async (threadId: string) => {
         model: UserModel,
         select: 'id name image',
       })
-      // .populate({
-      //   path: 'community',
-      //   model: CommunityModel,
-      //   select: 'id image name username',
-      // })
+      .populate({
+        path: 'community',
+        model: CommunityModel,
+        select: 'id image name username',
+      })
       .populate({
         path: 'children',
         populate: [
@@ -224,7 +225,7 @@ export const addCommentToThread = async ({
 };
 
 /**
- * Adds a user reaction on the thread by adding or removing userId to the 'thread.likes' property of the thread MongoDb object.
+ * Adds user reaction on the thread by adding or removing userId to the 'thread.likes' property of the thread MongoDb object.
  *
  * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of the thread.
  * @param {string} params.userId the author's _id MongoDb ObjectId.
@@ -234,7 +235,7 @@ export const reactToThread = async ({
   threadId,
   userObjectIdStr,
   path,
-}: TAddCommentToThreadParams) => {
+}: TReactToThreadParams): Promise<{ error: { message: string } | null }> => {
   try {
     connectToDB();
 
@@ -243,13 +244,23 @@ export const reactToThread = async ({
 
     if (!thread) throw new Error('Thread not found');
 
-    // Add / remove the user ID to the thread's 'likes' list
-    // thread.children.push(savedCommentThread._id);
+    // logger.b('thread', thread);
+    // logger.b('userObjectIdStr', userObjectIdStr);
+    // logger.b('path', path);
+
+    // Add / remove the user ID to the copy of thread's 'likes' list
+    const updThreadLikes = thread.likes.slice();
+    updThreadLikes.includes(userObjectIdStr)
+      ? updThreadLikes.splice(updThreadLikes.indexOf(userObjectIdStr), 1)
+      : updThreadLikes.push(userObjectIdStr);
 
     // Save the updated original thread to the database
+    thread.likes = updThreadLikes;
     await thread.save();
 
     revalidatePath(path);
+
+    return { error: null };
   } catch (err: any) {
     throw new Error(`Failed to add comment to thread: ${err.message}`);
   }

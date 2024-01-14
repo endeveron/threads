@@ -1,5 +1,21 @@
 import { ObjectId } from 'mongoose';
 
+type TThreadParams = {
+  _id: string | ObjectId;
+  author: string;
+  text: string;
+  parentId: string;
+  children: string;
+  community: string;
+  createdAt: Date;
+};
+
+type TThreadActionBaseParams = {
+  threadId: string;
+  userObjectIdStr: string;
+  path: string;
+};
+
 export type TThread = {
   _id: ObjectId;
   author: ObjectId;
@@ -17,16 +33,6 @@ export type TThreadAuthor = {
   image: string;
 };
 
-type TThreadParams = {
-  author: string;
-  children: string;
-  community: string;
-  createdAt: Date;
-  parentId: string;
-  text: string;
-  _id: string | ObjectId;
-};
-
 export type TCreateThreadParams = Pick<TThreadParams, 'author' | 'text'> & {
   communityId: string | null;
   path: string;
@@ -37,12 +43,11 @@ export type TFetchThreadsParams = {
   pageSize?: number;
 };
 
-export type TAddCommentToThreadParams = {
-  threadId: string;
+export type TAddCommentToThreadParams = TThreadActionBaseParams & {
   commentText: string;
-  userObjectIdStr: string;
-  path: string;
 };
+
+export type TReactToThreadParams = TThreadActionBaseParams & {};
 
 export type TThreadCardProps = {
   id: string;
@@ -60,7 +65,7 @@ export type TThreadCardProps = {
       image: string;
     };
   }[];
-  likes: ObjectId[];
+  likes: string[];
   parentId: string | null;
   createdAt: string;
   isReply?: boolean;

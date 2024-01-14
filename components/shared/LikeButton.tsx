@@ -1,22 +1,56 @@
 'use client';
 
-import { ObjectId } from 'mongoose';
+import { reactToThread } from '@/lib/actions/thread.actions';
 import Image from 'next/image';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type TLikeButtonProps = {
-  likeList: ObjectId[];
+  threadId: string;
+  likes: string[];
   userObjectIdStr?: string;
 };
 
-const LikeButton = ({ userObjectIdStr, likeList = [] }: TLikeButtonProps) => {
-  const [isLiked, setIsLiked] = useState(false);
+const LikeButton = ({ threadId, userObjectIdStr, likes }: TLikeButtonProps) => {
+  const [isLiked, setIsLiked] = useState(likes.includes(userObjectIdStr ?? ''));
+
+  const pathname = usePathname();
 
   if (!userObjectIdStr) return null;
 
-  const handleClick = () => {
+  const toggleStatus = () => {
     setIsLiked((prev) => !prev);
   };
+
+  const handleClick = async () => {
+    toggleStatus();
+    updateUserReaction();
+  };
+
+  // Send request to
+  const updateUserReaction = async () => {
+    try {
+      // 'use server';
+      const result = await reactToThread({
+        threadId,
+        userObjectIdStr,
+        path: pathname,
+      });
+
+      if (result?.error?.message) {
+        throw new Error(
+          `Error updating user reaction. ${result.error.message}`
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      throw new Error('Error updating user reaction.');
+    }
+  };
+
+  useEffect(() => {
+    setIsLiked(likes.includes(userObjectIdStr ?? ''));
+  }, [likes]);
 
   return (
     <div className="like-button" onClick={handleClick}>

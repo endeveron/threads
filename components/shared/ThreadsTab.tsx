@@ -30,7 +30,7 @@ type TThreadsTabContent = {
         image: string;
       };
     }[];
-    likes: ObjectId[];
+    likes: string[];
   }[];
 };
 
@@ -83,9 +83,9 @@ const ThreadsTab = async ({
               ? { name: content.name, id: content.id, image: content.image }
               : thread.community
           }
-          createdAt={thread.createdAt}
           replies={thread.children}
           likes={thread.likes}
+          createdAt={thread.createdAt}
         />
       ))}
     </section>
