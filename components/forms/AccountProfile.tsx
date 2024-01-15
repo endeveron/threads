@@ -1,12 +1,13 @@
 'use client';
 
-import * as zod from 'zod';
-import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import { usePathname, useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { ChangeEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as zod from 'zod';
 
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,15 +17,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useUploadThing } from '@/lib/uploadthing';
-import { UserValidation } from '@/lib/validations/user';
-import { isBase64Image } from '@/lib/utils/format';
+import { useToast } from '@/components/ui/use-toast';
 import { updateUser } from '@/lib/actions/user.actions';
-import { compareObjects } from '@/lib/utils/comparsion';
-import useDebouncedValue from '@/lib/utils/hooks';
+import { useUploadThing } from '@/lib/uploadthing';
+import { isBase64Image } from '@/lib/utils';
+import { UserValidation } from '@/lib/validations/user';
 
 type TAccountProfileProps = {
   user: {
@@ -47,6 +45,7 @@ type TFormValues = {
 const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
   const { startUpload } = useUploadThing('media');
 
   const [files, setFiles] = useState<File[]>([]);
@@ -147,26 +146,15 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
           render={({ field }) => (
             <FormItem className="flex items-center gap-4">
               <FormLabel className="form_image-label">
-                {field.value ? (
-                  <Image
-                    src={field.value}
-                    alt="user avatar"
-                    width={96}
-                    height={96}
-                    priority
-                    className="rounded-full object-contain"
-                    sizes=""
-                  />
-                ) : (
-                  <Image
-                    src="/assets/profile.svg"
-                    alt="profile icon"
-                    width={24}
-                    height={24}
-                    className="object-contain"
-                    sizes=""
-                  />
-                )}
+                <Image
+                  src={`${field.value ?? '/assets/profile.svg'}`}
+                  alt="profile icon"
+                  width={96}
+                  height={96}
+                  priority
+                  className="form_image"
+                  sizes=""
+                />
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-light-3">
                 <Input
@@ -235,11 +223,23 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
 
         <div className="form_button-wrapper flex justify-center">
           <Button
+            size="lg"
             disabled={!isFormDataChanged}
             type="submit"
-            className="button button--large"
+            className="button"
           >
             {btnTitle}
+          </Button>
+
+          <Button
+            onClick={() => {
+              toast({
+                title: 'Scheduled: Catch up',
+                description: 'Friday, February 10, 2023 at 5:57 PM',
+              });
+            }}
+          >
+            Show Toast
           </Button>
         </div>
       </form>

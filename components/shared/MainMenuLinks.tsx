@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import { mainMenu } from '@/constants';
 import { useAuth } from '@clerk/nextjs';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 
 interface MainMenuLinksProps {}
 

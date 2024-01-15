@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { SignedIn } from '@clerk/nextjs';
 
 import { TThreadCardProps } from '@/lib/types/thread.types';
-import { cn } from '@/lib/utils/cn';
-import { formatDateString } from '@/lib/utils/format';
+import { cn } from '@/lib/utils';
+import { formatDateString } from '@/lib/utils';
 import LikeButton from '@/components/shared/LikeButton';
 
 const ThreadCard = ({
@@ -24,7 +24,7 @@ const ThreadCard = ({
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {
         'mt-2 px-0 xs:px-7': isReply,
-        'bg-2 p-7': !isReply,
+        'paper p-7': !isReply,
       })}
     >
       <div className="thread-card_content-wrapper flex  flex-col items-start justify-between">

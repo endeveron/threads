@@ -39,7 +39,8 @@ const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
 
       <SignedIn>
         <Button
-          className="button button--small"
+          size="sm"
+          className="button"
           onClick={() => router.push(navigatePath + userId)}
         >
           View

@@ -43,7 +43,7 @@ const ProfileHeader = ({
         </div>
         {accountId === authUserId && type !== 'community' && (
           <Link href="/profile/edit">
-            <div className="bg-2 flex cursor-pointer gap-3 rounded-lg px-4 py-2">
+            <div className="paper flex cursor-pointer gap-3 rounded-lg px-4 py-2">
               <Image
                 src="/assets/edit.svg"
                 alt="logout"
@@ -62,7 +62,7 @@ const ProfileHeader = ({
         <p className="mt-6 sm:ml-24 text-base-regular text-light-2">{bio}</p>
       ) : null}
 
-      <div className="bg-2 mt-12 h-0.5 w-full" />
+      <div className="mt-12 border-b border-b-border" />
     </div>
   );
 };

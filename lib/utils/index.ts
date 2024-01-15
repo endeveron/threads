@@ -1,3 +1,20 @@
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+/**
+ * The function `cn` is a TypeScript function that merges multiple class values into a single string.
+ *
+ * @param {ClassValue[]} inputs - The `inputs` parameter is a rest parameter that allows you to pass in
+ * multiple arguments of type `ClassValue`. The `ClassValue` type represents a class name or an object
+ * of class names.
+ *
+ * @returns The `cn` function is returning the result of merging the class values passed as arguments
+ * using the `clsx` function.
+ */
+export const cn = (...inputs: ClassValue[]) => {
+  return twMerge(clsx(inputs));
+};
+
 /**
  * Checks if a given string is a valid base64 encoded image data.
  *
@@ -36,19 +53,19 @@ export const formatDateString = (dateString: string) => {
   return `${time} - ${formattedDate}`;
 };
 
-/**
- * Takes a number as input and returns a formatted string indicating the number of threads.
- *
- * @param {number} count a number that represents the number of threads.
- *
- * @returns a string that represents the formatted thread count.
- */
-export const formatThreadCount = (count: number): string => {
-  if (count === 0) {
-    return 'No Threads';
-  } else {
-    const threadCount = count.toString().padStart(2, '0');
-    const threadWord = count === 1 ? 'Thread' : 'Threads';
-    return `${threadCount} ${threadWord}`;
-  }
-};
+// /**
+//  * Takes a number as input and returns a formatted string indicating the number of threads.
+//  *
+//  * @param {number} count a number that represents the number of threads.
+//  *
+//  * @returns a string that represents the formatted thread count.
+//  */
+// export const formatThreadCount = (count: number): string => {
+//   if (count === 0) {
+//     return 'No Threads';
+//   } else {
+//     const threadCount = count.toString().padStart(2, '0');
+//     const threadWord = count === 1 ? 'Thread' : 'Threads';
+//     return `${threadCount} ${threadWord}`;
+//   }
+// };

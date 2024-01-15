@@ -28,7 +28,7 @@ const Page = async (props: PageProps) => {
           <>
             {replies.map((reply) => (
               <Link key={reply._id} href={`/thread/${reply.parentId}`}>
-                <article className="activity-card">
+                <article className="activity-card paper">
                   <Image
                     src={reply.author.image}
                     alt="user avatar"

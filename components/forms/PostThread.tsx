@@ -74,7 +74,7 @@ const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
         />
 
         <div className="form_button-wrapper flex justify-center">
-          <Button type="submit" className="button button--large">
+          <Button size="lg" type="submit" className="button">
             Create Thread
           </Button>
         </div>

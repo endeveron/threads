@@ -13,7 +13,7 @@ function CommunityCard({
   members,
 }: TCommunityCardProps) {
   return (
-    <article className="community-card">
+    <article className="community-card paper">
       <div className="flex flex-wrap items-center gap-5">
         <Link href={`/communities/${id}`} className="relative h-12 w-12">
           <Image
@@ -36,7 +36,7 @@ function CommunityCard({
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-5">
         <Link href={`/communities/${id}`}>
-          <Button size="sm" className="button button--small">
+          <Button size="sm" className="button">
             View
           </Button>
         </Link>
