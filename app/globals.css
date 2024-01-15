@@ -212,7 +212,12 @@
 
 /* Form */
 .form {
-  @apply flex flex-col justify-start gap-10;
+  @apply flex flex-col justify-start;
+}
+
+.form,
+.form_field-group {
+  @apply gap-10;
 }
 
 .form-card {
@@ -221,6 +226,10 @@
 
 .form_item {
   @apply flex w-full flex-col gap-3;
+}
+
+.form_field-group {
+  @apply grid sm:grid-cols-2;
 }
 
 .form_input {
@@ -236,7 +245,7 @@
 }
 
 .form_image-input {
-  @apply cursor-pointer border-none bg-transparent outline-none file:text-primary-500 !important;
+  @apply border-none bg-transparent outline-none file:text-primary-500 !important;
 }
 
 .no-focus {

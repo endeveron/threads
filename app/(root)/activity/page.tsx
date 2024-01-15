@@ -20,7 +20,7 @@ const Page = async (props: PageProps) => {
   const replies = await fetchActivity(user._id);
 
   return (
-    <section>
+    <>
       <h1 className="head-text">Activity</h1>
 
       <section className="flex flex-col gap-5">
@@ -50,7 +50,7 @@ const Page = async (props: PageProps) => {
           <p className="no-result">No activity yet</p>
         )}
       </section>
-    </section>
+    </>
   );
 };
 

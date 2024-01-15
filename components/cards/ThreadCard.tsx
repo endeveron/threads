@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { SignedIn } from '@clerk/nextjs';
 
 import { TThreadCardProps } from '@/lib/types/thread.types';
 import { cn } from '@/lib/utils/cn';
 import { formatDateString } from '@/lib/utils/format';
 import LikeButton from '@/components/shared/LikeButton';
-import { SignedIn } from '@clerk/nextjs';
 
 const ThreadCard = ({
   id,
