@@ -1,6 +1,7 @@
 'use client';
 
 import { reactToThread } from '@/lib/actions/thread.actions';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -55,11 +56,13 @@ const LikeButton = ({ threadId, userObjectIdStr, likes }: TLikeButtonProps) => {
   return (
     <div className="like-button" onClick={handleClick}>
       <Image
-        src={`/assets/heart-${isLiked ? 'filled' : 'gray'}.svg`}
+        src={`/assets/heart${isLiked ? '-filled' : ''}.svg`}
         alt="heart"
-        width={24}
-        height={24}
-        className="cursor-pointer object-contain"
+        width={18}
+        height={18}
+        className={cn('action-icon', {
+          stable: isLiked,
+        })}
         sizes=""
       />
     </div>

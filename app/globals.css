@@ -9,8 +9,8 @@
 
   .bg-blur {
     @apply bg-dark-blur;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
 
   .paper {
@@ -19,6 +19,14 @@
 
   .button {
     @apply bg-primary-800;
+  }
+
+  .action-icon {
+    @apply cursor-pointer object-contain;
+  }
+
+  .action-icon:not(.stable) {
+    @apply opacity-70 hover:opacity-100 transition-opacity;
   }
 
   .no-mt {
@@ -35,6 +43,11 @@
 
   .no-result {
     @apply text-center !text-base-regular text-light-4;
+  }
+
+  /* Menu */
+  .main-menu_link--active img {
+    filter: brightness(0) invert(1);
   }
 
   /* Bars */

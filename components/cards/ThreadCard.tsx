@@ -6,6 +6,7 @@ import { TThreadCardProps } from '@/lib/types/thread.types';
 import { cn } from '@/lib/utils';
 import { formatDateString } from '@/lib/utils';
 import LikeButton from '@/components/shared/LikeButton';
+import DeleteThread from '@/components/forms/DeleteThread';
 
 const ThreadCard = ({
   id,
@@ -65,7 +66,7 @@ const ThreadCard = ({
                   'mb-5': isReply,
                 },
                 {
-                  'mb-4 ': !isReply && replies?.length,
+                  'mb-3 ': !isReply && replies?.length,
                 }
               )}
             >
@@ -81,19 +82,26 @@ const ThreadCard = ({
                     <Image
                       src="/assets/reply.svg"
                       alt="reply"
-                      width={24}
-                      height={24}
-                      className="cursor-pointer object-contain"
+                      width={18}
+                      height={18}
+                      className="action-icon"
                       sizes=""
                     />
                   </Link>
                   <Image
                     src="/assets/share.svg"
                     alt="share"
-                    width={24}
-                    height={24}
-                    className="cursor-pointer object-contain"
+                    width={18}
+                    height={18}
+                    className="action-icon"
                     sizes=""
+                  />
+                  <DeleteThread
+                    id={id.toString()}
+                    userId={userId}
+                    authorId={author.id}
+                    parentId={parentId}
+                    isReply={isReply}
                   />
                 </div>
               </SignedIn>

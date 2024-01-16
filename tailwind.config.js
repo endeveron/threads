@@ -160,7 +160,7 @@ module.exports = {
         paper: '#121417', // bar, tab, card bg
         active: '#1a1c1e',
         border: '#1d1f21', // border
-        'dark-blur': '#121417cc', // 0.8 of paper, glassmorphism effect
+        'dark-blur': '#121417de', // 0.87 of paper, glassmorphism effect
 
         'light-1': '#FFFFFF',
         'light-2': '#cbd5e1', // Slate 300
