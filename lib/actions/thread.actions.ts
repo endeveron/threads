@@ -100,43 +100,42 @@ export const deleteThread = async (
     // Fetch all child threads and their descendants recursively
     const descendantThreads = await fetchAllChildThreads(threadObjectIdStr);
 
-    // Get all descendant thread IDs including the main thread ID and child thread IDs
-    const descendantThreadIds = [
+    // Create the thread id list that includes the main thread id and child thread ids
+    const threadIdList = [
       threadObjectIdStr,
       ...descendantThreads.map((thread) => thread._id.toString()),
     ];
 
-    // // Extract the authorIds and communityIds to update User and Community models respectively
-    // const uniqueAuthorIds = new Set(
-    //   [
-    //     ...descendantThreads.map((thread) => thread.author?._id?.toString()), // Use optional chaining to handle possible undefined values
-    //     mainThread.author?._id?.toString(),
-    //   ].filter((id) => id !== undefined)
-    // );
+    // Extract the authorIds and communityIds to update User and Community models respectively
+    const uniqueAuthorIds = new Set(
+      [
+        ...descendantThreads.map((thread) => thread.author?.toString()),
+        mainThread.author._id.toString(),
+      ].filter((id) => id !== undefined)
+    );
+    const uniqueCommunityIds = new Set(
+      [
+        ...descendantThreads.map((thread) => thread.community?.toString()),
+        mainThread.community?._id?.toString(),
+      ].filter((id) => id !== undefined)
+    );
 
-    // const uniqueCommunityIds = new Set(
-    //   [
-    //     ...descendantThreads.map((thread) => thread.community?._id?.toString()), // Use optional chaining to handle possible undefined values
-    //     mainThread.community?._id?.toString(),
-    //   ].filter((id) => id !== undefined)
-    // );
+    // Recursively delete threads and their descendants
+    await ThreadModel.deleteMany({ _id: { $in: threadIdList } });
 
-    // // Recursively delete child threads and their descendants
-    // await Thread.deleteMany({ _id: { $in: descendantThreadIds } });
+    // Update User model
+    await UserModel.updateMany(
+      { _id: { $in: Array.from(uniqueAuthorIds) } },
+      { $pull: { threads: { $in: threadIdList } } }
+    );
 
-    // // Update User model
-    // await User.updateMany(
-    //   { _id: { $in: Array.from(uniqueAuthorIds) } },
-    //   { $pull: { threads: { $in: descendantThreadIds } } }
-    // );
+    // Update Community model
+    await CommunityModel.updateMany(
+      { _id: { $in: Array.from(uniqueCommunityIds) } },
+      { $pull: { threads: { $in: threadIdList } } }
+    );
 
-    // // Update Community model
-    // await Community.updateMany(
-    //   { _id: { $in: Array.from(uniqueCommunityIds) } },
-    //   { $pull: { threads: { $in: descendantThreadIds } } }
-    // );
-
-    // revalidatePath(path);
+    revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Failed to delete thread: ${error.message}`);
   }
