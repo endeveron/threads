@@ -49,12 +49,12 @@ const ThreadCard = ({
               className="thread-card_profile-link w-fit"
               href={`/profile/${author.id}`}
             >
-              <h4 className="thread-card_author-name cursor-pointer text-base-semibold text-light-1">
+              <h4 className="thread-card_author-name my-2.5 cursor-pointer text-base-semibold text-light-1">
                 {author.name}
               </h4>
             </Link>
 
-            <p className="thread-card_text-content mt-1 text-small-regular text-light-2">
+            <p className="thread-card_text-content text-small-regular text-light-2">
               {content}
             </p>
 
@@ -72,7 +72,7 @@ const ThreadCard = ({
             >
               {/* Action buttons (icons) */}
               <SignedIn>
-                <div className="thread-card_actions flex gap-5 mr-3">
+                <div className="thread-card_actions flex gap-7 mr-5">
                   <LikeButton
                     threadId={id.toString()}
                     userObjectIdStr={userObjectId?.toString()}
@@ -108,8 +108,8 @@ const ThreadCard = ({
 
               {/* Time / Date / Communities */}
               {!isReply && (
-                <p className="flex items-center flex-wrap text-subtle-medium text-light-3">
-                  <span className="flex items-center cursor-default mr-7">
+                <p className="flex gap-x-7 gap-y-3 items-center flex-wrap text-subtle-medium text-light-3">
+                  <span className="flex items-center cursor-default">
                     {formatDateString(createdAt)}
                   </span>
                   {community && (

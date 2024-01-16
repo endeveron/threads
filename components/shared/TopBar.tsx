@@ -4,43 +4,48 @@ import {
   SignOutButton,
   SignedIn,
   SignedOut,
+  currentUser,
 } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const TopBar = () => {
+const TopBar = async () => {
+  const authUser = await currentUser();
+  const logoTextClassName = `text-heading3-bold text-light-1${
+    authUser ? ' max-xs:hidden' : ''
+  }`;
+
   return (
     <nav className="top-bar">
-      <Link href="/" className="flex items-center gap-3 ml-2">
+      <Link href="/" className="top-bar_logo flex items-center gap-3 ml-2">
         <Image src="/assets/logo.svg" alt="logo" width={33} height={32} />
-        <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
+        <p className={logoTextClassName}>Threads</p>
       </Link>
-      <div className="flex items-center gap-1">
-        <div className="block md:hidden">
-          <SignedIn>
-            <SignOutButton>
-              <div className="flex cursor-pointer">
-                <Image
-                  src="/assets/logout.svg"
-                  alt="logout"
-                  width={24}
-                  height={24}
-                  sizes=""
-                />
-              </div>
-            </SignOutButton>
-          </SignedIn>
-        </div>
-
+      <div className="top-bar_content flex items-center gap-3">
         <OrganizationSwitcher
           appearance={{
             baseTheme: dark,
             elements: {
-              organizationSwitcherTrigger: 'py-2 px-4',
+              organizationSwitcherTrigger: 'p-2',
             },
           }}
         />
+
+        <div className="block md:hidden">
+          <SignedIn>
+            <SignOutButton>
+              <Image
+                className="top-bar_logout-icon action-icon"
+                src="/assets/logout.svg"
+                alt="logout"
+                width={24}
+                height={24}
+                sizes=""
+              />
+            </SignOutButton>
+          </SignedIn>
+        </div>
 
         <SignedOut>
           <Link href="/sign-in">
