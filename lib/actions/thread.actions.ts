@@ -11,6 +11,7 @@ import {
   TCreateThreadParams,
   TFetchThreadsParams,
   TReactToThreadParams,
+  TThread,
 } from '@/lib/types/thread.types';
 import logger from '@/lib/utils/logger';
 
@@ -63,6 +64,81 @@ export const createThread = async ({
     revalidatePath(path);
   } catch (err: any) {
     throw new Error(`Failed to create thread: ${err.message}`);
+  }
+};
+
+const fetchAllChildThreads = async (
+  threadObjectIdStr: string
+): Promise<TThread[]> => {
+  const childThreads = await ThreadModel.find({ parentId: threadObjectIdStr });
+
+  const descendantThreads = [];
+  for (const childThread of childThreads) {
+    const descendants = await fetchAllChildThreads(childThread._id.toString());
+    descendantThreads.push(childThread, ...descendants);
+  }
+
+  return descendantThreads;
+};
+
+export const deleteThread = async (
+  threadObjectIdStr: string,
+  path: string
+): Promise<void> => {
+  try {
+    connectToDB();
+
+    // Find the thread to be deleted (the main thread)
+    const mainThread = await ThreadModel.findById(threadObjectIdStr).populate(
+      'author community'
+    );
+
+    if (!mainThread) {
+      throw new Error('Thread not found');
+    }
+
+    // Fetch all child threads and their descendants recursively
+    const descendantThreads = await fetchAllChildThreads(threadObjectIdStr);
+
+    // Get all descendant thread IDs including the main thread ID and child thread IDs
+    const descendantThreadIds = [
+      threadObjectIdStr,
+      ...descendantThreads.map((thread) => thread._id.toString()),
+    ];
+
+    // // Extract the authorIds and communityIds to update User and Community models respectively
+    // const uniqueAuthorIds = new Set(
+    //   [
+    //     ...descendantThreads.map((thread) => thread.author?._id?.toString()), // Use optional chaining to handle possible undefined values
+    //     mainThread.author?._id?.toString(),
+    //   ].filter((id) => id !== undefined)
+    // );
+
+    // const uniqueCommunityIds = new Set(
+    //   [
+    //     ...descendantThreads.map((thread) => thread.community?._id?.toString()), // Use optional chaining to handle possible undefined values
+    //     mainThread.community?._id?.toString(),
+    //   ].filter((id) => id !== undefined)
+    // );
+
+    // // Recursively delete child threads and their descendants
+    // await Thread.deleteMany({ _id: { $in: descendantThreadIds } });
+
+    // // Update User model
+    // await User.updateMany(
+    //   { _id: { $in: Array.from(uniqueAuthorIds) } },
+    //   { $pull: { threads: { $in: descendantThreadIds } } }
+    // );
+
+    // // Update Community model
+    // await Community.updateMany(
+    //   { _id: { $in: Array.from(uniqueCommunityIds) } },
+    //   { $pull: { threads: { $in: descendantThreadIds } } }
+    // );
+
+    // revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to delete thread: ${error.message}`);
   }
 };
 
