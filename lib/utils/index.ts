@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import moment from 'moment';
 import { twMerge } from 'tailwind-merge';
 
 /**
@@ -36,21 +37,22 @@ export function isBase64Image(imageData: string) {
  * date is in the format "month day, year".
  */
 export const formatDateString = (dateString: string) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  };
+  return moment(dateString).fromNow();
+  // const options: Intl.DateTimeFormatOptions = {
+  //   year: 'numeric',
+  //   month: 'short',
+  //   day: 'numeric',
+  // };
 
-  const date = new Date(dateString);
-  const formattedDate = date.toLocaleDateString(undefined, options);
+  // const date = new Date(dateString);
+  // const formattedDate = date.toLocaleDateString(undefined, options);
 
-  const time = date.toLocaleTimeString([], {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
+  // const time = date.toLocaleTimeString([], {
+  //   hour: 'numeric',
+  //   minute: '2-digit',
+  // });
 
-  return `${time} - ${formattedDate}`;
+  // return `${time} - ${formattedDate}`;
 };
 
 // /**

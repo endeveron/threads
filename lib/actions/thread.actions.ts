@@ -87,25 +87,20 @@ export const deleteThread = async (
 ): Promise<void> => {
   try {
     connectToDB();
-
     // Find the thread to be deleted (the main thread)
     const mainThread = await ThreadModel.findById(threadObjectIdStr).populate(
       'author community'
     );
-
     if (!mainThread) {
       throw new Error('Thread not found');
     }
-
     // Fetch all child threads and their descendants recursively
     const descendantThreads = await fetchAllChildThreads(threadObjectIdStr);
-
     // Create the thread id list that includes the main thread id and child thread ids
     const threadIdList = [
       threadObjectIdStr,
       ...descendantThreads.map((thread) => thread._id.toString()),
     ];
-
     // Extract the authorIds and communityIds to update User and Community models respectively
     const uniqueAuthorIds = new Set(
       [
@@ -119,22 +114,18 @@ export const deleteThread = async (
         mainThread.community?._id?.toString(),
       ].filter((id) => id !== undefined)
     );
-
     // Recursively delete threads and their descendants
     await ThreadModel.deleteMany({ _id: { $in: threadIdList } });
-
     // Update User model
     await UserModel.updateMany(
       { _id: { $in: Array.from(uniqueAuthorIds) } },
       { $pull: { threads: { $in: threadIdList } } }
     );
-
     // Update Community model
     await CommunityModel.updateMany(
       { _id: { $in: Array.from(uniqueCommunityIds) } },
       { $pull: { threads: { $in: threadIdList } } }
     );
-
     revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Failed to delete thread: ${error.message}`);

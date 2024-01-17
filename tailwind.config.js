@@ -152,6 +152,9 @@ module.exports = {
     },
     extend: {
       colors: {
+        danger: 'var(--danger)',
+        'danger-foreground': 'var(--danger-foreground)',
+
         'primary-500': '#ec4899', // Pink 500
         'primary-800': '#9d174d', // Pink 800
         'primary-900': '#831843', // Pink 900

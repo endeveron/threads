@@ -72,7 +72,7 @@ const ThreadCard = ({
             >
               {/* Action buttons (icons) */}
               <SignedIn>
-                <div className="thread-card_actions flex gap-7 mr-5">
+                <div className="thread-card_actions flex gap-7 mr-3">
                   <LikeButton
                     threadId={id.toString()}
                     userObjectIdStr={userObjectId?.toString()}

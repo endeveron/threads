@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Rose */
+  --main-05: #fdf2f8;
+  --main-1: #fce7f3;
+  --main-2: #fbcfe8;
+  --main-3: #f9a8d4;
+  --main-4: #f472b6;
+  --main-5: #ec4899;
+  --main-6: #db2777;
+  --main-7: #be185d;
+  --main-8: #9d174d;
+  --main-9: #831843;
+  --main-95: #500724;
+
+  /* Rose */
+  --accent-05: #fdf2f8;
+  --accent-1: #fce7f3;
+  --accent-2: #fbcfe8;
+  --accent-3: #f9a8d4;
+  --accent-4: #f472b6;
+  --accent-5: #ec4899;
+  --accent-6: #db2777;
+  --accent-7: #be185d;
+  --accent-8: #9d174d;
+  --accent-9: #831843;
+  --accent-95: #500724;
+
+  --background: #0b0c0c; /* body */
+  --background-secondary: #121417; /* bar, tab, card */
+  --background-secondary-hover: #1a1c1e;
+  --background-secondary-opacity: rgba(var(--background-secondary), 0.87);
+  /* --background-tertiary: #000; */
+
+  --border: #1d1f21;
+
+  --danger: #ff0000;
+  --danger-foreground: #ff0000;
+}
+
+.dark {
+  --danger: #500724;
+  --danger-foreground: #f9a8d4;
+}
+
 @layer components {
   .main-container {
     @apply flex mt-20 px-6 py-10 min-h-screen flex-1 flex-col items-center bg-main  max-md:pb-32 sm:px-10;
