@@ -25,9 +25,6 @@ const Page = async (props: PageProps) => {
   return (
     <>
       <h1 className="head-text">Edit profile</h1>
-      {/* <p className="text-base-regular text-light-2">
-        Complete your profile now, to use Threds.
-      </p> */}
 
       <AccountProfile user={userData} btnTitle="Continue" />
     </>

@@ -156,7 +156,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
                   sizes=""
                 />
               </FormLabel>
-              <FormControl className="flex-1 text-base-semibold text-light-3">
+              <FormControl className="flex-1 text-base-semibold text-tertiary">
                 <Input
                   type="file"
                   accept="image/*"
@@ -177,11 +177,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
               <FormItem className="form_item">
                 <FormLabel className="form_label">Name</FormLabel>
                 <FormControl>
-                  <Input
-                    type="text"
-                    className="form_input no-focus"
-                    {...field}
-                  />
+                  <Input type="text" className="form_input" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -195,11 +191,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
               <FormItem className="form_item">
                 <FormLabel className="form_label">Username</FormLabel>
                 <FormControl>
-                  <Input
-                    type="text"
-                    className="form_input no-focus"
-                    {...field}
-                  />
+                  <Input type="text" className="form_input" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -214,7 +206,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
             <FormItem className="form_item">
               <FormLabel className="form_label">Bio</FormLabel>
               <FormControl>
-                <Textarea rows={5} className="form_input no-focus" {...field} />
+                <Textarea rows={5} className="form_input" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

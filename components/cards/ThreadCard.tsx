@@ -49,12 +49,12 @@ const ThreadCard = ({
               className="thread-card_profile-link w-fit"
               href={`/profile/${author.id}`}
             >
-              <h4 className="thread-card_author-name my-2.5 cursor-pointer text-base-semibold text-light-1">
+              <h4 className="thread-card_author-name my-2.5 cursor-pointer text-base-semibold text-heading-2">
                 {author.name}
               </h4>
             </Link>
 
-            <p className="thread-card_text-content text-small-regular text-light-2">
+            <p className="thread-card_text-content text-small-regular text-secondary leading-6">
               {content}
             </p>
 
@@ -108,7 +108,7 @@ const ThreadCard = ({
 
               {/* Time / Date / Communities */}
               {!isReply && (
-                <p className="flex gap-x-7 gap-y-3 items-center flex-wrap text-subtle-medium text-light-3">
+                <p className="flex gap-x-7 gap-y-3 items-center flex-wrap text-subtle-medium text-tertiary">
                   <span className="flex items-center cursor-default">
                     {formatDateString(createdAt)}
                   </span>
@@ -151,7 +151,7 @@ const ThreadCard = ({
                   } rounded-full object-cover`}
                 />
               ))}
-              <p className="thread-card_replies-text relative text-subtle-medium text-light-3 ml-4">
+              <p className="thread-card_replies-text relative text-subtle-medium text-tertiary ml-4">
                 {replies.length} repl{replies.length > 1 ? 'ies' : 'y'}
               </p>
             </div>

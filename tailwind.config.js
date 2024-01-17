@@ -122,21 +122,21 @@ module.exports = {
       //   },
       // ],
       'subtle-medium': [
-        '12px',
+        '13px',
         {
           lineHeight: '1.5',
           fontWeight: '500',
         },
       ],
       // 'subtle-semibold': [
-      //   '12px',
+      //   '13px',
       //   {
       //     lineHeight: '1.5',
       //     fontWeight: '600',
       //   },
       // ],
       // 'tiny-medium': [
-      //   '10px',
+      //   '11px',
       //   {
       //     lineHeight: '1.5',
       //     fontWeight: '500',
@@ -152,23 +152,26 @@ module.exports = {
     },
     extend: {
       colors: {
+        'heading-1': 'var(--heading-1)', // h1
+        'heading-2': 'var(--heading-2)', // h2, h3, h4
+
+        main: 'var(--foreground)',
+        secondary: 'var(--foreground-secondary)',
+        tertiary: 'var(--foreground-tertiary)',
+        accent: 'var(--accent)',
+
+        'main-bg': 'var(--background)',
+        paper: 'var(--background-secondary)', // bar, tab, card
+        'paper-hover': 'var(--background-secondary-hover)',
+        'paper-blur': 'var(--background-secondary-opacity)',
+
+        button: 'var(--button)',
+        // 'button-secondary': 'var(--button-secondary)',
+
+        border: 'var(--border)',
+
         danger: 'var(--danger)',
         'danger-foreground': 'var(--danger-foreground)',
-
-        'primary-500': '#ec4899', // Pink 500
-        'primary-800': '#9d174d', // Pink 800
-        'primary-900': '#831843', // Pink 900
-
-        main: '#0b0c0c', // body bg
-        paper: '#121417', // bar, tab, card bg
-        active: '#1a1c1e',
-        border: '#1d1f21', // border
-        'dark-blur': '#121417de', // 0.87 of paper, glassmorphism effect
-
-        'light-1': '#FFFFFF',
-        'light-2': '#cbd5e1', // Slate 300
-        'light-3': '#64748b', // Slate 500
-        'light-4': '#475569', // Slate 600
       },
       boxShadow: {
         'count-badge': '0px 0px 6px 2px rgba(219, 188, 159, 0.30)',

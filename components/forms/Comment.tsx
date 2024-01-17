@@ -69,7 +69,7 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
                   type="text"
                   {...field}
                   placeholder="Reply to the thread..."
-                  className="no-focus text-light-1 outline-none no-mt"
+                  className="text-main outline-none no-mt"
                 />
               </FormControl>
             </FormItem>

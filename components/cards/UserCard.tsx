@@ -32,8 +32,8 @@ const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
         </div>
 
         <div className="flex-1 text-ellipsis">
-          <h4 className="text-base-semibold text-light-1">{name}</h4>
-          <p className="text-small-medium text-light-3">@{username}</p>
+          <h4 className="text-base-semibold text-main">{name}</h4>
+          <p className="text-small-medium text-tertiary">@{username}</p>
         </div>
       </div>
 

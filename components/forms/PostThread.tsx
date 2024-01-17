@@ -63,7 +63,7 @@ const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
               <FormControl>
                 <Textarea
                   rows={10}
-                  className="form_input no-focus"
+                  className="form_input"
                   placeholder="Share your thoughts..."
                   {...field}
                 />

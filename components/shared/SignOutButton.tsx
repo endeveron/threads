@@ -25,7 +25,7 @@ const SignOutButton = ({ callbackRoute = '/', label }: SignOutButtonProps) => {
               sizes=""
             />
             {!!label ? (
-              <p className="text-light-2 max-lg:hidden">{label}</p>
+              <p className="text-secondary max-lg:hidden">{label}</p>
             ) : null}
           </div>
         </ClerkSignOutButton>

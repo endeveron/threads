@@ -37,10 +37,12 @@ const Page = async (props: PageProps) => {
                     className="rounded-full object-cover"
                   />
                   <p className="text-small-regular">
-                    <span className="text-light-1 font-bold pl-1 pr-2">
+                    <span className="text-main font-bold pl-1 pr-2">
                       {reply.author.name}
                     </span>
-                    <span className="text-light-2">replied to your thread</span>
+                    <span className="text-secondary">
+                      replied to your thread
+                    </span>
                   </p>
                 </article>
               </Link>

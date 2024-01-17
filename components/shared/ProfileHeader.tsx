@@ -35,10 +35,10 @@ const ProfileHeader = ({
           </div>
 
           <div className="flex-1">
-            <h2 className="text-left text-heading3-bold text-light-1">
+            <h2 className="text-left text-heading3-bold text-heading-2">
               {name}
             </h2>
-            <p className="text-base-medium text-light-3">@{username}</p>
+            <p className="text-base-medium text-tertiary">@{username}</p>
           </div>
         </div>
         {accountId === authUserId && type !== 'community' && (
@@ -52,14 +52,14 @@ const ProfileHeader = ({
                 sizes=""
               />
 
-              <p className="text-light-3 max-sm:hidden">Edit</p>
+              <p className="text-secondary max-sm:hidden">Edit</p>
             </div>
           </Link>
         )}
       </div>
 
       {bio ? (
-        <p className="mt-6 sm:ml-24 text-base-regular text-light-2">{bio}</p>
+        <p className="mt-6 sm:ml-24 text-base-regular text-secondary">{bio}</p>
       ) : null}
 
       <div className="mt-12 border-b border-b-border" />

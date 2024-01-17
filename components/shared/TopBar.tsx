@@ -14,7 +14,7 @@ const TopBar = async () => {
     <nav className="top-bar">
       <Link href="/" className="top-bar_logo flex items-center gap-3">
         <Image src="/assets/logo.svg" alt="logo" width={33} height={32} />
-        <p className="text-heading3-bold text-light-1">Threads</p>
+        <p className="text-heading3-bold text-heading-2">Threads</p>
       </Link>
       <div className="top-bar_content flex items-center gap-5">
         <OrganizationSwitcher
