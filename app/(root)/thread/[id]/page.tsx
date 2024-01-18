@@ -42,6 +42,7 @@ const Page = async ({ params }: PageProps) => {
         createdAt={thread.createdAt}
         userId={userId} // Clerk user id
         userObjectId={userObjectId}
+        disableTextLink
       />
 
       <div className="thread-details_reply mt-8">

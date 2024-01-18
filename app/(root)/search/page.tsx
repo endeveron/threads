@@ -32,8 +32,6 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <>
-      {/* <h1 className="head-text">Search</h1> */}
-
       <Searchbar routeType="search" />
 
       <section className="mt-8 flex flex-col gap-9">

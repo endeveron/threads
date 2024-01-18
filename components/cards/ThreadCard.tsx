@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { formatDateString } from '@/lib/utils';
 import LikeButton from '@/components/shared/LikeButton';
 import DeleteThread from '@/components/forms/DeleteThread';
-import ClickableContent from '@/components/shared/ClickableContent';
 
 const ThreadCard = ({
   id,
@@ -21,7 +20,7 @@ const ThreadCard = ({
   createdAt,
   userId,
   userObjectId,
-  navLink,
+  disableTextLink,
 }: TThreadCardProps) => {
   const createReplyImageSet = (replies: TThreadCardReply[]): string[] => {
     const imageSet = new Set<string>();
@@ -35,6 +34,12 @@ const ThreadCard = ({
   };
 
   const replyImages = createReplyImageSet(replies);
+
+  const textContent = (
+    <p className="thread-card_text-content text-small-regular text-secondary leading-6">
+      {content}
+    </p>
+  );
 
   return (
     <article
@@ -55,8 +60,6 @@ const ThreadCard = ({
                 alt="user avatar"
               />
             </Link>
-
-            {/* {replies?.length ? <div className="thread-card_bar" /> : null} */}
             <div className="thread-card_bar" />
           </div>
 
@@ -70,11 +73,11 @@ const ThreadCard = ({
               </h4>
             </Link>
 
-            <ClickableContent id={id.toString()} navLink={navLink}>
-              <p className="thread-card_text-content text-small-regular text-secondary leading-6">
-                {content}
-              </p>
-            </ClickableContent>
+            {disableTextLink ? (
+              textContent
+            ) : (
+              <Link href={`/thread/${id}`}>{textContent}</Link>
+            )}
 
             {/* Toolbar */}
             <div
@@ -96,7 +99,7 @@ const ThreadCard = ({
                     userObjectIdStr={userObjectId?.toString()}
                     likes={likes}
                   />
-                  {/* <Link href={`/thread/${id}`}>
+                  <Link href={`/thread/${id}`}>
                     <Image
                       src="/assets/reply.svg"
                       alt="reply"
@@ -105,7 +108,7 @@ const ThreadCard = ({
                       className="action-icon"
                       sizes=""
                     />
-                  </Link> */}
+                  </Link>
                   <Image
                     src="/assets/share.svg"
                     alt="share"

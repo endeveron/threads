@@ -17,31 +17,27 @@ const Home = async () => {
   const { threads, isNext } = await fetchThreads({});
 
   return (
-    <>
-      {/* <h1 className="head-text text-left">Home</h1> */}
-      <section className="main-thread-list">
-        {threads.length === 0 ? (
-          <p className="no-result">No threads found</p>
-        ) : (
-          threads.map((thread) => (
-            <ThreadCard
-              id={thread._id}
-              author={thread.author}
-              content={thread.text}
-              community={thread.community}
-              replies={thread.children}
-              likes={thread.likes}
-              parentId={thread.parentId}
-              createdAt={thread.createdAt}
-              key={thread._id}
-              userId={authUser?.id ?? null}
-              userObjectId={user?._id ?? null}
-              navLink={`/thread/${thread._id}`}
-            />
-          ))
-        )}
-      </section>
-    </>
+    <section className="main-thread-list">
+      {threads.length === 0 ? (
+        <p className="no-result">No threads found</p>
+      ) : (
+        threads.map((thread) => (
+          <ThreadCard
+            id={thread._id}
+            author={thread.author}
+            content={thread.text}
+            community={thread.community}
+            replies={thread.children}
+            likes={thread.likes}
+            parentId={thread.parentId}
+            createdAt={thread.createdAt}
+            key={thread._id}
+            userId={authUser?.id ?? null}
+            userObjectId={user?._id ?? null}
+          />
+        ))
+      )}
+    </section>
   );
 };
 

@@ -72,5 +72,5 @@ export type TThreadCardProps = {
   createdAt: string;
   isReply?: boolean;
   path?: string;
-  navLink?: string;
+  disableTextLink?: boolean;
 };

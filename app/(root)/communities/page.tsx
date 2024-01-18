@@ -29,8 +29,6 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <>
-      {/* <h1 className="head-text">Communities</h1> */}
-
       <Searchbar routeType="communities" />
 
       <section className="mt-8">
