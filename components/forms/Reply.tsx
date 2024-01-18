@@ -17,16 +17,22 @@ import { addCommentToThread } from '@/lib/actions/thread.actions';
 import { CommentValidation } from '@/lib/validations/thread';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { ObjectId } from 'mongoose';
+import { useState } from 'react';
 
-interface CommentProps {
+type TFormValues = {
+  thread: string;
+};
+
+type TCommentProps = {
   threadId: string;
   userImg: string;
   userObjectIdStr: string;
-}
+};
 
-const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
+const Reply = ({ threadId, userImg, userObjectIdStr }: TCommentProps) => {
   const pathname = usePathname();
+
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const form = useForm<zod.infer<typeof CommentValidation>>({
     resolver: zodResolver(CommentValidation),
@@ -34,6 +40,13 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
       thread: '',
     },
   });
+
+  form.formState;
+
+  const onChange = (values: TFormValues) => {
+    const inputLength = values.thread.trim().length;
+    setIsFormValid(() => !!inputLength);
+  };
 
   const onSubmit = async (values: zod.infer<typeof CommentValidation>) => {
     await addCommentToThread({
@@ -48,12 +61,16 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
 
   return (
     <Form {...form}>
-      <form className="comment-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="reply-form"
+        onChange={() => onChange(form.getValues())}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="thread"
           render={({ field }) => (
-            <FormItem className="flex w-full items-center gap-3">
+            <FormItem className="flex w-full items-center">
               <FormLabel>
                 <Image
                   src={userImg}
@@ -78,6 +95,7 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
 
         <Button
           type="submit"
+          disabled={!isFormValid}
           className="button px-7 max-xs:mt-3 max-xs:w-full max-sm:px-10"
         >
           Reply
@@ -87,4 +105,4 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
   );
 };
 
-export default Comment;
+export default Reply;

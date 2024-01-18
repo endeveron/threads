@@ -26,13 +26,15 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`bg-main-bg ${inter.className}`}>
+        <body className={`bg-background ${inter.className}`}>
           <ThemeProvider attribute="class" defaultTheme="dark">
             <Topbar />
             <main className="flex flex-row">
               <LeftSidebar />
               <section className="main-container">
-                <div className="w-full max-w-4xl">{children}</div>
+                <div className="content-wrapper w-full max-w-4xl">
+                  {children}
+                </div>
               </section>
               <RightSidebar />
             </main>

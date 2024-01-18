@@ -49,6 +49,12 @@ export type TAddCommentToThreadParams = TThreadActionBaseParams & {
 
 export type TReactToThreadParams = TThreadActionBaseParams & {};
 
+export type TThreadCardReply = {
+  author: {
+    image: string;
+  };
+};
+
 export type TThreadCardProps = {
   id: string;
   userId: string | null;
@@ -60,11 +66,7 @@ export type TThreadCardProps = {
     image: string;
   } | null;
   content: string;
-  replies: {
-    author: {
-      image: string;
-    };
-  }[];
+  replies: TThreadCardReply[];
   likes: string[];
   parentId: string | null;
   createdAt: string;

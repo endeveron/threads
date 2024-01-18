@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SignedIn } from '@clerk/nextjs';
 
-import { TThreadCardProps } from '@/lib/types/thread.types';
+import { TThreadCardProps, TThreadCardReply } from '@/lib/types/thread.types';
 import { cn } from '@/lib/utils';
 import { formatDateString } from '@/lib/utils';
 import LikeButton from '@/components/shared/LikeButton';
@@ -23,11 +23,23 @@ const ThreadCard = ({
   userObjectId,
   navLink,
 }: TThreadCardProps) => {
+  const createReplyImageSet = (replies: TThreadCardReply[]): string[] => {
+    const imageSet = new Set<string>();
+    for (let reply of replies) {
+      const imageUrl = reply.author.image;
+      if (imageUrl && !imageSet.has(imageUrl)) {
+        imageSet.add(imageUrl);
+      }
+    }
+    return Array.from(imageSet);
+  };
+
+  const replyImages = createReplyImageSet(replies);
+
   return (
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {
-        // 'mt-2 px-0 xs:px-7': isReply,
-        // 'paper p-7': !isReply,
+        'has-replies': !!replies?.length,
         reply: isReply,
       })}
     >
@@ -44,7 +56,8 @@ const ThreadCard = ({
               />
             </Link>
 
-            {replies?.length ? <div className="thread-card_bar" /> : null}
+            {/* {replies?.length ? <div className="thread-card_bar" /> : null} */}
+            <div className="thread-card_bar" />
           </div>
 
           <div className="thread-card_column flex flex-col w-full">
@@ -141,13 +154,13 @@ const ThreadCard = ({
         </div>
 
         {/* Replies */}
-        {replies?.length && replies.length > 0 ? (
+        {replyImages.length > 0 ? (
           <Link href={`/thread/${id}`}>
             <div className="thread-card_replies flex items-center pl-1.5 mt-2">
-              {replies.map((reply, index) => (
+              {replyImages.map((image, index) => (
                 <Image
                   key={index}
-                  src={reply.author.image}
+                  src={image as string}
                   alt={`user_${index}`}
                   width={32}
                   height={32}
@@ -162,9 +175,6 @@ const ThreadCard = ({
             </div>
           </Link>
         ) : null}
-
-        {/* TODO: Delete thread */}
-        {/* TODO: Show comment logos */}
       </div>
     </article>
   );

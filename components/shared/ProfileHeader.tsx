@@ -52,14 +52,16 @@ const ProfileHeader = ({
                 sizes=""
               />
 
-              <p className="text-secondary max-sm:hidden">Edit</p>
+              <p className="text-small-medium text-secondary max-sm:hidden">
+                Edit
+              </p>
             </div>
           </Link>
         )}
       </div>
 
       {bio ? (
-        <p className="mt-3 sm:ml-24 text-small-medium leading-6 text-secondary">
+        <p className="mt-6 sm:mt-2 sm:ml-24 text-small-medium leading-6 text-secondary">
           {bio}
         </p>
       ) : null}

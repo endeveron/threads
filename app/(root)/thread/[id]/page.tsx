@@ -4,7 +4,7 @@ import { currentUser } from '@clerk/nextjs';
 import { fetchUser } from '@/lib/actions/user.actions';
 import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreadById } from '@/lib/actions/thread.actions';
-import Comment from '@/components/forms/Comment';
+import Reply from '@/components/forms/Reply';
 import { TUser } from '@/lib/types/user.types';
 
 export const revalidate = 0;
@@ -30,7 +30,7 @@ const Page = async ({ params }: PageProps) => {
   const thread = await fetchThreadById(params.id);
 
   return (
-    <div className="relative">
+    <div className="thread-details">
       <ThreadCard
         id={thread._id}
         author={thread.author}
@@ -44,15 +44,15 @@ const Page = async ({ params }: PageProps) => {
         userObjectId={userObjectId}
       />
 
-      <div className="mt-10">
-        <Comment
+      <div className="thread-details_reply mt-8">
+        <Reply
           threadId={params.id}
           userImg={user.image}
           userObjectIdStr={userObjectId?.toString()}
         />
       </div>
 
-      <div className="mt-10">
+      <div className="thread-details_reply-list mt-10">
         {thread.children.map((reply: any) => (
           <ThreadCard
             id={reply._id}

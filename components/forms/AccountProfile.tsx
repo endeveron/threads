@@ -45,7 +45,6 @@ type TFormValues = {
 const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { toast } = useToast();
   const { startUpload } = useUploadThing('media');
 
   const [files, setFiles] = useState<File[]>([]);

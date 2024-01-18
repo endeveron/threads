@@ -17,28 +17,28 @@ module.exports = {
     },
     fontSize: {
       'heading1-bold': [
-        '36px',
+        '30px',
         {
           lineHeight: '1.5',
           fontWeight: '700',
         },
       ],
       'heading1-semibold': [
-        '36px',
+        '30px',
         {
           lineHeight: '1.5',
           fontWeight: '600',
         },
       ],
       'heading2-bold': [
-        '30px',
+        '24px',
         {
           lineHeight: '1.5',
           fontWeight: '700',
         },
       ],
       'heading2-semibold': [
-        '30px',
+        '24px',
         {
           lineHeight: '1.5',
           fontWeight: '600',
@@ -160,7 +160,8 @@ module.exports = {
         tertiary: 'var(--foreground-tertiary)',
         accent: 'var(--accent)',
 
-        'main-bg': 'var(--background)',
+        background: 'var(--background)',
+        'background-opac': 'var(--background-opac)',
         paper: 'var(--background-secondary)', // bar, tab, card
         'paper-hover': 'var(--background-secondary-hover)',
         'paper-blur': 'var(--background-secondary-opacity)',
