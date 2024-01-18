@@ -46,6 +46,7 @@
   --accent: var(--accent-5);
   --border: var(--main-8);
   --button: var(--accent-8);
+  --button-disabled: var(--main-7);
 
   --danger: var(--accent-6);
 }
@@ -69,6 +70,10 @@
 
   .button {
     @apply bg-button;
+  }
+
+  .button:disabled {
+    @apply bg-button-disabled;
   }
 
   .link-button--small {
@@ -129,15 +134,20 @@
     @apply bg-paper sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto pb-5 pt-28 border-r border-r-border max-md:hidden;
   }
 
-  .left-sidebar_container {
-    @apply flex w-full flex-1 flex-col gap-6 px-4 md:px-6;
+  .left-sidebar_main,
+  .left-sidebar_bottom {
+    @apply px-4;
   }
 
-  .left-sidebar_container .main-menu_link {
+  .left-sidebar_main {
+    @apply flex w-full flex-1 flex-col gap-6;
+  }
+
+  .left-sidebar_main .main-menu_link {
     @apply relative flex justify-start gap-4 rounded-lg p-4;
   }
 
-  .left-sidebar_container .main-menu_link p {
+  .left-sidebar_main .main-menu_link p {
     @apply text-main max-lg:hidden;
   }
 

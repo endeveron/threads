@@ -6,10 +6,10 @@ interface LeftSidebarProps {}
 const LeftSidebar = (props: LeftSidebarProps) => {
   return (
     <section className="left-sidebar custom-scrollbar">
-      <div className="left-sidebar_container">
+      <div className="left-sidebar_main">
         <MainMenuLinks />
       </div>
-      <div className="mt-10 px-4 md:px-6">
+      <div className="left-sidebar_bottom mt-10">
         <SignOutButton callbackRoute="/" label="Logout" />
       </div>
     </section>

@@ -168,6 +168,7 @@ module.exports = {
         overlay: 'var(--background-overlay)',
 
         button: 'var(--button)',
+        'button-disabled': 'var(--button-disabled)',
         // 'button-secondary': 'var(--button-secondary)',
 
         border: 'var(--border)',
