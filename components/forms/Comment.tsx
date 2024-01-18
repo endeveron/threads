@@ -68,7 +68,7 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
                 <Input
                   type="text"
                   {...field}
-                  placeholder="Reply to the thread..."
+                  placeholder="Share your thoughts..."
                   className="text-main outline-none no-mt"
                 />
               </FormControl>
@@ -76,7 +76,10 @@ const Comment = ({ threadId, userImg, userObjectIdStr }: CommentProps) => {
           )}
         />
 
-        <Button type="submit" className="button px-7 max-sm:px-4">
+        <Button
+          type="submit"
+          className="button px-7 max-xs:mt-3 max-xs:w-full max-sm:px-10"
+        >
           Reply
         </Button>
       </form>

@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { formatDateString } from '@/lib/utils';
 import LikeButton from '@/components/shared/LikeButton';
 import DeleteThread from '@/components/forms/DeleteThread';
+import ClickableContent from '@/components/shared/ClickableContent';
 
 const ThreadCard = ({
   id,
@@ -18,17 +19,19 @@ const ThreadCard = ({
   parentId,
   isReply,
   createdAt,
-  userObjectId,
   userId,
+  userObjectId,
+  navLink,
 }: TThreadCardProps) => {
   return (
     <article
       className={cn('thread-card flex w-full flex-col rounded-xl', {
-        'mt-2 px-0 xs:px-7': isReply,
-        'paper p-7': !isReply,
+        // 'mt-2 px-0 xs:px-7': isReply,
+        // 'paper p-7': !isReply,
+        reply: isReply,
       })}
     >
-      <div className="thread-card_content-wrapper flex  flex-col items-start justify-between">
+      <div className="thread-card_content-wrapper flex flex-col items-start justify-between">
         <div className="thread-card_content flex w-full flex-1 flex-row gap-4">
           <div className="thread-card_column flex flex-col items-center">
             <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
@@ -41,7 +44,7 @@ const ThreadCard = ({
               />
             </Link>
 
-            <div className="thread-card_bar" />
+            {replies?.length ? <div className="thread-card_bar" /> : null}
           </div>
 
           <div className="thread-card_column flex flex-col w-full">
@@ -54,9 +57,11 @@ const ThreadCard = ({
               </h4>
             </Link>
 
-            <p className="thread-card_text-content text-small-regular text-secondary leading-6">
-              {content}
-            </p>
+            <ClickableContent id={id.toString()} navLink={navLink}>
+              <p className="thread-card_text-content text-small-regular text-secondary leading-6">
+                {content}
+              </p>
+            </ClickableContent>
 
             {/* Toolbar */}
             <div
@@ -78,7 +83,7 @@ const ThreadCard = ({
                     userObjectIdStr={userObjectId?.toString()}
                     likes={likes}
                   />
-                  <Link href={`/thread/${id}`}>
+                  {/* <Link href={`/thread/${id}`}>
                     <Image
                       src="/assets/reply.svg"
                       alt="reply"
@@ -87,7 +92,7 @@ const ThreadCard = ({
                       className="action-icon"
                       sizes=""
                     />
-                  </Link>
+                  </Link> */}
                   <Image
                     src="/assets/share.svg"
                     alt="share"

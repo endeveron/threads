@@ -45,14 +45,21 @@ module.exports = {
         },
       ],
       'heading3-bold': [
-        '22px',
+        '20px',
         {
           lineHeight: '1.5',
           fontWeight: '700',
         },
       ],
+      'heading3-semibold': [
+        '20px',
+        {
+          lineHeight: '1.5',
+          fontWeight: '600',
+        },
+      ],
       'heading3-medium': [
-        '22px',
+        '20px',
         {
           lineHeight: '1.5',
           fontWeight: '500',
@@ -103,24 +110,17 @@ module.exports = {
       'small-regular': [
         '14px',
         {
-          lineHeight: '1.5',
+          lineHeight: '1.75',
           fontWeight: '400',
         },
       ],
       'small-medium': [
         '14px',
         {
-          lineHeight: '1.5',
+          lineHeight: '1.75',
           fontWeight: '500',
         },
       ],
-      // 'small-semibold': [
-      //   '14px',
-      //   {
-      //     lineHeight: '1.5',
-      //     fontWeight: '600',
-      //   },
-      // ],
       'subtle-medium': [
         '13px',
         {
@@ -164,6 +164,7 @@ module.exports = {
         paper: 'var(--background-secondary)', // bar, tab, card
         'paper-hover': 'var(--background-secondary-hover)',
         'paper-blur': 'var(--background-secondary-opacity)',
+        overlay: 'var(--background-overlay)',
 
         button: 'var(--button)',
         // 'button-secondary': 'var(--button-secondary)',

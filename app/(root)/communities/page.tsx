@@ -29,15 +29,15 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <>
-      <h1 className="head-text">Communities</h1>
+      {/* <h1 className="head-text">Communities</h1> */}
 
       <Searchbar routeType="communities" />
 
-      <section className="mt-10 grid gap-7 sm:grid-cols-2">
+      <section className="mt-8">
         {result.communities.length === 0 ? (
           <p className="no-result">No Result</p>
         ) : (
-          <>
+          <div className="grid gap-5 sm:grid-cols-2">
             {result.communities.map((community) => (
               <CommunityCard
                 key={community.id}
@@ -49,7 +49,7 @@ const Page = async ({ searchParams }: PageProps) => {
                 members={community.members}
               />
             ))}
-          </>
+          </div>
         )}
       </section>
 

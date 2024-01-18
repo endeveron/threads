@@ -40,14 +40,13 @@
   --background-secondary: var(--main-9); /* bar, tab, card */
   --background-secondary-hover: hsla(240, 9%, 15%, 0.7); /* --main-8 */
   --background-secondary-opacity: hsla(240, 9%, 9%, 0.9); /* --main-9 */
+  --background-overlay: hsla(0, 0%, 0%, 0.9);
 
   --accent: var(--accent-5);
   --border: var(--main-8);
   --button: var(--accent-8);
 
-  /* thread deletion toast */
-  --danger: hsl(340, 84%, 17%);
-  --danger-foreground: hsl(351, 100%, 99%);
+  --danger: var(--accent-6);
 }
 
 /* .dark {} */
@@ -154,7 +153,7 @@
   }
 
   .search-bar {
-    @apply paper flex gap-1 rounded-lg px-4 py-2;
+    @apply paper flex gap-1 rounded-lg px-4;
   }
 
   .search-bar_input {
@@ -164,7 +163,7 @@
   /* Cards */
 
   .user-card {
-    @apply flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:paper max-xs:p-4 xs:flex-row xs:items-center;
+    @apply flex items-center justify-between gap-4 rounded-lg paper p-4;
   }
 
   .user-card_avatar {
@@ -179,8 +178,12 @@
     @apply w-full rounded-lg p-5;
   }
 
+  .thread-card.reply {
+    @apply mt-2;
+  }
+
   .thread-card_bar {
-    @apply relative mt-2 w-0.5 grow rounded-full bg-border;
+    @apply mt-2 w-0 grow border-r border-r-border;
   }
 
   .pagination {
@@ -210,7 +213,7 @@
   }
 
   .form_input {
-    @apply paper p-4 border border-border text-main text-base-medium;
+    @apply paper p-4 border-border text-main text-base-medium;
   }
 
   .form_label {
@@ -230,7 +233,7 @@
   }
 
   .comment-form {
-    @apply mt-10 flex items-center gap-4 border-y border-y-border py-5 max-xs:flex-col !important;
+    @apply mt-10 flex items-center gap-4 border-y border-y-border py-5 max-sm:flex-col !important;
   }
 
   /* Tab */
@@ -249,6 +252,10 @@
 
   .tabs-content {
     @apply w-full text-main;
+  }
+
+  .main-thread-list {
+    @apply py-6 xs:pt-2 flex flex-col gap-20;
   }
 }
 

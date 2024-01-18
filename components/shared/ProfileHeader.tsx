@@ -38,7 +38,7 @@ const ProfileHeader = ({
             <h2 className="text-left text-heading3-bold text-heading-2">
               {name}
             </h2>
-            <p className="text-base-medium text-tertiary">@{username}</p>
+            <p className="mt-05 text-base-medium text-tertiary">@{username}</p>
           </div>
         </div>
         {accountId === authUserId && type !== 'community' && (
@@ -59,10 +59,12 @@ const ProfileHeader = ({
       </div>
 
       {bio ? (
-        <p className="mt-6 sm:ml-24 text-base-regular text-secondary">{bio}</p>
+        <p className="mt-3 sm:ml-24 text-small-medium leading-6 text-secondary">
+          {bio}
+        </p>
       ) : null}
 
-      <div className="mt-12 border-b border-b-border" />
+      <div className="mt-10 border-b border-b-border" />
     </div>
   );
 };

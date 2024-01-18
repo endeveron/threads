@@ -3,10 +3,18 @@
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { useToast } from '@/components/ui/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { deleteThread } from '@/lib/actions/thread.actions';
-import { ToastAction } from '@/components/ui/toast';
-import { Button } from '@/components/ui/button';
 
 type TDeleteThreadProps = {
   id: string;
@@ -28,39 +36,38 @@ const DeleteThread = ({
 
   if (!userId || !authorId || userId !== authorId) return null;
 
-  const toast = useToast();
-
   const handleDelete = async () => {
-    // await deleteThread(id, pathname);
-    // if (!parentId || !isReply) {
-    //   router.push('/');
-    // }
-
-    console.log('delete');
+    await deleteThread(id, pathname);
+    if (!parentId || !isReply) {
+      router.push('/');
+    }
   };
 
   return (
-    <Image
-      src="/assets/delete.svg"
-      alt="delte"
-      width={18}
-      height={18}
-      className="action-icon"
-      onClick={() =>
-        toast.toast({
-          variant: 'destructive',
-          title: 'Delete this thread?',
-          description:
-            'Once you delete, there is no going back. Please be certain.',
-          action: (
-            <Button onClick={handleDelete} className="button">
-              Delete
-            </Button>
-          ),
-          // duration: 6000000,
-        })
-      }
-    />
+    <AlertDialog>
+      <AlertDialogTrigger>
+        <Image
+          src="/assets/delete.svg"
+          alt="delte"
+          width={18}
+          height={18}
+          className="action-icon"
+        />
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete this
+            thread and all their descendants from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

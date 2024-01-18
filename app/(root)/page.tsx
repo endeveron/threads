@@ -18,8 +18,8 @@ const Home = async () => {
 
   return (
     <>
-      <h1 className="head-text text-left">Home</h1>
-      <section className="flex flex-col gap-10 text-secondary">
+      {/* <h1 className="head-text text-left">Home</h1> */}
+      <section className="main-thread-list">
         {threads.length === 0 ? (
           <p className="no-result">No threads found</p>
         ) : (
@@ -36,6 +36,7 @@ const Home = async () => {
               key={thread._id}
               userId={authUser?.id ?? null}
               userObjectId={user?._id ?? null}
+              navLink={`/thread/${thread._id}`}
             />
           ))
         )}

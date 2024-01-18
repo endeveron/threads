@@ -69,4 +69,6 @@ export type TThreadCardProps = {
   parentId: string | null;
   createdAt: string;
   isReply?: boolean;
+  path?: string;
+  navLink?: string;
 };

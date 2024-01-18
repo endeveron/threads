@@ -32,7 +32,7 @@ const Page = async ({ params }: TPageProps) => {
         bio={user.bio}
       />
 
-      <div className="mt-10">
+      <div className="mt-10 mb-6">
         <Tabs className="w-full" defaultValue="threads">
           <TabsList className="tabs-list">
             {profileTabs.map((tab) => (
