@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 
-import { Button } from '@/components/ui/button';
+import Button from '@/components/shared/Button';
 import {
   Form,
   FormControl,
@@ -74,7 +74,7 @@ const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
         />
 
         <div className="form_button-wrapper flex justify-center">
-          <Button size="lg" type="submit" className="button">
+          <Button size="lg" type="submit">
             Create Thread
           </Button>
         </div>

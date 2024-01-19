@@ -25,6 +25,7 @@ const Page = async ({ params }: TPageProps) => {
   // Fetch user data from db
   const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const communityDetails = await fetchCommunityDetails(params.id);
 

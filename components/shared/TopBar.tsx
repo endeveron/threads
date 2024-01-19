@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import Button from '@/components/shared/Button';
 import {
   OrganizationSwitcher,
   SignOutButton,
@@ -43,7 +43,7 @@ const TopBar = async () => {
 
         <SignedOut>
           <Link href="/sign-in">
-            <Button className="button px-6">Sign In</Button>
+            <Button className="px-6">Sign In</Button>
           </Link>
         </SignedOut>
       </div>

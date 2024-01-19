@@ -15,6 +15,7 @@ const Page = async (props: PageProps) => {
   // Fetch user data from db
   const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const userData = {
     id: authUser.id,
@@ -26,7 +27,7 @@ const Page = async (props: PageProps) => {
 
   return (
     <>
-      <h1 className="head-text">Edit profile</h1>
+      <h1 className="head-text">Edit User Profile</h1>
 
       <AccountProfile user={userData} btnTitle="Continue" />
     </>

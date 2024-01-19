@@ -21,6 +21,7 @@ const Page = async ({ searchParams }: PageProps) => {
   // Fetch user data from db
   const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const result = await fetchCommunities({
     searchQuery: searchParams.q,

@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 
 import AccountProfile from '@/components/forms/AccountProfile';
 import { fetchUser } from '@/lib/actions/user.actions';
-import { TUser } from '@/lib/types/user.types';
 
 interface PageProps {}
 
@@ -25,7 +24,7 @@ const Page = async (props: PageProps) => {
   };
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
+    <div className="mx-auto flex max-w-4xl flex-col justify-start p-4">
       <h1 className="head-text">Onboarding</h1>
       <p className="text-base-regular text-secondary">
         Complete your profile now, to use Threds.

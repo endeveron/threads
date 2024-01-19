@@ -1,9 +1,8 @@
 import { currentUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 
 import PostThread from '@/components/forms/PostThread';
 import { fetchUser } from '@/lib/actions/user.actions';
-import { TUser } from '@/lib/types/user.types';
+import { redirect } from 'next/navigation';
 
 const Page = async () => {
   // Get user auth data from clerk
@@ -13,6 +12,7 @@ const Page = async () => {
   // Fetch user data from db
   const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const userObjectIdStr = user._id.toString(); // Mongo ObjectId
 

@@ -15,7 +15,8 @@ const Page = async (props: PageProps) => {
 
   // Fetch user data from db
   const user = await fetchUser(authUser.id);
-  if (user && !user.onboarded) redirect('/onboarding');
+  if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   // Fetch all replies on the user threads
   const replies = await fetchActivity(user?._id);

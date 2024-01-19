@@ -25,6 +25,7 @@ const Page = async ({ params }: PageProps) => {
   // Fetch user data from db
   const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   const userId = authUser.id;
   const userObjectId = user._id;

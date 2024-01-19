@@ -1,12 +1,12 @@
-import Image from 'next/image';
 import { currentUser } from '@clerk/nextjs';
+import Image from 'next/image';
+import { redirect } from 'next/navigation';
 
 import ProfileHeader from '@/components/shared/ProfileHeader';
+import ThreadsTab from '@/components/shared/ThreadsTab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { profileTabs } from '@/constants';
 import { fetchUser } from '@/lib/actions/user.actions';
-import ThreadsTab from '@/components/shared/ThreadsTab';
-import { TUser } from '@/lib/types/user.types';
 
 type TPageProps = {
   params: {
@@ -22,6 +22,7 @@ const Page = async ({ params }: TPageProps) => {
   // Fetch user data from db
   const user = await fetchUser(params.id);
   if (!user) throw new Error('Error fetching user data.');
+  if (!user.onboarded) redirect('/onboarding');
 
   return (
     <section>

@@ -3,6 +3,8 @@ import { dark } from '@clerk/themes';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
+import { ThemeProvider } from '@/components/shared/ThemeProvider';
+
 import '../globals.css';
 
 export const metadata: Metadata = {
@@ -25,9 +27,11 @@ export default function RootLayout({
     >
       <html lang="en">
         <body className={`bg-background ${inter.className}`}>
-          <div className="w-full flex justify-center items-center min-h-screen">
-            {children}
-          </div>
+          <ThemeProvider attribute="class" defaultTheme="dark">
+            <main className="w-full min-h-screen flex justify-center items-center">
+              {children}
+            </main>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

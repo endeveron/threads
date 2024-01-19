@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { TUserCardProps } from '@/lib/types/user.types';
-import { Button } from '../ui/button';
+import Button from '@/components/shared/Button';
 import { SignedIn } from '@clerk/nextjs';
 
 const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
@@ -38,11 +38,7 @@ const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
       </div>
 
       <SignedIn>
-        <Button
-          size="sm"
-          className="button"
-          onClick={() => router.push(navigatePath + userId)}
-        >
+        <Button size="sm" onClick={() => router.push(navigatePath + userId)}>
           View
         </Button>
       </SignedIn>

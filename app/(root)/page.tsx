@@ -5,15 +5,18 @@ import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreads } from '@/lib/actions/thread.actions';
 import { fetchUser } from '@/lib/actions/user.actions';
 import { TUser } from '@/lib/types/user.types';
+import Spinner from '@/components/shared/Spinner';
 
 // Route '/' allowed for unauthenicated users
 const Home = async () => {
+  // Get user auth data from clerk
   const authUser = await currentUser();
   let user: TUser | undefined;
 
   if (authUser) {
+    // Fetch user data from db
     user = await fetchUser(authUser.id);
-    if (user && !user.onboarded) redirect('/onboarding');
+    if (!user?.onboarded) redirect('/onboarding');
   }
 
   const { threads, isNext } = await fetchThreads({});

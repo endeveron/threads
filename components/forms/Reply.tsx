@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/form';
 import { addCommentToThread } from '@/lib/actions/thread.actions';
 import { CommentValidation } from '@/lib/validations/thread';
-import { Button } from '../ui/button';
+import Button from '@/components/shared/Button';
 import { Input } from '../ui/input';
 import { useState } from 'react';
 
@@ -96,7 +96,7 @@ const Reply = ({ threadId, userImg, userObjectIdStr }: TCommentProps) => {
         <Button
           type="submit"
           disabled={!isFormValid}
-          className="button px-7 max-xs:mt-3 max-xs:w-full max-sm:px-10"
+          className="px-7 max-xs:mt-3 max-xs:w-full max-sm:px-10"
         >
           Reply
         </Button>

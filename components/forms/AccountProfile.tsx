@@ -7,7 +7,7 @@ import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as zod from 'zod';
 
-import { Button } from '@/components/ui/button';
+import Button from '@/components/shared/Button';
 import {
   Form,
   FormControl,
@@ -18,10 +18,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
 import { updateUser } from '@/lib/actions/user.actions';
 import { useUploadThing } from '@/lib/uploadthing';
-import { isBase64Image } from '@/lib/utils';
+import { cn, isBase64Image } from '@/lib/utils';
 import { UserValidation } from '@/lib/validations/user';
 
 type TAccountProfileProps = {
@@ -47,8 +46,8 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   const pathname = usePathname();
   const { startUpload } = useUploadThing('media');
 
+  const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [isFormDataChanged, setIsFormDataChanged] = useState(false);
 
   const form = useForm<zod.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
@@ -83,28 +82,8 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
     }
   };
 
-  const detectImageChange = (values: TFormValues) => {
-    const blob = values.image;
-    return isBase64Image(blob);
-  };
-
-  const onChange = (values: TFormValues) => {
-    setIsFormDataChanged(() => {
-      const isImageChanged = detectImageChange(values);
-      const isDataImmutable =
-        user.bio === values.bio.trim() &&
-        user.name === values.name.trim() &&
-        user.username === values.username.trim() &&
-        !isImageChanged;
-
-      return !isDataImmutable;
-    });
-  };
-
   const onSubmit = async (values: TFormValues) => {
-    if (!isFormDataChanged) return;
-
-    const isImageChanged = detectImageChange(values);
+    const isImageChanged = isBase64Image(values.image);
     if (isImageChanged) {
       const imgRes = await startUpload(files);
 
@@ -113,11 +92,12 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
       }
     }
     try {
+      setLoading(true);
       await updateUser({
         userId: user.id,
-        username: values.username,
-        name: values.name,
-        bio: values.bio,
+        username: values.username.trim(),
+        name: values.name.trim(),
+        bio: values.bio.trim(),
         image: values.image,
         path: pathname,
       });
@@ -129,14 +109,17 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
     } catch (err) {
       // TODO: Handle error
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Form {...form}>
       <form
-        className="form form-card mt-9"
-        onChange={() => onChange(form.getValues())}
+        className={cn('form form-card mt-9', {
+          inactive: loading,
+        })}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -214,8 +197,9 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
 
         <div className="form_button-wrapper flex justify-center">
           <Button
+            loading={loading}
             size="lg"
-            disabled={!isFormDataChanged}
+            disabled={!form.formState.isDirty}
             type="submit"
             className="button"
           >
