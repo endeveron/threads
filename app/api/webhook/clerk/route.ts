@@ -11,12 +11,13 @@ import { IncomingHttpHeaders } from 'http';
 
 import { NextResponse } from 'next/server';
 import {
-  addMemberToCommunity,
+  addUserToCommunity,
   createCommunity,
   deleteCommunity,
   removeUserFromCommunity,
   updateCommunityInfo,
 } from '@/lib/actions/community.actions';
+import logger from '@/lib/utils/logger';
 
 // Resource: https://clerk.com/docs/integration/webhooks#supported-events
 // Above document lists the supported events
@@ -116,17 +117,17 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/CreateOrganizationMembership
       // Show what evnt?.data sends from above resource
       const { organization, public_user_data } = evnt?.data;
-      console.log('created', evnt?.data);
+      logger.g('User successfully added to organization.', evnt?.data);
 
       // @ts-ignore
-      await addMemberToCommunity(organization.id, public_user_data.user_id);
+      await addUserToCommunity(public_user_data.user_id, organization.id);
 
       return NextResponse.json(
         { message: 'Invitation accepted' },
         { status: 201 }
       );
     } catch (err) {
-      console.log(err);
+      logger.r('Error adding user to organization', err);
 
       return NextResponse.json(
         { message: 'Internal Server Error' },
@@ -141,14 +142,14 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/DeleteOrganizationMembership
       // Show what evnt?.data sends from above resource
       const { organization, public_user_data } = evnt?.data;
-      console.log('removed', evnt?.data);
+      logger.g('User successfully removed from organization.', evnt?.data);
 
       // @ts-ignore
       await removeUserFromCommunity(public_user_data.user_id, organization.id);
 
       return NextResponse.json({ message: 'Member removed' }, { status: 201 });
     } catch (err) {
-      console.log(err);
+      logger.r('Error removing user from organization', err);
 
       return NextResponse.json(
         { message: 'Internal Server Error' },
@@ -163,18 +164,18 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/UpdateOrganization
       // Show what evnt?.data sends from above resource
       const { id, logo_url, name, slug } = evnt?.data;
-      console.log('updated', evnt?.data);
+      logger.g('Community successfully updated.', evnt?.data);
 
       await updateCommunityInfo({
-        id: id as string,
-        name: name as string,
-        username: slug as string,
-        image: logo_url as string,
+        id: id.toString(),
+        name: name.toString(),
+        username: slug.toString(),
+        image: logo_url.toString(),
       });
 
       return NextResponse.json({ message: 'Member removed' }, { status: 201 });
     } catch (err) {
-      console.log(err);
+      logger.r('Error updating organization', err);
 
       return NextResponse.json(
         { message: 'Internal Server Error' },
@@ -189,17 +190,17 @@ export const POST = async (request: Request) => {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/DeleteOrganization
       // Show what evnt?.data sends from above resource
       const { id } = evnt?.data;
-      console.log('deleted', evnt?.data);
+      const communityId = id.toString();
+      logger.g('Community successfully deleted.', evnt?.data);
 
-      // @ts-ignore
-      await deleteCommunity(id);
+      await deleteCommunity(communityId);
 
       return NextResponse.json(
         { message: 'Organization deleted' },
         { status: 201 }
       );
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      logger.r('Error deleding organization', err);
 
       return NextResponse.json(
         { message: 'Internal Server Error' },

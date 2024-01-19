@@ -14,13 +14,14 @@ interface PageProps {
   };
 }
 
+// Route '/search' allowed for unauthenicated users
 const Page = async ({ searchParams }: PageProps) => {
   const authUser = await currentUser();
-  let user: TUser;
+  let user: TUser | undefined;
 
   if (authUser) {
     user = await fetchUser(authUser.id);
-    if (!user) throw new Error('Error fetching user data.');
+    if (user && !user.onboarded) redirect('/onboarding');
   }
 
   const result = await fetchUsers({

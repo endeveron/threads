@@ -14,12 +14,13 @@ interface PageProps {
 }
 
 const Page = async ({ searchParams }: PageProps) => {
+  // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const user: TUser = await fetchUser(authUser.id);
+  // Fetch user data from db
+  const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
-  if (!user.onboarded) redirect('/onboarding');
 
   const result = await fetchCommunities({
     searchQuery: searchParams.q,

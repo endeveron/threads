@@ -15,10 +15,12 @@ type TPageProps = {
 };
 
 const Page = async ({ params }: TPageProps) => {
+  // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const user: TUser = await fetchUser(params.id);
+  // Fetch user data from db
+  const user = await fetchUser(params.id);
   if (!user) throw new Error('Error fetching user data.');
 
   return (

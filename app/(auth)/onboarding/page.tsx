@@ -8,10 +8,12 @@ import { TUser } from '@/lib/types/user.types';
 interface PageProps {}
 
 const Page = async (props: PageProps) => {
+  // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const user: TUser = await fetchUser(authUser.id);
+  // Fetch user data from db
+  const user = await fetchUser(authUser.id);
   if (user?.onboarded) redirect('/');
 
   const userData = {

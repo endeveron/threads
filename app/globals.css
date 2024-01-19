@@ -43,7 +43,7 @@
   --background-overlay: hsla(0, 0%, 0%, 0.9);
   --background-opac: hsla(240, 9%, 9%, 0.6);
 
-  --accent: var(--accent-5);
+  --accent: var(--accent-6);
   --border: var(--main-8);
   --button: var(--accent-8);
   --button-disabled: var(--main-7);
@@ -245,11 +245,11 @@
   }
 
   .form_image-label {
-    @apply flex h-24 w-24 items-center justify-center rounded-full bg-border !important;
+    @apply flex items-center justify-center rounded-full bg-border !important;
   }
 
   .form_image {
-    @apply h-24 w-24 max-h-24 max-w-24 rounded-full object-contain;
+    @apply h-24 w-24 min-h-24 max-w-24 rounded-full object-contain;
   }
 
   .form_image-input {

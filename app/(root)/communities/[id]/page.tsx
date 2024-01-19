@@ -18,13 +18,13 @@ type TPageProps = {
 };
 
 const Page = async ({ params }: TPageProps) => {
-  // Authenticated user
+  // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const user: TUser = await fetchUser(authUser.id);
+  // Fetch user data from db
+  const user = await fetchUser(authUser.id);
   if (!user) throw new Error('Error fetching user data.');
-  if (!user.onboarded) redirect('/onboarding');
 
   const communityDetails = await fetchCommunityDetails(params.id);
 
@@ -60,7 +60,7 @@ const Page = async ({ params }: TPageProps) => {
                 <p className="max-sm:hidden">{tab.label}</p>
 
                 {tab.label === 'Threads' && (
-                  <p className="ml-1 font-semibold text-primary-500">
+                  <p className="ml-1 font-semibold text-accent">
                     {communityDetails.threads.length}
                   </p>
                 )}
@@ -78,7 +78,7 @@ const Page = async ({ params }: TPageProps) => {
           </TabsContent>
 
           <TabsContent value="members" className="tabs-content">
-            <section className="mt-9 flex flex-col gap-9">
+            <section className="mt-9 grid sm:grid-cols-2 gap-5">
               {communityDetails.members.map((member: any) => (
                 <UserCard
                   key={member.id}

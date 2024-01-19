@@ -7,7 +7,11 @@ import CommunityModel from '@/lib/models/community.model';
 import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
-import { TFetchUsersParams, TUpdateUserParams } from '@/lib/types/user.types';
+import {
+  TFetchUsersParams,
+  TUpdateUserParams,
+  TUser,
+} from '@/lib/types/user.types';
 
 /**
  * Updates a user's information in a database and revalidates the cache if the path is '/profile/edit'.
@@ -61,7 +65,7 @@ export const updateUser = async ({
  *
  * @returns the user object.
  */
-export const fetchUser = async (userId: string) => {
+export const fetchUser = async (userId: string): Promise<TUser | undefined> => {
   try {
     connectToDB();
 
@@ -92,7 +96,7 @@ export const fetchUsers = async ({
   pageSize = 20,
   sortBy = 'desc',
   userId, // clerk user.id
-}: TFetchUsersParams) => {
+}: TFetchUsersParams): Promise<{ users: TUser[]; isNext: boolean }> => {
   try {
     connectToDB();
 
@@ -210,8 +214,6 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
     throw new Error(`Failed to fetch user activity: ${err.message}`);
   }
 };
-
-// TODO: Implement the fetching user replies
 
 /**
  * Retrieves all the threads that a user has replied to, excluding their own threads, and populates the author information for each reply.

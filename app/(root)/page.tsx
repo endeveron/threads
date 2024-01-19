@@ -1,24 +1,26 @@
 import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreads } from '@/lib/actions/thread.actions';
 import { fetchUser } from '@/lib/actions/user.actions';
 import { TUser } from '@/lib/types/user.types';
 
+// Route '/' allowed for unauthenicated users
 const Home = async () => {
   const authUser = await currentUser();
   let user: TUser | undefined;
 
   if (authUser) {
     user = await fetchUser(authUser.id);
-    if (!user) throw new Error('Error fetching user data.');
+    if (user && !user.onboarded) redirect('/onboarding');
   }
 
   const { threads, isNext } = await fetchThreads({});
 
   return (
     <section className="main-thread-list">
-      {threads.length === 0 ? (
+      {threads?.length === 0 ? (
         <p className="no-result">No threads found</p>
       ) : (
         threads.map((thread) => (

@@ -9,15 +9,16 @@ import { TUser } from '@/lib/types/user.types';
 interface PageProps {}
 
 const Page = async (props: PageProps) => {
+  // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const user: TUser = await fetchUser(authUser.id);
-  if (!user) throw new Error('Error fetching user data.');
-  if (!user.onboarded) redirect('/onboarding');
+  // Fetch user data from db
+  const user = await fetchUser(authUser.id);
+  if (user && !user.onboarded) redirect('/onboarding');
 
   // Fetch all replies on the user threads
-  const replies = await fetchActivity(user._id);
+  const replies = await fetchActivity(user?._id);
 
   return (
     <>

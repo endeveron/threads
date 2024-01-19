@@ -209,10 +209,7 @@ export async function fetchCommunities({
  *
  * @returns the community object after adding a member to it.
  */
-export async function addMemberToCommunity(
-  communityId: string,
-  memberId: string
-) {
+export async function addUserToCommunity(userId: string, communityId: string) {
   try {
     connectToDB();
 
@@ -224,7 +221,7 @@ export async function addMemberToCommunity(
     }
 
     // Find the user by their unique id
-    const user = await UserModel.findOne({ id: memberId });
+    const user = await UserModel.findOne({ id: userId });
 
     if (!user) {
       throw new Error('User not found');
@@ -350,17 +347,19 @@ export async function deleteCommunity(id: string) {
     if (!communityResult?.length) throw new Error('Community not found');
 
     const community = communityResult[0];
-    const communityId = community._id;
+    const communityObjectId = community._id;
 
     // Delete all threads associated with the community
-    await ThreadModel.deleteMany({ community: communityId });
+    await ThreadModel.deleteMany({ community: communityObjectId });
 
     // Find all users who are part of the community
-    const communityUsers = await UserModel.find({ communities: communityId });
+    const communityUsers = await UserModel.find({
+      communities: communityObjectId,
+    });
 
     // Remove the community from the 'communities' array for each user
     const updateUserPromises = communityUsers.map((user) => {
-      user.communities.pull(communityId);
+      user.communities.pull(communityObjectId);
       return user.save();
     });
 
