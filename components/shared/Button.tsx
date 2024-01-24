@@ -19,13 +19,17 @@ const Button = React.forwardRef<HTMLButtonElement, TButtonProps>(
   ) => {
     return (
       <ShadcnButton
-        className={cn(buttonVariants({ variant, size, className }), 'button', {
-          loading: loading,
-        })}
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          'button transition-opacity',
+          {
+            loading: loading,
+          }
+        )}
         ref={ref}
         {...props}
       >
-        {loading ? 'Loading...' : children}
+        {children}
       </ShadcnButton>
     );
   }

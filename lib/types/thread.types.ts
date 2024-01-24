@@ -12,7 +12,7 @@ type TThreadParams = {
 
 type TThreadActionBaseParams = {
   threadId: string;
-  userObjectIdStr: string;
+  userObjectId: string;
   path: string;
 };
 
@@ -58,7 +58,7 @@ export type TThreadCardReply = {
 export type TThreadCardProps = {
   id: string;
   userId: string | null;
-  userObjectId: ObjectId | null;
+  userObjectId: string | null;
   author: TThreadAuthor;
   community: {
     id: string;

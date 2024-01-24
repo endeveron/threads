@@ -1,27 +1,28 @@
 'use client';
 
+import { SignedIn } from '@clerk/nextjs';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { TUserCardProps } from '@/lib/types/user.types';
 import Button from '@/components/shared/Button';
-import { SignedIn } from '@clerk/nextjs';
+import { TUserCardProps } from '@/lib/types/user.types';
 
-const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
+// The card can handle either user data or community data
+const UserCard = ({ id, name, username, image, type }: TUserCardProps) => {
   const router = useRouter();
-  let navigatePath: string;
+  let navigatePath: string | null = null;
 
   switch (type) {
     case 'user':
       navigatePath = '/profile/';
       break;
     case 'community':
-      navigatePath = '/communities/';
+      navigatePath = '/community/';
   }
 
   return (
     <article className="user-card">
-      <div className="user-card_avatar">
+      <div className="user-card_content">
         <div className="relative h-12 w-12">
           <Image
             src={image}
@@ -38,7 +39,7 @@ const UserCard = ({ userId, name, username, image, type }: TUserCardProps) => {
       </div>
 
       <SignedIn>
-        <Button size="sm" onClick={() => router.push(navigatePath + userId)}>
+        <Button size="sm" onClick={() => router.push(navigatePath + id)}>
           View
         </Button>
       </SignedIn>

@@ -26,8 +26,9 @@ import { UserValidation } from '@/lib/validations/user';
 type TAccountProfileProps = {
   user: {
     id: string;
-    username: string;
     name: string;
+    username: string;
+    email: string;
     image: string;
     bio?: string;
   };
@@ -83,6 +84,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   };
 
   const onSubmit = async (values: TFormValues) => {
+    setLoading(true);
     const isImageChanged = isBase64Image(values.image);
     if (isImageChanged) {
       const imgRes = await startUpload(files);
@@ -92,11 +94,11 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
       }
     }
     try {
-      setLoading(true);
       await updateUser({
         userId: user.id,
         username: values.username.trim(),
         name: values.name.trim(),
+        email: user.email,
         bio: values.bio.trim(),
         image: values.image,
         path: pathname,

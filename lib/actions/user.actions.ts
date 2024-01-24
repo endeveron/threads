@@ -11,12 +11,25 @@ import {
   TFetchUsersParams,
   TUpdateUserParams,
   TUser,
+  TUserAuthData,
 } from '@/lib/types/user.types';
+
+// export const getUserAuthDataById = async (
+//   userId: string
+// ): Promise<TUserAuthData> => {
+//   const user = await clerkClient.users.getUser(userId);
+//   const userEmailAdresses = user.emailAddresses;
+//   const email = userEmailAdresses[0];
+//   return {
+//     email,
+//   };
+// };
 
 /**
  * Updates a user's information in a database and revalidates the cache if the path is '/profile/edit'.
  *
  * @param {string} params.bio biography of the user.
+ * @param {string} params.email email of the user.
  * @param {string} params.image user avatar image path.
  * @param {string} params.name user name.
  * @param {string} params.path pathname to revalidate cached data.
@@ -25,6 +38,7 @@ import {
  */
 export const updateUser = async ({
   bio,
+  email,
   image,
   name,
   path,
@@ -38,6 +52,7 @@ export const updateUser = async ({
       { id: userId },
       {
         bio,
+        email,
         image,
         name,
         onboarded: true,
@@ -54,6 +69,7 @@ export const updateUser = async ({
       revalidatePath(path);
     }
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to create/update user: ${err.message}`);
   }
 };
@@ -75,6 +91,7 @@ export const fetchUser = async (userId: string): Promise<TUser | undefined> => {
       select: '_id id image name',
     });
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch user: ${err.message}`);
   }
 };
@@ -136,6 +153,7 @@ export const fetchUsers = async ({
 
     return { users, isNext };
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch users: ${err.message}`);
   }
 };
@@ -176,6 +194,7 @@ export const fetchUserThreads = async (userId: string) => {
 
     return await threadsQuery.exec();
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch user threads: ${err.message}`);
   }
 };
@@ -211,6 +230,7 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
 
     return await activityQuery.exec();
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch user activity: ${err.message}`);
   }
 };
@@ -246,6 +266,7 @@ export const fetchUserReplies = async (userId: string) => {
 
     return await repliesQuery.exec();
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch user activity: ${err.message}`);
   }
 };

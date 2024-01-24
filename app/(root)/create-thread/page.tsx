@@ -8,19 +8,20 @@ const Page = async () => {
   // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
+  const authUserId = authUser.id.toString();
 
   // Fetch user data from db
-  const user = await fetchUser(authUser.id);
+  const user = await fetchUser(authUserId);
   if (!user) throw new Error('Error fetching user data.');
   if (!user.onboarded) redirect('/onboarding');
 
-  const userObjectIdStr = user._id.toString(); // Mongo ObjectId
+  const userObjectId = user._id.toString();
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col justify-start">
       <h1 className="head-text">Create a New Thread</h1>
 
-      <PostThread userObjectIdStr={userObjectIdStr} />
+      <PostThread userObjectId={userObjectId} />
     </div>
   );
 };

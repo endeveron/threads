@@ -19,15 +19,19 @@ const Page = async ({ searchParams }: PageProps) => {
   // Get user auth data from clerk
   const authUser = await currentUser();
   let user: TUser | undefined;
+  let authUserId: string | null = null;
+  let userObjectId: string | null = null;
 
   if (authUser) {
     // Fetch user data from db
-    user = await fetchUser(authUser.id);
+    authUserId = authUser.id.toString();
+    user = await fetchUser(authUserId);
+    if (user) userObjectId = user._id.toString();
     if (!user?.onboarded) redirect('/onboarding');
   }
 
   const result = await fetchUsers({
-    userId: authUser?.id, // Clerk user id
+    userId: authUserId, // Clerk user id
     searchQuery: searchParams.q,
     pageNumber: searchParams?.page ? +searchParams.page : 1,
     pageSize: 25,
@@ -45,7 +49,7 @@ const Page = async ({ searchParams }: PageProps) => {
             {result.users.map((user) => (
               <UserCard
                 key={user.id}
-                userId={user.id}
+                id={user.id}
                 name={user.name}
                 username={user.username}
                 image={user.image}

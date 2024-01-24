@@ -10,16 +10,16 @@ import DeleteThread from '@/components/forms/DeleteThread';
 
 const ThreadCard = ({
   id,
-  author,
-  community,
+  author, // if accountType === 'user'
+  community, // if accountType === 'community'
   content,
   replies,
   likes,
   parentId,
   isReply,
   createdAt,
-  userId,
-  userObjectId,
+  userId, // Clerk user.id
+  userObjectId, // MongoDb user._id: string
   disableTextLink,
 }: TThreadCardProps) => {
   const createReplyImageSet = (replies: TThreadCardReply[]): string[] => {
@@ -96,7 +96,7 @@ const ThreadCard = ({
                 <div className="thread-card_actions flex gap-7 mr-3">
                   <LikeButton
                     threadId={id.toString()}
-                    userObjectIdStr={userObjectId?.toString()}
+                    userObjectId={userObjectId || ''}
                     likes={likes}
                   />
                   <Link href={`/thread/${id}`}>
@@ -135,7 +135,7 @@ const ThreadCard = ({
                   </span>
                   {community && (
                     <Link
-                      href={`/communities/${community.id}`}
+                      href={`/community/${community.id}`}
                       className="flex items-center"
                     >
                       <Image
@@ -157,7 +157,7 @@ const ThreadCard = ({
         </div>
 
         {/* Replies */}
-        {replyImages.length > 0 ? (
+        {replyImages.length > 0 && (
           <Link href={`/thread/${id}`}>
             <div className="thread-card_replies flex items-center pl-1.5 mt-2">
               {replyImages.map((image, index) => (
@@ -177,7 +177,7 @@ const ThreadCard = ({
               </p>
             </div>
           </Link>
-        ) : null}
+        )}
       </div>
     </article>
   );

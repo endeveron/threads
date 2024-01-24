@@ -14,7 +14,7 @@ function CommunityCard({
   return (
     <article className="community-card paper">
       <div className="flex flex-wrap items-center gap-5">
-        <Link href={`/communities/${id}`} className="relative h-12 w-12">
+        <Link href={`/community/${id}`} className="relative h-12 w-12">
           <Image
             src={image}
             alt="community_logo"
@@ -24,7 +24,7 @@ function CommunityCard({
         </Link>
 
         <div>
-          <Link href={`/communities/${id}`}>
+          <Link href={`/community/${id}`}>
             <h4 className="text-base-semibold text-main">{name}</h4>
           </Link>
           <p className="text-small-medium text-tertiary">@{username}</p>
@@ -34,7 +34,7 @@ function CommunityCard({
       <p className="mt-5 text-subtle-medium text-secondary">{bio}</p>
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-5">
-        <Link href={`/communities/${id}`} className="link-button--small">
+        <Link href={`/community/${id}`} className="link-button--small">
           View
         </Link>
 

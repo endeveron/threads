@@ -1,6 +1,7 @@
+import { ObjectId } from 'mongoose';
+
 import { TThread } from '@/lib/types/thread.types';
 import { TUser } from '@/lib/types/user.types';
-import { ObjectId } from 'mongoose';
 
 export type TCommunity = {
   _id: ObjectId;
@@ -11,7 +12,28 @@ export type TCommunity = {
   createdBy: ObjectId;
   threads: TThread[];
   members: TUser[];
+  requests: TUser[];
   bio?: string;
+};
+
+export type TCommunityDetailsItem = {
+  id: string;
+  image: string;
+  name: string;
+  username: string;
+};
+
+export type TCommunityDetailsRequestItem = TCommunityDetailsItem & {
+  email: string;
+};
+
+export type TCommunityDetails = Omit<
+  TCommunity,
+  'createdBy' | 'members' | 'requests'
+> & {
+  createdBy: TUser;
+  members: TCommunityDetailsItem[];
+  requests: TCommunityDetailsRequestItem[];
 };
 
 export type TCreateCommunityParams = {
@@ -39,4 +61,22 @@ export type TCommunityCardProps = {
   members: {
     image: string;
   }[];
+};
+
+export type TProfileHeaderCommunity = {
+  id: string;
+  creatorId: string;
+  isJoinAllowed: boolean;
+};
+
+export type TRequestJoinCommunityParams = {
+  communityId: string;
+  userObjectId: string;
+  path: string;
+};
+
+export type TAcceptJoinCommunityParams = {
+  userId: string;
+  communityId: string;
+  path: string;
 };

@@ -37,7 +37,7 @@ type TThreadsTabContent = {
 type TThreadsTabProps = {
   id: string;
   userId: string;
-  userObjectId: ObjectId;
+  userObjectId: string;
   accountType: TAccountType;
 };
 

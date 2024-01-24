@@ -39,7 +39,7 @@ const SearchBar = ({ routeType }: SearchbarProps) => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder={`${
-          routeType !== 'search' ? 'Search communities' : 'Search creators'
+          routeType !== 'search' ? 'Search community' : 'Search creators'
         }`}
         className="search-bar_input"
       />

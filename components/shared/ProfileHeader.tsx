@@ -1,24 +1,31 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+
+import JoinCommunity from '@/components/shared/JoinCommunity';
+import { TProfileHeaderCommunity } from '@/lib/types/community.types';
+import Test from '@/components/shared/Test';
 
 interface ProfileHeaderProps {
-  accountId: string;
   authUserId: string;
+  authUserObjectId: string;
   name: string;
   username: string;
   imgUrl: string;
+  communityId?: string;
   bio?: string;
-  type?: 'user' | 'community';
+  userId?: string;
+  community?: TProfileHeaderCommunity;
 }
 
 const ProfileHeader = ({
-  accountId,
   authUserId,
+  authUserObjectId,
   name,
   username,
   imgUrl,
   bio,
-  type,
+  userId, // for profile
+  community, // for community
 }: ProfileHeaderProps) => {
   return (
     <div className="profile-header flex w-full flex-col justify-start">
@@ -41,7 +48,9 @@ const ProfileHeader = ({
             <p className="mt-05 text-base-medium text-tertiary">@{username}</p>
           </div>
         </div>
-        {accountId === authUserId && type !== 'community' && (
+
+        {/* Only account owner can edit */}
+        {userId === authUserId && (
           <Link href="/profile/edit">
             <div className="paper flex cursor-pointer gap-3 rounded-lg px-4 py-2">
               <Image
@@ -58,13 +67,20 @@ const ProfileHeader = ({
             </div>
           </Link>
         )}
+
+        {community && community.isJoinAllowed && (
+          <JoinCommunity
+            communityId={community.id}
+            userObjectId={authUserObjectId}
+          />
+        )}
       </div>
 
-      {bio ? (
+      {bio && (
         <p className="mt-6 sm:mt-2 sm:ml-24 text-small-medium leading-6 text-secondary">
           {bio}
         </p>
-      ) : null}
+      )}
 
       <div className="mt-10 border-b border-b-border" />
     </div>

@@ -17,9 +17,10 @@ const Page = async ({ searchParams }: PageProps) => {
   // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
+  const authUserId = authUser.id.toString();
 
   // Fetch user data from db
-  const user = await fetchUser(authUser.id);
+  const user = await fetchUser(authUserId);
   if (!user) throw new Error('Error fetching user data.');
   if (!user.onboarded) redirect('/onboarding');
 
@@ -31,14 +32,14 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <>
-      <Searchbar routeType="communities" />
+      <Searchbar routeType="community" />
 
       <section className="mt-8">
-        {result.communities.length === 0 ? (
+        {result?.communities.length === 0 ? (
           <p className="no-result">No Result</p>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2">
-            {result.communities.map((community) => (
+            {result?.communities.map((community) => (
               <CommunityCard
                 key={community.id}
                 id={community.id}

@@ -37,6 +37,12 @@ const communitySchema = new Schema<TCommunity>({
       ref: 'User',
     },
   ],
+  requests: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
 });
 
 const CommunityModel = models.Community || model('Community', communitySchema);

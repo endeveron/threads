@@ -18,17 +18,21 @@ const Page = async ({ params }: TPageProps) => {
   // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
+  const authUserId = authUser.id.toString();
 
   // Fetch user data from db
-  const user = await fetchUser(params.id);
+  const userId = params.id;
+  const user = await fetchUser(userId);
   if (!user) throw new Error('Error fetching user data.');
   if (!user.onboarded) redirect('/onboarding');
+  const userObjectId = user._id.toString();
 
   return (
     <section>
       <ProfileHeader
-        accountId={user.id}
-        authUserId={authUser.id}
+        userId={userId}
+        authUserId={authUserId}
+        authUserObjectId={userObjectId}
         name={user.name}
         username={user.username}
         imgUrl={user.image}
@@ -65,8 +69,8 @@ const Page = async ({ params }: TPageProps) => {
 
           <TabsContent value="threads" className="tabs-content">
             <ThreadsTab
-              userId={authUser.id}
-              userObjectId={user._id}
+              userId={authUserId}
+              userObjectId={userObjectId}
               id={user.id} // user ClerkId
               accountType="user"
             />

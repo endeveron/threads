@@ -19,10 +19,10 @@ import { createThread } from '@/lib/actions/thread.actions';
 import { ThreadValidation } from '@/lib/validations/thread';
 
 interface PostThreadProps {
-  userObjectIdStr: string; // Mongo ObjectId
+  userObjectId: string; // Mongo ObjectId
 }
 
-const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
+const PostThread = ({ userObjectId }: PostThreadProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { organization } = useOrganization();
@@ -31,7 +31,7 @@ const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
     resolver: zodResolver(ThreadValidation),
     defaultValues: {
       thread: '',
-      userId: userObjectIdStr,
+      userId: userObjectId,
     },
   });
 
@@ -39,14 +39,14 @@ const PostThread = ({ userObjectIdStr }: PostThreadProps) => {
     try {
       await createThread({
         text: values.thread,
-        author: userObjectIdStr,
+        author: userObjectId,
         path: pathname,
         communityId: organization ? organization.id : null,
       });
 
       router.push('/');
     } catch (err) {
-      // TODO: Handle error
+      // TODO: Handle Error
       console.error(err);
     }
   };

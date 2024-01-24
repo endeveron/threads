@@ -27,7 +27,7 @@ export const mainMenu: TMainMenuLink[] = [
   },
   {
     imgURL: '/assets/community.svg',
-    route: '/communities',
+    route: '/community',
     label: 'Communities',
   },
   {
@@ -37,19 +37,22 @@ export const mainMenu: TMainMenuLink[] = [
   },
 ];
 
-type TTab = {
-  value: string;
+export type TProfileTabValue = 'threads' | 'replies' | 'tagged';
+export type TCommunityTabValue = 'threads' | 'members' | 'requests';
+
+export type TTab<TabValue> = {
+  value: TabValue;
   label: string;
   icon: string;
 };
 
-export const profileTabs: TTab[] = [
+export const profileTabs: TTab<TProfileTabValue>[] = [
   { value: 'threads', label: 'Threads', icon: '/assets/reply.svg' },
   { value: 'replies', label: 'Replies', icon: '/assets/replies.svg' },
   { value: 'tagged', label: 'Tagged', icon: '/assets/tag.svg' },
 ];
 
-export const communityTabs: TTab[] = [
+export const communityTabs: TTab<TCommunityTabValue>[] = [
   { value: 'threads', label: 'Threads', icon: '/assets/reply.svg' },
   { value: 'members', label: 'Members', icon: '/assets/members.svg' },
   { value: 'requests', label: 'Requests', icon: '/assets/request.svg' },

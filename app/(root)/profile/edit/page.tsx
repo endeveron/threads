@@ -11,18 +11,20 @@ const Page = async (props: PageProps) => {
   // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
+  const authUserId = authUser.id.toString();
 
   // Fetch user data from db
-  const user = await fetchUser(authUser.id);
+  const user = await fetchUser(authUserId);
   if (!user) throw new Error('Error fetching user data.');
   if (!user.onboarded) redirect('/onboarding');
 
   const userData = {
-    id: authUser.id,
+    id: authUserId,
     username: user?.username || authUser.username || '',
     name: user?.name || authUser.firstName || '',
     bio: user?.bio || '',
     image: user?.image || authUser.imageUrl,
+    email: user?.email || authUser.emailAddresses[0].emailAddress,
   };
 
   return (

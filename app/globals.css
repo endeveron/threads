@@ -77,8 +77,12 @@
     @apply bg-button-disabled;
   }
 
+  .button.loading {
+    @apply opacity-50 cursor-wait;
+  }
+
   .link-button--small {
-    @apply bg-button h-9 rounded-md px-7 py-2 text-small-regular;
+    @apply bg-button rounded-md px-7 py-2 text-small-regular;
   }
 
   .action-icon {
@@ -175,10 +179,14 @@
   /* Cards */
 
   .user-card {
-    @apply flex items-center justify-between gap-4 rounded-lg paper p-4;
+    @apply flex items-center justify-between gap-4 rounded-lg paper p-4 transition-opacity;
   }
 
-  .user-card_avatar {
+  .user-card.loading {
+    @apply opacity-50;
+  }
+
+  .user-card_content {
     @apply flex flex-1 items-start justify-start gap-3 xs:items-center;
   }
 

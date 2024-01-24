@@ -21,14 +21,13 @@ const Page = async ({ params }: PageProps) => {
   // Get user auth data from clerk
   const authUser = await currentUser();
   if (!authUser) return null;
+  const authUserId = authUser.id.toString();
 
   // Fetch user data from db
-  const user = await fetchUser(authUser.id);
+  const user = await fetchUser(authUserId);
   if (!user) throw new Error('Error fetching user data.');
   if (!user.onboarded) redirect('/onboarding');
-
-  const userId = authUser.id;
-  const userObjectId = user._id;
+  const userObjectId = user._id.toString();
 
   // Fetch the main thread data from db
   const thread = await fetchThreadById(params.id);
@@ -44,7 +43,7 @@ const Page = async ({ params }: PageProps) => {
         likes={thread.likes}
         parentId={thread.parentId}
         createdAt={thread.createdAt}
-        userId={userId} // Clerk user id
+        userId={authUserId}
         userObjectId={userObjectId}
         disableTextLink
       />
@@ -53,7 +52,7 @@ const Page = async ({ params }: PageProps) => {
         <Reply
           threadId={params.id}
           userImg={user.image}
-          userObjectIdStr={userObjectId?.toString()}
+          userObjectId={userObjectId}
         />
       </div>
 
@@ -69,7 +68,7 @@ const Page = async ({ params }: PageProps) => {
             parentId={reply.parentId}
             createdAt={reply.createdAt}
             isReply
-            userId={userId} // Clerk user id
+            userId={authUserId} // Clerk user id
             userObjectId={userObjectId}
             key={reply._id}
           />

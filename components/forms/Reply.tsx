@@ -26,10 +26,10 @@ type TFormValues = {
 type TCommentProps = {
   threadId: string;
   userImg: string;
-  userObjectIdStr: string;
+  userObjectId: string;
 };
 
-const Reply = ({ threadId, userImg, userObjectIdStr }: TCommentProps) => {
+const Reply = ({ threadId, userImg, userObjectId }: TCommentProps) => {
   const pathname = usePathname();
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -52,7 +52,7 @@ const Reply = ({ threadId, userImg, userObjectIdStr }: TCommentProps) => {
     await addCommentToThread({
       threadId: threadId,
       commentText: values.thread,
-      userObjectIdStr: userObjectIdStr,
+      userObjectId: userObjectId,
       path: pathname,
     });
 

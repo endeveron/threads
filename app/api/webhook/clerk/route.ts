@@ -95,7 +95,7 @@ export const POST = async (request: Request) => {
   if (eventType === 'organizationInvitation.created') {
     try {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Invitations#operation/CreateOrganizationInvitation
-      console.log('Invitation created', evnt?.data);
+      logger.g('Invitation created', evnt?.data);
 
       return NextResponse.json(
         { message: 'Invitation created' },

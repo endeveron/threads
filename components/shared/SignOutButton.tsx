@@ -24,9 +24,7 @@ const SignOutButton = ({ callbackRoute = '/', label }: SignOutButtonProps) => {
               height={24}
               sizes=""
             />
-            {!!label ? (
-              <p className="text-secondary max-lg:hidden">{label}</p>
-            ) : null}
+            {!!label && <p className="text-secondary max-lg:hidden">{label}</p>}
           </div>
         </ClerkSignOutButton>
       </SignedIn>

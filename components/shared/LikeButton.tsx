@@ -9,15 +9,15 @@ import { useEffect, useState } from 'react';
 type TLikeButtonProps = {
   threadId: string;
   likes: string[];
-  userObjectIdStr?: string;
+  userObjectId?: string;
 };
 
-const LikeButton = ({ threadId, userObjectIdStr, likes }: TLikeButtonProps) => {
-  const [isLiked, setIsLiked] = useState(likes.includes(userObjectIdStr ?? ''));
+const LikeButton = ({ threadId, userObjectId, likes }: TLikeButtonProps) => {
+  const [isLiked, setIsLiked] = useState(likes.includes(userObjectId ?? ''));
 
   const pathname = usePathname();
 
-  if (!userObjectIdStr) return null;
+  if (!userObjectId) return null;
 
   const toggleStatus = () => {
     setIsLiked((prev) => !prev);
@@ -34,7 +34,7 @@ const LikeButton = ({ threadId, userObjectIdStr, likes }: TLikeButtonProps) => {
       // 'use server';
       const result = await reactToThread({
         threadId,
-        userObjectIdStr,
+        userObjectId,
         path: pathname,
       });
 
@@ -44,13 +44,14 @@ const LikeButton = ({ threadId, userObjectIdStr, likes }: TLikeButtonProps) => {
         );
       }
     } catch (err) {
+      // TODO: Handle Error
       console.error(err);
       throw new Error('Error updating user reaction.');
     }
   };
 
   useEffect(() => {
-    setIsLiked(likes.includes(userObjectIdStr ?? ''));
+    setIsLiked(likes.includes(userObjectId ?? ''));
   }, [likes]);
 
   return (

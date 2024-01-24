@@ -1,3 +1,4 @@
+import { EmailAddress } from '@clerk/nextjs/server';
 import { ObjectId, SortOrder } from 'mongoose';
 
 export type TUser = {
@@ -5,6 +6,7 @@ export type TUser = {
   id: string;
   name: string;
   username: string;
+  email: string;
   image: string;
   threads: [];
   onboarded: boolean;
@@ -13,7 +15,7 @@ export type TUser = {
 };
 
 export type TFetchUsersParams = {
-  userId?: string;
+  userId: string | null;
   searchQuery?: string;
   sortBy?: SortOrder;
   pageNumber?: number;
@@ -22,6 +24,7 @@ export type TFetchUsersParams = {
 
 export type TUpdateUserParams = {
   bio: string;
+  email: string;
   image: string;
   name: string;
   path: string;
@@ -29,12 +32,21 @@ export type TUpdateUserParams = {
   username: string;
 };
 
-export type TUserCardType = 'user' | 'community';
+export type TUserCardType = 'community' | 'request' | 'user';
+
+export type TCommunityRequestData = {
+  communityId: string;
+};
 
 export type TUserCardProps = {
-  userId: string;
+  id: string; // userId or communityId
   name: string;
   username: string;
   image: string;
   type: TUserCardType;
+  communityRequestData?: TCommunityRequestData;
+};
+
+export type TUserAuthData = {
+  email: EmailAddress;
 };

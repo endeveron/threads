@@ -8,9 +8,13 @@ import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
 import logger from '@/lib/utils/logger';
 import {
+  TAcceptJoinCommunityParams,
+  TCommunityDetails,
   TCreateCommunityParams,
+  TRequestJoinCommunityParams,
   TUpdateCommunityParams,
 } from '@/lib/types/community.types';
+import { revalidatePath } from 'next/cache';
 
 /**
  * The function creates a new community with the provided details and associates it with a user.
@@ -59,8 +63,8 @@ export const createCommunity = async ({
 
     return createdCommunity;
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error creating community:', error);
-    throw error;
   }
 };
 
@@ -72,25 +76,30 @@ export const createCommunity = async ({
  *
  * @returns the community details, which is an object containing information about the community.
  */
-export async function fetchCommunityDetails(id: string) {
+export const fetchCommunityDetails = async (id: string) => {
   try {
     connectToDB();
 
-    const communityDetails = await CommunityModel.findOne({ id }).populate([
+    const communityDetailsQuery = CommunityModel.findOne({ id }).populate([
       'createdBy',
       {
         path: 'members',
         model: UserModel,
-        select: 'name username image _id id',
+        select: 'name username image id', // TCommunityDetailsItem
+      },
+      {
+        path: 'requests',
+        model: UserModel,
+        select: 'name username email image id', // TCommunityDetailsRequestItem
       },
     ]);
 
-    return communityDetails;
+    return await communityDetailsQuery.exec();
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error fetching community details:', error);
-    throw error;
   }
-}
+};
 
 /**
  * The function fetches community threads from a database, populating the author and children fields
@@ -101,7 +110,7 @@ export async function fetchCommunityDetails(id: string) {
  * @returns the community posts with their associated threads. The threads are populated with the
  * author information and any child threads are also populated with their author information.
  */
-export async function fetchCommunityThreads(id: string) {
+export const fetchCommunityThreads = async (id: string) => {
   try {
     connectToDB();
 
@@ -128,10 +137,10 @@ export async function fetchCommunityThreads(id: string) {
 
     return communityPosts;
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error fetching community posts:', error);
-    throw error;
   }
-}
+};
 
 /**
  * The function fetchCommunities fetches a list of communities based on search criteria, pagination,
@@ -145,7 +154,7 @@ export async function fetchCommunityThreads(id: string) {
  * contains an array of fetched communities that match the search and sort criteria. The "isNext"
  * property is a boolean value indicating whether there are more communities beyond the current page.
  */
-export async function fetchCommunities({
+export const fetchCommunities = async ({
   searchQuery = '',
   pageNumber = 1,
   pageSize = 20,
@@ -155,7 +164,7 @@ export async function fetchCommunities({
   pageNumber?: number;
   pageSize?: number;
   sortBy?: SortOrder;
-}) {
+}) => {
   try {
     connectToDB();
 
@@ -196,59 +205,63 @@ export async function fetchCommunities({
 
     return { communities, isNext };
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error fetching communities:', error);
-    throw error;
   }
-}
+};
 
 /**
- * Adds a member to a community by updating the community's members array and the user's communities array.
+ * Adds a user to a community by updating the user's `communities` array, the community's `members` array and the community's `requests` array.
  *
+ * @param {string} userId user.id, ClerkId of the member.
  * @param {string} communityId community.id, ClerkId of the community.
- * @param {string} memberId user.id, ClerkId of the member.
  *
- * @returns the community object after adding a member to it.
+ * @returns the updated community object after adding the user as a member.
  */
-export async function addUserToCommunity(userId: string, communityId: string) {
+export const addUserToCommunity = async (
+  userId: string,
+  communityId: string
+) => {
   try {
     connectToDB();
 
-    // Find the community by its unique id
+    // Find the community by ObjectId
     const community = await CommunityModel.findOne({ id: communityId });
+    if (!community) throw new Error('Community not found');
 
-    if (!community) {
-      throw new Error('Community not found');
-    }
-
-    // Find the user by their unique id
+    // Find the user by clerk id
     const user = await UserModel.findOne({ id: userId });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
+    if (!user) throw new Error('User not found');
 
     // Check if the user is already a member of the community
     if (community.members.includes(user._id)) {
       throw new Error('User is already a member of the community');
     }
 
-    // Add the user's _id to the members array in the community
-    community.members.push(user._id);
-    await community.save();
-
-    // Add the community's _id to the communities array in the user
+    // Add the community's _id to the `user.communities` array
     user.communities.push(community._id);
+
+    // Add the user's _id to the `community.members` array
+    community.members.push(user._id);
+
+    // Remove the user's _id from the `community.requests` array
+    const reqIndex = community.requests.indexOf(user._id);
+    if (reqIndex !== -1) {
+      community.requests = [...community.requests].splice(reqIndex, 1);
+    }
+
     await user.save();
+    await community.save();
 
     return community;
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error adding member to community:', error);
-    throw error;
   }
-}
+};
 
 /**
- * The function removes a user from a community by updating the members array in the community and the
+ * Removes a user from a community by updating the members array in the community and the
  * communities array in the user.
  *
  * @param {string} userId user.id, ClerkId of the user which will be removed.
@@ -256,10 +269,10 @@ export async function addUserToCommunity(userId: string, communityId: string) {
  *
  * @returns an object with a property "success" set to true.
  */
-export async function removeUserFromCommunity(
+export const removeUserFromCommunity = async (
   userId: string,
   communityId: string
-) {
+) => {
   try {
     connectToDB();
 
@@ -291,10 +304,10 @@ export async function removeUserFromCommunity(
 
     return { success: true };
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error removing user from community:', error);
-    throw error;
   }
-}
+};
 
 /**
  * Updates the information of a community in a database.
@@ -306,12 +319,12 @@ export async function removeUserFromCommunity(
  *
  * @returns the updated community object.
  */
-export async function updateCommunityInfo({
+export const updateCommunityInfo = async ({
   id,
   name,
   username,
   image,
-}: TUpdateCommunityParams) {
+}: TUpdateCommunityParams) => {
   try {
     connectToDB();
 
@@ -327,10 +340,10 @@ export async function updateCommunityInfo({
 
     return updatedCommunity;
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error updating community information:', error);
-    throw error;
   }
-}
+};
 
 /**
  * Deletes a community and all associated threads, removes the community from the 'communities' array for each user, and returns the deleted community.
@@ -339,7 +352,7 @@ export async function updateCommunityInfo({
  *
  * @returns the deleted community object.
  */
-export async function deleteCommunity(id: string) {
+export const deleteCommunity = async (id: string) => {
   try {
     connectToDB();
 
@@ -370,7 +383,74 @@ export async function deleteCommunity(id: string) {
 
     return deletedCommunity;
   } catch (error) {
+    // TODO: Handle Error
     logger.r('Error deleting community: ', error);
-    throw error;
   }
-}
+};
+
+export const requestJoinCommunity = async ({
+  communityId,
+  userObjectId,
+  path,
+}: TRequestJoinCommunityParams) => {
+  try {
+    connectToDB();
+
+    // Find the user by objectId
+    const user = await UserModel.findById(userObjectId);
+    if (!user) throw new Error('User not found');
+
+    // Find the community by clerk id
+    const community = await CommunityModel.findOne({ id: communityId });
+    if (!community) throw new Error('Community not found');
+
+    community.requests.push(user._id);
+    await community.save();
+
+    revalidatePath(path);
+  } catch (error) {
+    // TODO: Handle Error
+    logger.r('Error adding member to community:', error);
+  }
+};
+
+// Only removes the user from `community.requests` array
+// If user approves the email invitation, adding user will be handled by `addUserToCommunity`
+export const acceptJoinCommunity = async ({
+  userId,
+  communityId,
+  path,
+}: TAcceptJoinCommunityParams) => {
+  try {
+    connectToDB();
+
+    // Find the user by objectId
+    const user = await UserModel.findById({ id: userId });
+    if (!user) throw new Error('User not found');
+
+    // Find the community by clerk id
+    const community = await CommunityModel.findOne({ id: communityId });
+    if (!community) throw new Error('Community not found');
+
+    // Remove the user's _id from the `community.requests` array
+    const reqIndex = community.requests.indexOf(user._id);
+    if (reqIndex !== -1) {
+      community.requests = [...community.requests].splice(reqIndex, 1);
+    }
+    await community.save();
+
+    revalidatePath(path);
+  } catch (error) {
+    // TODO: Handle Error
+    logger.r('Error adding member to community:', error);
+  }
+};
+
+export const test = async (path: string) => {
+  try {
+    revalidatePath(path);
+  } catch (error) {
+    // TODO: Handle Error
+    logger.r('Error adding member to community:', error);
+  }
+};

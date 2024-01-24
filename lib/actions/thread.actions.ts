@@ -63,6 +63,7 @@ export const createThread = async ({
     // Update cached data
     revalidatePath(path);
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to create thread: ${err.message}`);
   }
 };
@@ -127,8 +128,9 @@ export const deleteThread = async (
       { $pull: { threads: { $in: threadIdList } } }
     );
     revalidatePath(path);
-  } catch (error: any) {
-    throw new Error(`Failed to delete thread: ${error.message}`);
+  } catch (err: any) {
+    // TODO: Handle Error
+    throw new Error(`Failed to delete thread: ${err.message}`);
   }
 };
 
@@ -191,6 +193,7 @@ export const fetchThreads = async ({
 
     return { threads, isNext };
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch threads: ${err.message}`);
   }
 };
@@ -239,6 +242,7 @@ export const fetchThreadById = async (threadId: string) => {
 
     return await threadQuery.exec();
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to fetch thread: ${err.message}`);
   }
 };
@@ -255,7 +259,7 @@ export const fetchThreadById = async (threadId: string) => {
 export const addCommentToThread = async ({
   threadId,
   commentText,
-  userObjectIdStr,
+  userObjectId,
   path,
 }: TAddCommentToThreadParams) => {
   try {
@@ -271,7 +275,7 @@ export const addCommentToThread = async ({
     // Create the new comment thread
     const commentThread = new ThreadModel({
       text: commentText,
-      author: userObjectIdStr,
+      author: userObjectId,
       parentId: threadId, // Set the parentId to the original thread's ID
     });
 
@@ -286,6 +290,7 @@ export const addCommentToThread = async ({
 
     revalidatePath(path);
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to add comment to thread: ${err.message}`);
   }
 };
@@ -299,7 +304,7 @@ export const addCommentToThread = async ({
  */
 export const reactToThread = async ({
   threadId,
-  userObjectIdStr,
+  userObjectId,
   path,
 }: TReactToThreadParams): Promise<{ error: { message: string } | null }> => {
   try {
@@ -310,15 +315,11 @@ export const reactToThread = async ({
 
     if (!thread) throw new Error('Thread not found');
 
-    // logger.b('thread', thread);
-    // logger.b('userObjectIdStr', userObjectIdStr);
-    // logger.b('path', path);
-
     // Add / remove the user ID to the copy of thread's 'likes' list
     const updThreadLikes = thread.likes.slice();
-    updThreadLikes.includes(userObjectIdStr)
-      ? updThreadLikes.splice(updThreadLikes.indexOf(userObjectIdStr), 1)
-      : updThreadLikes.push(userObjectIdStr);
+    updThreadLikes.includes(userObjectId)
+      ? updThreadLikes.splice(updThreadLikes.indexOf(userObjectId), 1)
+      : updThreadLikes.push(userObjectId);
 
     // Save the updated original thread to the database
     thread.likes = updThreadLikes;
@@ -328,6 +329,7 @@ export const reactToThread = async ({
 
     return { error: null };
   } catch (err: any) {
+    // TODO: Handle Error
     throw new Error(`Failed to add comment to thread: ${err.message}`);
   }
 };
