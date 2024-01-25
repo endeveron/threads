@@ -35,7 +35,6 @@ const TopBar = async () => {
                 alt="logout"
                 width={24}
                 height={24}
-                sizes=""
               />
             </SignOutButton>
           </SignedIn>
@@ -43,7 +42,9 @@ const TopBar = async () => {
 
         <SignedOut>
           <Link href="/sign-in">
-            <Button className="px-6">Sign In</Button>
+            <Button size="sm" className="px-6">
+              Sign In
+            </Button>
           </Link>
         </SignedOut>
       </div>

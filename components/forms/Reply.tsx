@@ -78,7 +78,8 @@ const Reply = ({ threadId, userImg, userObjectId }: TCommentProps) => {
                   width={48}
                   height={48}
                   className="rounded-full object-cover"
-                  sizes=""
+                  sizes="256px"
+                  fill
                 />
               </FormLabel>
               <FormControl className="border-none bg-transparent">

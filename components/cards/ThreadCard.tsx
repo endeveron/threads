@@ -2,7 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SignedIn } from '@clerk/nextjs';
 
-import { TThreadCardProps, TThreadCardReply } from '@/lib/types/thread.types';
+import {
+  TThreadCardProps,
+  TThreadWithPopulatedAuthor,
+} from '@/lib/types/thread.types';
 import { cn } from '@/lib/utils';
 import { formatDateString } from '@/lib/utils';
 import LikeButton from '@/components/shared/LikeButton';
@@ -22,7 +25,9 @@ const ThreadCard = ({
   userObjectId, // MongoDb user._id: string
   disableTextLink,
 }: TThreadCardProps) => {
-  const createReplyImageSet = (replies: TThreadCardReply[]): string[] => {
+  const createReplyImageSet = (
+    replies: TThreadWithPopulatedAuthor[]
+  ): string[] => {
     const imageSet = new Set<string>();
     for (let reply of replies) {
       const imageUrl = reply.author.image;
@@ -32,6 +37,8 @@ const ThreadCard = ({
     }
     return Array.from(imageSet);
   };
+
+  const likeIdArray = [...likes].map((userId) => userId.toString());
 
   const replyImages = createReplyImageSet(replies);
 
@@ -54,10 +61,10 @@ const ThreadCard = ({
             <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
               <Image
                 src={author.image}
-                fill
-                sizes=""
-                className="cursor-pointer rounded-full"
+                className="cursor-pointer rounded-full object-cover"
                 alt="user avatar"
+                sizes="256px"
+                fill
               />
             </Link>
             <div className="thread-card_bar" />
@@ -97,7 +104,7 @@ const ThreadCard = ({
                   <LikeButton
                     threadId={id.toString()}
                     userObjectId={userObjectId || ''}
-                    likes={likes}
+                    likes={likeIdArray}
                   />
                   <Link href={`/thread/${id}`}>
                     <Image
@@ -106,7 +113,6 @@ const ThreadCard = ({
                       width={18}
                       height={18}
                       className="action-icon"
-                      sizes=""
                     />
                   </Link>
                   <Image
@@ -115,12 +121,11 @@ const ThreadCard = ({
                     width={18}
                     height={18}
                     className="action-icon"
-                    sizes=""
                   />
                   <DeleteThread
                     id={id.toString()}
                     userId={userId}
-                    authorId={author.id}
+                    authorId={author.id.toString()}
                     parentId={parentId}
                     isReply={isReply}
                   />

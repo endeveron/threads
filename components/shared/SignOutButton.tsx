@@ -22,7 +22,6 @@ const SignOutButton = ({ callbackRoute = '/', label }: SignOutButtonProps) => {
               alt="logout"
               width={24}
               height={24}
-              sizes=""
             />
             {!!label && <p className="text-secondary max-lg:hidden">{label}</p>}
           </div>

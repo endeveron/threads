@@ -158,7 +158,7 @@ module.exports = {
         main: 'var(--foreground)',
         secondary: 'var(--foreground-secondary)',
         tertiary: 'var(--foreground-tertiary)',
-        accent: 'var(--accent)',
+        'accent-fg': 'var(--foreground-accent)',
 
         background: 'var(--background)',
         'background-opac': 'var(--background-opac)',
@@ -169,12 +169,13 @@ module.exports = {
 
         button: 'var(--button)',
         'button-disabled': 'var(--button-disabled)',
-        // 'button-secondary': 'var(--button-secondary)',
+        'button-secondary': 'var(--button-secondary)',
 
         border: 'var(--border)',
 
-        danger: 'var(--danger)',
-        'danger-foreground': 'var(--danger-foreground)',
+        accent: 'var(--accent)',
+        error: 'var(--error)',
+        'error-background': 'var(--error-background)',
       },
       boxShadow: {
         'count-badge': '0px 0px 6px 2px rgba(219, 188, 159, 0.30)',

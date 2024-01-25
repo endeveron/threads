@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { acceptJoinCommunity } from '@/lib/actions/community.actions';
 import { usePathname } from 'next/navigation';
+import { useErrorHandler } from '@/lib/utils/hooks';
 
 const RequestCard = ({
   userId,
@@ -24,13 +25,15 @@ const RequestCard = ({
   const { organization } = useOrganization();
   const pathname = usePathname();
   const { toast } = useToast();
+  const { toastError } = useErrorHandler();
   const [loading, setLoading] = useState(false);
 
   const isAuthor = userId === authUserId;
 
   const inviteUser = async () => {
     if (!organization) {
-      throw new Error('Error getting community data from clerk.');
+      toastError({ message: 'Error getting community data from clerk.' });
+      return;
     }
 
     try {
@@ -56,15 +59,7 @@ const RequestCard = ({
         path: pathname,
       });
     } catch (err: any) {
-      const error = err?.errors[0];
-      if (error) {
-        const title = error?.message;
-        const titleCapitalised = title[0].toUpperCase() + title.slice(1);
-        toast({
-          title: titleCapitalised,
-          description: error.longMessage,
-        });
-      }
+      toastError(err);
     } finally {
       setLoading(false);
     }
@@ -76,8 +71,9 @@ const RequestCard = ({
         <Image
           src={image}
           alt="user avatar"
-          fill
           className="rounded-full object-cover"
+          sizes="256px"
+          fill
         />
       </div>
 
@@ -102,7 +98,7 @@ const RequestCard = ({
         </div>
       )}
 
-      {isCommunityCreator && (
+      {organization && isCommunityCreator && (
         <Button size="sm" loading={loading} onClick={inviteUser}>
           Invite
         </Button>

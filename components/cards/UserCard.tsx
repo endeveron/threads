@@ -27,8 +27,9 @@ const UserCard = ({ id, name, username, image, type }: TUserCardProps) => {
           <Image
             src={image}
             alt="user avatar"
-            fill
             className="rounded-full object-cover"
+            sizes="256px"
+            fill
           />
         </div>
 

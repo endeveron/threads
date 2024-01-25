@@ -18,8 +18,9 @@ function CommunityCard({
           <Image
             src={image}
             alt="community_logo"
-            fill
             className="rounded-full object-cover"
+            sizes="256px"
+            fill
           />
         </Link>
 

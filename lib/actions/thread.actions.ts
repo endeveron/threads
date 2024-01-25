@@ -12,8 +12,9 @@ import {
   TFetchThreadsParams,
   TReactToThreadParams,
   TThread,
+  TThreadPopulated,
 } from '@/lib/types/thread.types';
-import logger from '@/lib/utils/logger';
+import { handleActionError } from '@/lib/utils/error';
 
 /**
  * Creates a new thread object in MongoDb, updates the user model, and revalidates the cached data.
@@ -35,7 +36,7 @@ export const createThread = async ({
     let communityObjId = null;
 
     // The 'communityId' prop is the ID given by the Clerk service.
-    // But the 'community' prop of the thread object must be an MongoDb ObjectId type.
+    // But the 'community' prop of a thread object must be an MongoDb ObjectId type.
     // Therefore if 'communityId' is provided, we must fetch the community ObjectId from the MongoDb
     if (communityId !== null) {
       community = await CommunityModel.findOne({ id: communityId });
@@ -63,8 +64,7 @@ export const createThread = async ({
     // Update cached data
     revalidatePath(path);
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to create thread: ${err.message}`);
+    handleActionError('Could not create a thread', err);
   }
 };
 
@@ -88,7 +88,7 @@ export const deleteThread = async (
 ): Promise<void> => {
   try {
     connectToDB();
-    // Find the thread to be deleted (the main thread)
+    // Find a thread to be deleted (the main thread)
     const mainThread = await ThreadModel.findById(threadObjectIdStr).populate(
       'author community'
     );
@@ -97,7 +97,7 @@ export const deleteThread = async (
     }
     // Fetch all child threads and their descendants recursively
     const descendantThreads = await fetchAllChildThreads(threadObjectIdStr);
-    // Create the thread id list that includes the main thread id and child thread ids
+    // Create a thread id list that includes the main thread id and child thread ids
     const threadIdList = [
       threadObjectIdStr,
       ...descendantThreads.map((thread) => thread._id.toString()),
@@ -129,8 +129,7 @@ export const deleteThread = async (
     );
     revalidatePath(path);
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to delete thread: ${err.message}`);
+    handleActionError('Could not delete a thread', err);
   }
 };
 
@@ -155,29 +154,32 @@ export const fetchThreads = async ({
     const skipAmount = (pageNumber - 1) * pageSize;
 
     // Fetch the threads that have no parents (top level threads that is not a comment/reply)
-    const threadsQuery = ThreadModel.find({
+    const threads: TThreadPopulated[] = await ThreadModel.find({
       parentId: { $in: [null, undefined] },
     })
       .sort({ createdAt: 'desc' })
       .skip(skipAmount)
       .limit(pageSize)
       .populate({
+        // TUserItemData
         path: 'author',
         model: UserModel,
-        select: 'id image name username',
+        select: '_id id image name username',
       })
       .populate({
         path: 'children',
         populate: {
+          // TUserItemData
           path: 'author',
           model: UserModel,
-          select: 'id image name username',
+          select: '_id id image name username',
         },
       })
       .populate({
+        // TItemData
         path: 'community',
         model: CommunityModel,
-        select: 'id image name',
+        select: '_id id image name',
       });
 
     // Count the total number of top-level threads that are not comments
@@ -186,22 +188,21 @@ export const fetchThreads = async ({
     });
 
     // Fetch the threads
-    const threads = await threadsQuery.exec();
+    // const threads = await threadsQuery.exec();
 
     // Calculating whether there are more threads available to fetch
     const isNext = totalThreadsCount > skipAmount + threads.length;
 
     return { threads, isNext };
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch threads: ${err.message}`);
+    handleActionError('Could not fetch threads', err);
   }
 };
 
 /**
  * Fetches a thread by its _id from a database, populating it with related author and child thread information.
  *
- * @param {string} threadId thread._id, MongoDb ObjectId parameter of the thread.
+ * @param {string} threadId thread._id, MongoDb ObjectId parameter of a thread.
  *
  * @returns a promise that resolves to the fetched thread object.
  */
@@ -242,8 +243,7 @@ export const fetchThreadById = async (threadId: string) => {
 
     return await threadQuery.exec();
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch thread: ${err.message}`);
+    handleActionError('Could not fetch a thread', err);
   }
 };
 
@@ -251,7 +251,7 @@ export const fetchThreadById = async (threadId: string) => {
  * Adds a comment to a thread by creating a new comment thread, linking it to the original thread,
  * and updating the original thread's children array.
  *
- * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of the thread.
+ * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of a thread.
  * @param {string} params.commentText the text of the comment.
  * @param {string} params.userObjectId the author's _id MongoDb ObjectId.
  * @param {string} params.path the pathname to revalidate cached data.
@@ -290,15 +290,14 @@ export const addCommentToThread = async ({
 
     revalidatePath(path);
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to add comment to thread: ${err.message}`);
+    handleActionError('Could not add a comment to the thread', err);
   }
 };
 
 /**
- * Adds user reaction on the thread by adding or removing userId to the 'thread.likes' property of the thread MongoDb object.
+ * Adds user reaction on a thread by adding or removing userId to the 'thread.likes' property of the thread MongoDb object.
  *
- * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of the thread.
+ * @param {string} params.threadId thread._id, MongoDb ObjectId parameter of a thread.
  * @param {string} params.userId the author's _id MongoDb ObjectId.
  * @param {string} params.path the pathname to revalidate cached data.
  */
@@ -306,7 +305,9 @@ export const reactToThread = async ({
   threadId,
   userObjectId,
   path,
-}: TReactToThreadParams): Promise<{ error: { message: string } | null }> => {
+}: TReactToThreadParams): Promise<
+  { error: { message: string } | null } | undefined
+> => {
   try {
     connectToDB();
 
@@ -329,7 +330,6 @@ export const reactToThread = async ({
 
     return { error: null };
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to add comment to thread: ${err.message}`);
+    handleActionError("Could not update a user's reaction to a thread", err);
   }
 };

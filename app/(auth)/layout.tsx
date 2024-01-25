@@ -25,7 +25,7 @@ export default function RootLayout({
         baseTheme: dark,
       }}
     >
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={`bg-background ${inter.className}`}>
           <ThemeProvider attribute="class" defaultTheme="dark">
             <main className="w-full min-h-screen flex justify-center items-center">

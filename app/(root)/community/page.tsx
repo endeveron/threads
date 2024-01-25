@@ -5,7 +5,6 @@ import CommunityCard from '@/components/cards/CommunityCard';
 import Searchbar from '@/components/shared/SearchBar';
 import { fetchCommunities } from '@/lib/actions/community.actions';
 import { fetchUser } from '@/lib/actions/user.actions';
-import { TUser } from '@/lib/types/user.types';
 
 interface PageProps {
   searchParams: {

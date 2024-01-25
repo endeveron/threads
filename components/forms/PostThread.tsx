@@ -17,6 +17,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { createThread } from '@/lib/actions/thread.actions';
 import { ThreadValidation } from '@/lib/validations/thread';
+import { useErrorHandler } from '@/lib/utils/hooks';
 
 interface PostThreadProps {
   userObjectId: string; // Mongo ObjectId
@@ -26,6 +27,7 @@ const PostThread = ({ userObjectId }: PostThreadProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { organization } = useOrganization();
+  const { toastError } = useErrorHandler();
 
   const form = useForm<zod.infer<typeof ThreadValidation>>({
     resolver: zodResolver(ThreadValidation),
@@ -46,8 +48,7 @@ const PostThread = ({ userObjectId }: PostThreadProps) => {
 
       router.push('/');
     } catch (err) {
-      // TODO: Handle Error
-      console.error(err);
+      toastError(err);
     }
   };
 

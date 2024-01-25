@@ -11,8 +11,8 @@ import {
   TFetchUsersParams,
   TUpdateUserParams,
   TUser,
-  TUserAuthData,
 } from '@/lib/types/user.types';
+import { handleActionError } from '@/lib/utils/error';
 
 // export const getUserAuthDataById = async (
 //   userId: string
@@ -48,6 +48,8 @@ export const updateUser = async ({
   try {
     connectToDB();
 
+    throw new Error('Asdf');
+
     await UserModel.findOneAndUpdate(
       { id: userId },
       {
@@ -69,8 +71,7 @@ export const updateUser = async ({
       revalidatePath(path);
     }
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to create/update user: ${err.message}`);
+    handleActionError('Could not create / update user', err);
   }
 };
 
@@ -91,8 +92,7 @@ export const fetchUser = async (userId: string): Promise<TUser | undefined> => {
       select: '_id id image name',
     });
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch user: ${err.message}`);
+    handleActionError('Could not fetch user', err);
   }
 };
 
@@ -113,7 +113,9 @@ export const fetchUsers = async ({
   pageSize = 20,
   sortBy = 'desc',
   userId, // clerk user.id
-}: TFetchUsersParams): Promise<{ users: TUser[]; isNext: boolean }> => {
+}: TFetchUsersParams): Promise<
+  { users: TUser[]; isNext: boolean } | undefined
+> => {
   try {
     connectToDB();
 
@@ -153,8 +155,7 @@ export const fetchUsers = async ({
 
     return { users, isNext };
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch users: ${err.message}`);
+    handleActionError('Could not fetch users', err);
   }
 };
 
@@ -194,8 +195,7 @@ export const fetchUserThreads = async (userId: string) => {
 
     return await threadsQuery.exec();
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch user threads: ${err.message}`);
+    handleActionError('Could not fetch threads', err);
   }
 };
 
@@ -230,43 +230,27 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
 
     return await activityQuery.exec();
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch user activity: ${err.message}`);
+    handleActionError('Could not fetch activity', err);
   }
 };
 
 /**
  * Retrieves all the threads that a user has replied to, excluding their own threads, and populates the author information for each reply.
  *
- * @param {string} userId user._id, MongoDb ObjectId of the user.
+ * @param {string} userObjectId user._id, MongoDb ObjectId of the user.
  *
  * @returns a promise that resolves to an array of thread objects.
  */
-export const fetchUserReplies = async (userId: string) => {
+export const fetchUserReplies = async (userObjectId: string) => {
   try {
     connectToDB();
 
-    // Get all threads created by the user
-    const userThreads = await ThreadModel.find({ author: userId });
+    // TODO: Get all the threads if children includes author: userObjectId
 
-    // Iterate over the user threads and collect all the child thread ids (replies) from the `thread.children` property.
-    const childThreadIds = userThreads.reduce((acc, thread) => {
-      return acc.concat(thread.children);
-    }, []);
+    // const userThreads = await ThreadModel.find({ author: userObjectId });
 
-    // Get all threads that the user replied, but exclude the user own threads
-    const repliesQuery = ThreadModel.find({
-      _id: { $in: childThreadIds },
-      author: { $ne: userId },
-    }).populate({
-      path: 'author',
-      model: UserModel,
-      select: '_id image name',
-    });
-
-    return await repliesQuery.exec();
+    // return await repliesQuery.exec();
   } catch (err: any) {
-    // TODO: Handle Error
-    throw new Error(`Failed to fetch user activity: ${err.message}`);
+    handleActionError('Could not fetch user replies', err);
   }
 };

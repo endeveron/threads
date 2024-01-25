@@ -35,9 +35,9 @@ const ProfileHeader = ({
             <Image
               src={imgUrl}
               alt="user avatar"
+              className="rounded-full object-cover"
+              sizes="256px"
               fill
-              className="rounded-full object-cover shadow-2xl"
-              sizes=""
             />
           </div>
 
@@ -58,7 +58,6 @@ const ProfileHeader = ({
                 alt="logout"
                 width={16}
                 height={16}
-                sizes=""
               />
 
               <p className="text-small-medium text-secondary max-sm:hidden">

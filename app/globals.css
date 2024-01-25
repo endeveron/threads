@@ -9,12 +9,12 @@
   --accent-2: hsl(326, 85%, 90%);
   --accent-3: hsl(327, 87%, 82%);
   --accent-4: hsl(329, 86%, 70%);
-  --accent-5: hsl(330, 81%, 60%);
+  --accent-5: hsl(332, 90%, 55%);
   --accent-6: hsl(333, 71%, 51%);
   --accent-7: hsl(335, 78%, 42%);
   --accent-8: hsl(336, 74%, 35%);
   --accent-9: hsl(336, 69%, 30%);
-  --accent-95: hsl(336, 84%, 17%);
+  --accent-95: hsl(336, 78%, 22%);
 
   /* Zink Customized */
   --main-05: hsl(0, 0%, 98%);
@@ -32,7 +32,7 @@
   --heading-1: var(--main-1); /* h1 */
   --heading-2: var(--main-05); /* h2, h3 */
 
-  --foreground: var(--main-1); /*  */
+  --foreground: var(--main-1); /* main text */
   --foreground-secondary: var(--main-3); /* thread text */
   --foreground-tertiary: var(--main-5); /* label, no-result, caption */
 
@@ -43,12 +43,14 @@
   --background-overlay: hsla(0, 0%, 0%, 0.9);
   --background-opac: hsla(240, 9%, 9%, 0.6);
 
-  --accent: var(--accent-6);
+  --accent: var(--accent-5);
   --border: var(--main-8);
   --button: var(--accent-8);
+  --button-secondary: var(--main-7);
   --button-disabled: var(--main-7);
 
-  --danger: var(--accent-6);
+  --error: var(--accent-6); /* form field error message */
+  --error-background: var(--accent-95); /* toast */
   --spinner: var(--main-2);
 }
 
@@ -69,12 +71,8 @@
     -webkit-backdrop-filter: blur(5px);
   }
 
-  .button {
-    @apply bg-button;
-  }
-
   .button:disabled {
-    @apply bg-button-disabled;
+    @apply bg-button-disabled opacity-30 text-secondary;
   }
 
   .button.loading {
@@ -102,7 +100,7 @@
   }
 
   .no-result {
-    @apply text-center text-base-regular text-tertiary;
+    @apply bg-paper rounded-lg p-8 text-center text-tertiary opacity-80 cursor-default;
   }
 
   /* Menu */
@@ -191,7 +189,7 @@
   }
 
   .activity-card {
-    @apply flex items-center gap-2 rounded-md px-7 py-4;
+    @apply flex items-center gap-4 rounded-md p-4;
   }
 
   .community-card {

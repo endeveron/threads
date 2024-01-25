@@ -5,6 +5,8 @@ import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreads } from '@/lib/actions/thread.actions';
 import { fetchUser } from '@/lib/actions/user.actions';
 import { TUser } from '@/lib/types/user.types';
+import { TThreadPopulated } from '@/lib/types/thread.types';
+import { handleActionError } from '@/lib/utils/error';
 
 // Route '/' allowed for unauthenicated users
 const Home = async () => {
@@ -22,24 +24,41 @@ const Home = async () => {
     if (!user?.onboarded) redirect('/onboarding');
   }
 
-  const { threads, isNext } = await fetchThreads({});
+  const threadsResult = await fetchThreads({});
+
+  // if (result?.threads) {
+  //   for (let thread of result.threads) {
+  //     console.log('thread.author', thread.author);
+  //     console.log('thread.children', thread.children);
+  //     console.log('thread.community', thread.community);
+  //     console.log('\n');
+  //   }
+  // }
 
   return (
     <section className="main-thread-list">
-      {threads?.length === 0 ? (
+      {threadsResult?.threads?.length === 0 ? (
         <p className="no-result">No threads found</p>
       ) : (
-        threads.map((thread) => (
+        threadsResult?.threads.map((thread) => (
           <ThreadCard
-            id={thread._id}
+            id={thread._id.toString()}
             author={thread.author}
             content={thread.text}
-            community={thread.community}
+            community={
+              thread?.community
+                ? {
+                    id: thread.community._id.toString(),
+                    image: thread.community.image,
+                    name: thread.community.name,
+                  }
+                : null
+            }
             replies={thread.children}
             likes={thread.likes}
-            parentId={thread.parentId}
+            parentId={thread.parentId || null}
             createdAt={thread.createdAt}
-            key={thread._id}
+            key={thread._id.toString()}
             userId={authUserId}
             userObjectId={userObjectId}
           />

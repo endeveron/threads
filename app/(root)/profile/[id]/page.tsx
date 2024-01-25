@@ -54,7 +54,6 @@ const Page = async ({ params }: TPageProps) => {
                   width={24}
                   height={24}
                   className="object-contain flex-shrink-0"
-                  sizes=""
                 />
                 <p className="max-sm:hidden">{tab.label}</p>
 

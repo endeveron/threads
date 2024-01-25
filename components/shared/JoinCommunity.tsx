@@ -7,6 +7,7 @@ import Button from '@/components/shared/Button';
 import { requestJoinCommunity, test } from '@/lib/actions/community.actions';
 import { useState } from 'react';
 import { ToastAction } from '@/components/ui/toast';
+import { useErrorHandler } from '@/lib/utils/hooks';
 
 type TJoinCommunityProps = {
   communityId: string;
@@ -14,6 +15,7 @@ type TJoinCommunityProps = {
 };
 
 const JoinCommunity = ({ communityId, userObjectId }: TJoinCommunityProps) => {
+  const { toastError } = useErrorHandler();
   const pathname = usePathname();
   const toast = useToast();
 
@@ -34,8 +36,7 @@ const JoinCommunity = ({ communityId, userObjectId }: TJoinCommunityProps) => {
         description: 'An invitation will be sent to your email within 48 hours',
       });
     } catch (err: any) {
-      // TODO: Handle Error
-      console.log('Error joining to community', err);
+      toastError(err);
     } finally {
       setLoading(false);
     }

@@ -22,6 +22,8 @@ import { updateUser } from '@/lib/actions/user.actions';
 import { useUploadThing } from '@/lib/uploadthing';
 import { cn, isBase64Image } from '@/lib/utils';
 import { UserValidation } from '@/lib/validations/user';
+import { handleActionError } from '@/lib/utils/error';
+import { useErrorHandler } from '@/lib/utils/hooks';
 
 type TAccountProfileProps = {
   user: {
@@ -45,6 +47,7 @@ type TFormValues = {
 const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { toastError } = useErrorHandler();
   const { startUpload } = useUploadThing('media');
 
   const [loading, setLoading] = useState(false);
@@ -108,9 +111,8 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
       } else {
         router.push('/');
       }
-    } catch (err) {
-      // TODO: Handle error
-      console.error(err);
+    } catch (err: any) {
+      toastError(err);
     } finally {
       setLoading(false);
     }
@@ -137,7 +139,6 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
                   height={96}
                   priority
                   className="form_image"
-                  sizes=""
                 />
               </FormLabel>
               <FormControl className="flex-1 text-base-semibold text-tertiary">

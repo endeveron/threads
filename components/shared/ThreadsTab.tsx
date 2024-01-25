@@ -5,33 +5,15 @@ import ThreadCard from '../cards/ThreadCard';
 import { fetchUserThreads } from '@/lib/actions/user.actions';
 import { fetchCommunityThreads } from '@/lib/actions/community.actions';
 import { TAccountType } from '@/lib/types/account.types';
+import { TThreadPopulated } from '@/lib/types/thread.types';
 
 type TThreadsTabContent = {
   name: string;
   image: string;
+  username: string;
   id: string;
-  threads: {
-    _id: string;
-    text: string;
-    parentId: string | null;
-    author: {
-      name: string;
-      image: string;
-      id: string;
-    };
-    community: {
-      id: string;
-      name: string;
-      image: string;
-    } | null;
-    createdAt: string;
-    children: {
-      author: {
-        image: string;
-      };
-    }[];
-    likes: string[];
-  }[];
+  _id: ObjectId;
+  threads: TThreadPopulated[];
 };
 
 type TThreadsTabProps = {
@@ -63,19 +45,27 @@ const ThreadsTab = async ({
     <section className="mt-9 flex flex-col gap-10">
       {content.threads.map((thread) => (
         <ThreadCard
-          key={thread._id}
-          id={thread._id}
+          key={thread._id.toString()}
+          id={thread._id.toString()}
           userId={userId}
           userObjectId={userObjectId}
-          parentId={thread.parentId}
+          parentId={thread.parentId || null}
           content={thread.text}
           author={
             accountType === 'user'
-              ? { name: content.name, image: content.image, id: content.id }
+              ? {
+                  _id: content._id,
+                  id: content.id,
+                  name: content.name,
+                  username: content.username,
+                  image: content.image,
+                }
               : {
-                  name: thread.author.name,
-                  image: thread.author.image,
+                  _id: thread.author._id,
                   id: thread.author.id,
+                  name: thread.author.name,
+                  username: thread.author.username,
+                  image: thread.author.image,
                 }
           }
           community={

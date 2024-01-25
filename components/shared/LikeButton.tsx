@@ -2,6 +2,7 @@
 
 import { reactToThread } from '@/lib/actions/thread.actions';
 import { cn } from '@/lib/utils';
+import { useErrorHandler } from '@/lib/utils/hooks';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,8 @@ type TLikeButtonProps = {
 };
 
 const LikeButton = ({ threadId, userObjectId, likes }: TLikeButtonProps) => {
+  const { toastError } = useErrorHandler();
+
   const [isLiked, setIsLiked] = useState(likes.includes(userObjectId ?? ''));
 
   const pathname = usePathname();
@@ -44,9 +47,7 @@ const LikeButton = ({ threadId, userObjectId, likes }: TLikeButtonProps) => {
         );
       }
     } catch (err) {
-      // TODO: Handle Error
-      console.error(err);
-      throw new Error('Error updating user reaction.');
+      toastError(err);
     }
   };
 
@@ -64,7 +65,6 @@ const LikeButton = ({ threadId, userObjectId, likes }: TLikeButtonProps) => {
         className={cn('action-icon', {
           stable: isLiked,
         })}
-        sizes=""
       />
     </div>
   );

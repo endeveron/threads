@@ -33,13 +33,7 @@ const MainMenuLinks = (props: MainMenuLinksProps) => {
           'main-menu_link--active bg-button hover:bg-button': isActive,
         })}
       >
-        <Image
-          src={link.imgURL}
-          alt={link.label}
-          width={24}
-          height={24}
-          sizes=""
-        />
+        <Image src={link.imgURL} alt={link.label} width={24} height={24} />
         <p>{link.label}</p>
       </Link>
     );

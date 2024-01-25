@@ -1,4 +1,5 @@
-import { ObjectId } from 'mongoose';
+import { TItemData, TUserItemData } from '@/lib/types/common.types';
+import { Date, ObjectId } from 'mongoose';
 
 type TThreadParams = {
   _id: string | ObjectId;
@@ -27,10 +28,17 @@ export type TThread = {
   parentId?: string;
 };
 
-export type TThreadAuthor = {
-  id: string;
-  name: string;
-  image: string;
+export type TThreadPopulated = Omit<
+  TThread,
+  'author' | 'children' | 'community'
+> & {
+  author: TUserItemData;
+  children: TThreadWithPopulatedAuthor[];
+  community: TItemData | null;
+};
+
+export type TThreadWithPopulatedAuthor = Omit<TThread, 'author'> & {
+  author: TUserItemData;
 };
 
 export type TCreateThreadParams = Pick<TThreadParams, 'author' | 'text'> & {
@@ -49,27 +57,21 @@ export type TAddCommentToThreadParams = TThreadActionBaseParams & {
 
 export type TReactToThreadParams = TThreadActionBaseParams & {};
 
-export type TThreadCardReply = {
-  author: {
-    image: string;
-  };
-};
-
 export type TThreadCardProps = {
   id: string;
   userId: string | null;
   userObjectId: string | null;
-  author: TThreadAuthor;
+  author: TUserItemData;
   community: {
     id: string;
     name: string;
     image: string;
   } | null;
   content: string;
-  replies: TThreadCardReply[];
-  likes: string[];
+  replies: TThreadWithPopulatedAuthor[];
+  likes: ObjectId[];
   parentId: string | null;
-  createdAt: string;
+  createdAt: any;
   isReply?: boolean;
   path?: string;
   disableTextLink?: boolean;

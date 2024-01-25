@@ -6,14 +6,14 @@ import CommunityModel from '@/lib/models/community.model';
 import ThreadModel from '@/lib/models/thread.model';
 import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
-import logger from '@/lib/utils/logger';
 import {
   TAcceptJoinCommunityParams,
-  TCommunityDetails,
   TCreateCommunityParams,
   TRequestJoinCommunityParams,
   TUpdateCommunityParams,
 } from '@/lib/types/community.types';
+import { handleActionError } from '@/lib/utils/error';
+import logger from '@/lib/utils/logger';
 import { revalidatePath } from 'next/cache';
 
 /**
@@ -62,9 +62,8 @@ export const createCommunity = async ({
     await user.save();
 
     return createdCommunity;
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error creating community:', error);
+  } catch (err: any) {
+    handleActionError('Could not create community', err);
   }
 };
 
@@ -95,9 +94,8 @@ export const fetchCommunityDetails = async (id: string) => {
     ]);
 
     return await communityDetailsQuery.exec();
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error fetching community details:', error);
+  } catch (err: any) {
+    handleActionError('Could not fetch community details', err);
   }
 };
 
@@ -136,9 +134,8 @@ export const fetchCommunityThreads = async (id: string) => {
     });
 
     return communityPosts;
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error fetching community posts:', error);
+  } catch (err: any) {
+    handleActionError('Could not fetch community threads', err);
   }
 };
 
@@ -204,9 +201,8 @@ export const fetchCommunities = async ({
     const isNext = totalCommunitiesCount > skipAmount + communities.length;
 
     return { communities, isNext };
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error fetching communities:', error);
+  } catch (err: any) {
+    handleActionError('Could not fetch communities', err);
   }
 };
 
@@ -254,9 +250,8 @@ export const addUserToCommunity = async (
     await community.save();
 
     return community;
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error adding member to community:', error);
+  } catch (err: any) {
+    handleActionError('Could not add a user to the community', err);
   }
 };
 
@@ -303,9 +298,8 @@ export const removeUserFromCommunity = async (
     );
 
     return { success: true };
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error removing user from community:', error);
+  } catch (err: any) {
+    handleActionError('Unable to remove a user from the community', err);
   }
 };
 
@@ -339,9 +333,8 @@ export const updateCommunityInfo = async ({
     }
 
     return updatedCommunity;
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error updating community information:', error);
+  } catch (err: any) {
+    handleActionError('Could not update community data', err);
   }
 };
 
@@ -382,9 +375,8 @@ export const deleteCommunity = async (id: string) => {
     const deletedCommunity = await community.deleteOne();
 
     return deletedCommunity;
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error deleting community: ', error);
+  } catch (err: any) {
+    handleActionError('Unable to delete the community', err);
   }
 };
 
@@ -408,9 +400,8 @@ export const requestJoinCommunity = async ({
     await community.save();
 
     revalidatePath(path);
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error adding member to community:', error);
+  } catch (err: any) {
+    handleActionError('Could not add member to community', err);
   }
 };
 
@@ -424,33 +415,33 @@ export const acceptJoinCommunity = async ({
   try {
     connectToDB();
 
-    // Find the user by objectId
-    const user = await UserModel.findById({ id: userId });
-    if (!user) throw new Error('User not found');
+    throw new Error('Hello there');
 
-    // Find the community by clerk id
-    const community = await CommunityModel.findOne({ id: communityId });
-    if (!community) throw new Error('Community not found');
+    // // Find the user by objectId
+    // const user = await UserModel.findById({ id: userId });
+    // if (!user) throw new Error('User not found');
 
-    // Remove the user's _id from the `community.requests` array
-    const reqIndex = community.requests.indexOf(user._id);
-    if (reqIndex !== -1) {
-      community.requests = [...community.requests].splice(reqIndex, 1);
-    }
-    await community.save();
+    // // Find the community by clerk id
+    // const community = await CommunityModel.findOne({ id: communityId });
+    // if (!community) throw new Error('Community not found');
+
+    // // Remove the user's _id from the `community.requests` array
+    // const reqIndex = community.requests.indexOf(user._id);
+    // if (reqIndex !== -1) {
+    //   community.requests = [...community.requests].splice(reqIndex, 1);
+    // }
+    // await community.save();
 
     revalidatePath(path);
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error adding member to community:', error);
+  } catch (err: any) {
+    handleActionError('Could not accept a user into the community', err);
   }
 };
 
 export const test = async (path: string) => {
   try {
     revalidatePath(path);
-  } catch (error) {
-    // TODO: Handle Error
-    logger.r('Error adding member to community:', error);
+  } catch (err: any) {
+    handleActionError('Test', err);
   }
 };

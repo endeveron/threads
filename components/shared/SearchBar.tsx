@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Input } from '../ui/input';
-import useDebouncedValue from '@/lib/utils/hooks';
+import { useDebouncedValue } from '@/lib/utils/hooks';
 
 interface SearchbarProps {
   routeType: string;
