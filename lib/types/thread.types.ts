@@ -5,7 +5,7 @@ type TThreadParams = {
   _id: string | ObjectId;
   author: string;
   text: string;
-  parentId: string;
+  parent: string;
   children: string;
   community: string;
   createdAt: Date;
@@ -25,7 +25,7 @@ export type TThread = {
   likes: ObjectId[];
   text: string;
   community?: ObjectId;
-  parentId?: string;
+  parent?: string;
 };
 
 export type TThreadPopulated = Omit<
@@ -51,6 +51,10 @@ export type TFetchThreadsParams = {
   pageSize?: number;
 };
 
+export type TFetchReplyThreadsParams = TFetchThreadsParams & {
+  userObjectId: string;
+};
+
 export type TAddCommentToThreadParams = TThreadActionBaseParams & {
   commentText: string;
 };
@@ -70,9 +74,29 @@ export type TThreadCardProps = {
   content: string;
   replies: TThreadWithPopulatedAuthor[];
   likes: ObjectId[];
-  parentId: string | null;
+  parent: string | null;
   createdAt: any;
   isReply?: boolean;
   path?: string;
   disableTextLink?: boolean;
+};
+
+export type TThreadReplyPopulated = {
+  _id: ObjectId;
+  likes: ObjectId[];
+  text: string;
+  author: TUserItemData;
+  parent: {
+    _id: ObjectId;
+    author: TUserItemData;
+    text: string;
+  };
+  community: TItemData | undefined;
+  createdAt: any;
+};
+
+// export type TReplyCardProps = Omit<TThreadCardProps, 'community'> & {
+export type TReplyCardProps = TThreadReplyPopulated & {
+  userId: string;
+  userObjectId: string;
 };

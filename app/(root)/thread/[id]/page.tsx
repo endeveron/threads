@@ -5,7 +5,6 @@ import { fetchUser } from '@/lib/actions/user.actions';
 import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreadById } from '@/lib/actions/thread.actions';
 import Reply from '@/components/forms/Reply';
-import { TUser } from '@/lib/types/user.types';
 
 export const revalidate = 0;
 
@@ -41,7 +40,7 @@ const Page = async ({ params }: PageProps) => {
         community={thread.community}
         replies={thread.children}
         likes={thread.likes}
-        parentId={thread.parentId}
+        parent={thread.parent}
         createdAt={thread.createdAt}
         userId={authUserId}
         userObjectId={userObjectId}
@@ -65,7 +64,7 @@ const Page = async ({ params }: PageProps) => {
             community={reply.community}
             replies={reply.children}
             likes={reply.likes}
-            parentId={reply.parentId}
+            parent={reply.parent}
             createdAt={reply.createdAt}
             isReply
             userId={authUserId} // Clerk user id

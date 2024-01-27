@@ -13,6 +13,11 @@ import {
   TUser,
 } from '@/lib/types/user.types';
 import { handleActionError } from '@/lib/utils/error';
+import {
+  TFetchReplyThreadsParams,
+  TThreadPopulated,
+  TThreadReplyPopulated,
+} from '@/lib/types/thread.types';
 
 // export const getUserAuthDataById = async (
 //   userId: string
@@ -138,17 +143,14 @@ export const fetchUsers = async ({
       ];
     }
 
-    // Configure the query object
-    const usersQuery = UserModel.find(query)
+    // Fetch user objects
+    const users = await UserModel.find(query)
       .sort({ createdAt: sortBy })
       .skip(skipAmount)
       .limit(pageSize);
 
     // Count the total number of fetched user objects
     const totalUsersCount = await UserModel.countDocuments(query);
-
-    // Fetch the users
-    const users = await usersQuery.exec();
 
     // Calculating whether there are more users available to fetch
     const isNext = totalUsersCount > skipAmount + users.length;
@@ -170,7 +172,7 @@ export const fetchUserThreads = async (userId: string) => {
   try {
     connectToDB();
 
-    const threadsQuery = UserModel.findOne({ id: userId }).populate({
+    return await UserModel.findOne({ id: userId }).populate({
       path: 'threads',
       model: ThreadModel,
       populate: [
@@ -192,8 +194,6 @@ export const fetchUserThreads = async (userId: string) => {
         },
       ],
     });
-
-    return await threadsQuery.exec();
   } catch (err: any) {
     handleActionError('Could not fetch threads', err);
   }
@@ -219,7 +219,7 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
     }, []);
 
     // Get all replies on the user threads
-    const activityQuery = ThreadModel.find({
+    return await ThreadModel.find({
       _id: { $in: childThreadIds },
       author: { $ne: userObjectId },
     }).populate({
@@ -227,8 +227,6 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
       model: UserModel,
       select: '_id image name',
     });
-
-    return await activityQuery.exec();
   } catch (err: any) {
     handleActionError('Could not fetch activity', err);
   }
@@ -237,20 +235,55 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
 /**
  * Retrieves all the threads that a user has replied to, excluding their own threads, and populates the author information for each reply.
  *
- * @param {string} userObjectId user._id, MongoDb ObjectId of the user.
+ * @param {string} params.userObjectId user._id, MongoDb ObjectId of the user.
+ * @param {number} params.pageNumber a number is used to specify the page number of the threads to fetch. The default value is 1.
+ * @param {number} params.pageSize a number is used to specify the amount of threads per page. The default value is 20.
  *
  * @returns a promise that resolves to an array of thread objects.
  */
-export const fetchUserReplies = async (userObjectId: string) => {
+export const fetchUserReplyThreads = async ({
+  userObjectId,
+  pageNumber = 1,
+  pageSize = 20,
+}: TFetchReplyThreadsParams): Promise<TThreadReplyPopulated[] | undefined> => {
   try {
     connectToDB();
 
-    // TODO: Get all the threads if children includes author: userObjectId
+    // Calculate the number of threads to skip based on the page number and page size
+    const skipAmount = (pageNumber - 1) * pageSize;
 
-    // const userThreads = await ThreadModel.find({ author: userObjectId });
-
-    // return await repliesQuery.exec();
+    return await ThreadModel.find({
+      author: userObjectId,
+      parent: { $nin: [null, undefined] },
+    })
+      .sort({ createdAt: 'desc' })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .select('-children')
+      .populate({
+        // TUserItemData
+        path: 'author',
+        model: UserModel,
+        select: '_id id image name username',
+      })
+      .populate({
+        path: 'parent',
+        model: ThreadModel,
+        select: '_id text',
+        populate: {
+          // TUserItemData
+          path: 'author',
+          model: UserModel,
+          select: '_id id image name username',
+        },
+      })
+      .populate({
+        // TItemData
+        path: 'community',
+        model: CommunityModel,
+        select: '_id id image name',
+      });
   } catch (err: any) {
-    handleActionError('Could not fetch user replies', err);
+    handleActionError('Could not fetch threads', err);
   }
 };

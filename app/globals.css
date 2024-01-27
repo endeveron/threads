@@ -100,7 +100,7 @@
   }
 
   .no-result {
-    @apply bg-paper rounded-lg p-8 text-center text-tertiary opacity-80 cursor-default;
+    @apply bg-paper rounded-lg p-8 text-center text-secondary opacity-40 cursor-default;
   }
 
   /* Menu */
@@ -209,6 +209,7 @@
     @apply xs:px-3 sm:px-4;
   }
 
+  /* ThreadCard.reply */
   .thread-card.reply {
     @apply mt-2;
   }

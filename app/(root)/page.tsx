@@ -5,8 +5,6 @@ import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreads } from '@/lib/actions/thread.actions';
 import { fetchUser } from '@/lib/actions/user.actions';
 import { TUser } from '@/lib/types/user.types';
-import { TThreadPopulated } from '@/lib/types/thread.types';
-import { handleActionError } from '@/lib/utils/error';
 
 // Route '/' allowed for unauthenicated users
 const Home = async () => {
@@ -25,15 +23,6 @@ const Home = async () => {
   }
 
   const threadsResult = await fetchThreads({});
-
-  // if (result?.threads) {
-  //   for (let thread of result.threads) {
-  //     console.log('thread.author', thread.author);
-  //     console.log('thread.children', thread.children);
-  //     console.log('thread.community', thread.community);
-  //     console.log('\n');
-  //   }
-  // }
 
   return (
     <section className="main-thread-list">
@@ -56,7 +45,7 @@ const Home = async () => {
             }
             replies={thread.children}
             likes={thread.likes}
-            parentId={thread.parentId || null}
+            parent={thread.parent || null}
             createdAt={thread.createdAt}
             key={thread._id.toString()}
             userId={authUserId}

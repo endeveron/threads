@@ -117,7 +117,7 @@ const Page = async ({ params }: TPageProps) => {
 
           <TabsContent value="threads" className="tabs-content">
             <ThreadsTab
-              accountType="community"
+              contentType="communityThreads"
               id={communityDetails._id.toString()} // community ObjectId
               userId={authUserId}
               userObjectId={userObjectId}

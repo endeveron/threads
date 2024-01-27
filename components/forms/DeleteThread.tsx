@@ -20,7 +20,7 @@ type TDeleteThreadProps = {
   id: string;
   userId: string | null;
   authorId: string;
-  parentId: string | null;
+  parent: string | null;
   isReply?: boolean;
 };
 
@@ -28,7 +28,7 @@ const DeleteThread = ({
   id,
   userId,
   authorId,
-  parentId,
+  parent, // parent thread ObjectId
   isReply,
 }: TDeleteThreadProps) => {
   const pathname = usePathname();
@@ -38,7 +38,7 @@ const DeleteThread = ({
 
   const handleDelete = async () => {
     await deleteThread(id, pathname);
-    if (!parentId || !isReply) {
+    if (!parent || !isReply) {
       router.push('/');
     }
   };

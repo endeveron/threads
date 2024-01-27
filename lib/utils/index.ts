@@ -38,21 +38,6 @@ export function isBase64Image(imageData: string) {
  */
 export const formatDateString = (dateString: string) => {
   return moment(dateString).fromNow();
-  // const options: Intl.DateTimeFormatOptions = {
-  //   year: 'numeric',
-  //   month: 'short',
-  //   day: 'numeric',
-  // };
-
-  // const date = new Date(dateString);
-  // const formattedDate = date.toLocaleDateString(undefined, options);
-
-  // const time = date.toLocaleTimeString([], {
-  //   hour: 'numeric',
-  //   minute: '2-digit',
-  // });
-
-  // return `${time} - ${formattedDate}`;
 };
 
 // /**

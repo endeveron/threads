@@ -22,7 +22,6 @@ import { updateUser } from '@/lib/actions/user.actions';
 import { useUploadThing } from '@/lib/uploadthing';
 import { cn, isBase64Image } from '@/lib/utils';
 import { UserValidation } from '@/lib/validations/user';
-import { handleActionError } from '@/lib/utils/error';
 import { useErrorHandler } from '@/lib/utils/hooks';
 
 type TAccountProfileProps = {

@@ -1,18 +1,20 @@
 import { ObjectId } from 'mongoose';
 import { redirect } from 'next/navigation';
 
-import ThreadCard from '../cards/ThreadCard';
-import { fetchUserThreads } from '@/lib/actions/user.actions';
 import { fetchCommunityThreads } from '@/lib/actions/community.actions';
-import { TAccountType } from '@/lib/types/account.types';
+import { fetchUserThreads } from '@/lib/actions/user.actions';
+import ThreadCard from '../cards/ThreadCard';
+
+import { TTabContentType } from '@/lib/types/common.types';
 import { TThreadPopulated } from '@/lib/types/thread.types';
+import { handleActionError } from '@/lib/utils/error';
 
 type TThreadsTabContent = {
-  name: string;
-  image: string;
-  username: string;
-  id: string;
   _id: ObjectId;
+  id: string;
+  name: string;
+  username: string;
+  image: string;
   threads: TThreadPopulated[];
 };
 
@@ -20,65 +22,71 @@ type TThreadsTabProps = {
   id: string;
   userId: string;
   userObjectId: string;
-  accountType: TAccountType;
+  contentType: TTabContentType;
 };
 
 const ThreadsTab = async ({
   id, // user ClerkId or community ClerkId
   userId,
   userObjectId,
-  accountType,
+  contentType,
 }: TThreadsTabProps) => {
-  let content: TThreadsTabContent;
+  let content: TThreadsTabContent | undefined;
 
-  switch (accountType) {
-    case 'user':
-      content = await fetchUserThreads(id);
-      break;
-    case 'community':
-      content = await fetchCommunityThreads(id);
+  try {
+    switch (contentType) {
+      case 'userThreads':
+        content = await fetchUserThreads(id);
+        break;
+      case 'communityThreads':
+        content = await fetchCommunityThreads(id);
+    }
+  } catch (err) {
+    handleActionError('Error fetching data', err);
   }
 
   if (!content) redirect('/');
 
   return (
-    <section className="mt-9 flex flex-col gap-10">
-      {content.threads.map((thread) => (
-        <ThreadCard
-          key={thread._id.toString()}
-          id={thread._id.toString()}
-          userId={userId}
-          userObjectId={userObjectId}
-          parentId={thread.parentId || null}
-          content={thread.text}
-          author={
-            accountType === 'user'
-              ? {
-                  _id: content._id,
-                  id: content.id,
-                  name: content.name,
-                  username: content.username,
-                  image: content.image,
-                }
-              : {
-                  _id: thread.author._id,
-                  id: thread.author.id,
-                  name: thread.author.name,
-                  username: thread.author.username,
-                  image: thread.author.image,
-                }
-          }
-          community={
-            accountType === 'community'
-              ? { name: content.name, id: content.id, image: content.image }
-              : thread.community
-          }
-          replies={thread.children}
-          likes={thread.likes}
-          createdAt={thread.createdAt}
-        />
-      ))}
-    </section>
+    content && (
+      <section className="mt-9 flex flex-col gap-10">
+        {content.threads.map((thread) => (
+          <ThreadCard
+            key={thread._id.toString()}
+            id={thread._id.toString()}
+            userId={userId}
+            userObjectId={userObjectId}
+            parent={thread.parent || null}
+            content={thread.text}
+            author={
+              content && contentType === 'userThreads'
+                ? {
+                    _id: content._id,
+                    id: content.id,
+                    name: content.name,
+                    username: content.username,
+                    image: content.image,
+                  }
+                : {
+                    _id: thread.author._id,
+                    id: thread.author.id,
+                    name: thread.author.name,
+                    username: thread.author.username,
+                    image: thread.author.image,
+                  }
+            }
+            community={
+              content && contentType === 'communityThreads'
+                ? { name: content.name, id: content.id, image: content.image }
+                : thread.community
+            }
+            replies={thread.children}
+            likes={thread.likes}
+            createdAt={thread.createdAt}
+          />
+        ))}
+      </section>
+    )
   );
 };
 

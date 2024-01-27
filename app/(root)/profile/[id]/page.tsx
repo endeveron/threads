@@ -7,6 +7,7 @@ import ThreadsTab from '@/components/shared/ThreadsTab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { profileTabs } from '@/constants';
 import { fetchUser } from '@/lib/actions/user.actions';
+import UserReplies from '@/components/shared/UserReplies';
 
 type TPageProps = {
   params: {
@@ -71,7 +72,15 @@ const Page = async ({ params }: TPageProps) => {
               userId={authUserId}
               userObjectId={userObjectId}
               id={user.id} // user ClerkId
-              accountType="user"
+              contentType="userThreads"
+            />
+          </TabsContent>
+
+          <TabsContent value="replies" className="tabs-content">
+            <UserReplies
+              className="mt-9"
+              userId={userId}
+              userObjectId={userObjectId}
             />
           </TabsContent>
         </Tabs>

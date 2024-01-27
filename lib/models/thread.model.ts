@@ -25,7 +25,7 @@ const threadSchema = new Schema<TThread>({
       type: String,
     },
   ],
-  parentId: {
+  parent: {
     type: String,
   },
   text: { type: String, required: true },

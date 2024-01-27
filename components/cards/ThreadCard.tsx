@@ -13,12 +13,12 @@ import DeleteThread from '@/components/forms/DeleteThread';
 
 const ThreadCard = ({
   id,
-  author, // if accountType === 'user'
-  community, // if accountType === 'community'
+  author,
+  community,
   content,
   replies,
   likes,
-  parentId,
+  parent, // parent thread ObjectId
   isReply,
   createdAt,
   userId, // Clerk user.id
@@ -63,8 +63,9 @@ const ThreadCard = ({
                 src={author.image}
                 className="cursor-pointer rounded-full object-cover"
                 alt="user avatar"
-                sizes="256px"
-                fill
+                height={44}
+                width={44}
+                sizes="44px"
               />
             </Link>
             <div className="thread-card_bar" />
@@ -126,7 +127,7 @@ const ThreadCard = ({
                     id={id.toString()}
                     userId={userId}
                     authorId={author.id.toString()}
-                    parentId={parentId}
+                    parent={parent}
                     isReply={isReply}
                   />
                 </div>

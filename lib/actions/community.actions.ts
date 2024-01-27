@@ -79,7 +79,7 @@ export const fetchCommunityDetails = async (id: string) => {
   try {
     connectToDB();
 
-    const communityDetailsQuery = CommunityModel.findOne({ id }).populate([
+    return await CommunityModel.findOne({ id }).populate([
       'createdBy',
       {
         path: 'members',
@@ -92,8 +92,6 @@ export const fetchCommunityDetails = async (id: string) => {
         select: 'name username email image id', // TCommunityDetailsRequestItem
       },
     ]);
-
-    return await communityDetailsQuery.exec();
   } catch (err: any) {
     handleActionError('Could not fetch community details', err);
   }
@@ -186,7 +184,7 @@ export const fetchCommunities = async ({
     const sortOptions = { createdAt: sortBy };
 
     // Create a query to fetch the communities based on the search and sort criteria.
-    const communitiesQuery = CommunityModel.find(query)
+    const communities = await CommunityModel.find(query)
       .sort(sortOptions)
       .skip(skipAmount)
       .limit(pageSize)
@@ -194,8 +192,6 @@ export const fetchCommunities = async ({
 
     // Count the total number of communities that match the search criteria (without pagination).
     const totalCommunitiesCount = await CommunityModel.countDocuments(query);
-
-    const communities = await communitiesQuery.exec();
 
     // Check if there are more communities beyond the current page.
     const isNext = totalCommunitiesCount > skipAmount + communities.length;

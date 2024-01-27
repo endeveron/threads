@@ -71,7 +71,7 @@ export const createThread = async ({
 const fetchAllChildThreads = async (
   threadObjectIdStr: string
 ): Promise<TThread[]> => {
-  const childThreads = await ThreadModel.find({ parentId: threadObjectIdStr });
+  const childThreads = await ThreadModel.find({ parent: threadObjectIdStr });
 
   const descendantThreads = [];
   for (const childThread of childThreads) {
@@ -155,7 +155,7 @@ export const fetchThreads = async ({
 
     // Fetch the threads that have no parents (top level threads that is not a comment/reply)
     const threads: TThreadPopulated[] = await ThreadModel.find({
-      parentId: { $in: [null, undefined] },
+      parent: { $in: [null, undefined] },
     })
       .sort({ createdAt: 'desc' })
       .skip(skipAmount)
@@ -184,11 +184,8 @@ export const fetchThreads = async ({
 
     // Count the total number of top-level threads that are not comments
     const totalThreadsCount = await ThreadModel.countDocuments({
-      parentId: { $in: [null, undefined] },
+      parent: { $in: [null, undefined] },
     });
-
-    // Fetch the threads
-    // const threads = await threadsQuery.exec();
 
     // Calculating whether there are more threads available to fetch
     const isNext = totalThreadsCount > skipAmount + threads.length;
@@ -210,7 +207,7 @@ export const fetchThreadById = async (threadId: string) => {
   try {
     connectToDB();
 
-    const threadQuery = ThreadModel.findById(threadId)
+    return await ThreadModel.findById(threadId)
       .populate({
         path: 'author',
         model: UserModel,
@@ -240,8 +237,6 @@ export const fetchThreadById = async (threadId: string) => {
           },
         ],
       });
-
-    return await threadQuery.exec();
   } catch (err: any) {
     handleActionError('Could not fetch a thread', err);
   }
@@ -276,7 +271,7 @@ export const addCommentToThread = async ({
     const commentThread = new ThreadModel({
       text: commentText,
       author: userObjectId,
-      parentId: threadId, // Set the parentId to the original thread's ID
+      parent: threadId, // Set the parent to the original thread's ID
     });
 
     // Save the comment thread to the database

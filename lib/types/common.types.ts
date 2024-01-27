@@ -2,6 +2,8 @@ import { ObjectId } from 'mongoose';
 
 export type WithChildren<T = {}> = T & { children?: React.ReactNode };
 
+export type TTabContentType = 'userThreads' | 'communityThreads';
+
 export type TItemData = {
   _id: ObjectId;
   id: string;

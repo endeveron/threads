@@ -23,23 +23,25 @@ export default function Error({
   // }, [error]);
 
   return (
-    <div>
-      <h1 className="head-text mb-4 text-accent">Ooops!</h1>
-      <p className="text-base-regular text-secondary mb-10">
-        {error?.message || 'Something went wrong.'}
-      </p>
-      <div className="flex flex-wrap max-xs:gap-4 gap-8">
-        <Button
-          onClick={
-            // Attempt to recover by trying to re-render the segment
-            () => reset()
-          }
-        >
-          Try again
-        </Button>
-        <Button variant="secondary" onClick={() => router.back()}>
-          Previous page
-        </Button>
+    <div className="error-page flex w-full justify-center">
+      <div className="error-page_message rounded-xl bg-paper p-8 w-fit flex flex-col items-center">
+        <h1 className="head-text mb-4 text-accent">Ooops!</h1>
+        <p className="text-base-regular text-secondary mb-10">
+          {error?.message || 'Something went wrong.'}
+        </p>
+        <div className="flex flex-wrap max-xs:gap-4 gap-8">
+          <Button
+            onClick={
+              // Attempt to recover by trying to re-render the segment
+              () => reset()
+            }
+          >
+            Try again
+          </Button>
+          <Button variant="secondary" onClick={() => router.back()}>
+            Previous page
+          </Button>
+        </div>
       </div>
     </div>
   );
