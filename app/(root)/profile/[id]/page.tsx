@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import ProfileHeader from '@/components/shared/ProfileHeader';
 import ThreadsTab from '@/components/shared/ThreadsTab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { profileTabs } from '@/constants';
+import { TProfileTabValue, TTab, profileTabs } from '@/constants';
 import { fetchUser } from '@/lib/actions/user.actions';
 import UserReplies from '@/components/shared/UserReplies';
 
@@ -27,6 +27,13 @@ const Page = async ({ params }: TPageProps) => {
   if (!user) throw new Error('Error fetching user data.');
   if (!user.onboarded) redirect('/onboarding');
   const userObjectId = user._id.toString();
+
+  // Calculate the length of ('threads' | 'replies')
+  const addTabHeaderCounter = (tab: TTab<TProfileTabValue>) => {
+    if (tab.value === 'tagged') return null;
+    const count = user[tab.value]?.length;
+    return !!count && <p className="ml-1 font-semibold text-accent">{count}</p>;
+  };
 
   return (
     <section>
@@ -58,11 +65,8 @@ const Page = async ({ params }: TPageProps) => {
                 />
                 <p className="max-sm:hidden">{tab.label}</p>
 
-                {tab.label === 'Threads' && (
-                  <p className="ml-1 font-semibold text-accent">
-                    {user.threads.length}
-                  </p>
-                )}
+                {/* `tagged` value hasn't been calculated */}
+                {addTabHeaderCounter(tab)}
               </TabsTrigger>
             ))}
           </TabsList>
@@ -81,6 +85,7 @@ const Page = async ({ params }: TPageProps) => {
               className="mt-9"
               userId={userId}
               userObjectId={userObjectId}
+              replyIdList={user.replies}
             />
           </TabsContent>
         </Tabs>

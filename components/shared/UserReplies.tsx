@@ -1,19 +1,23 @@
+import { ObjectId } from 'mongoose';
+
 import ReplyCard from '@/components/cards/ReplyCard';
-import { fetchUserReplyThreads } from '@/lib/actions/user.actions';
+import { fetchUserReplies } from '@/lib/actions/user.actions';
 import { cn } from '@/lib/utils';
 
 type TUserRepliesProps = {
   userId: string;
   userObjectId: string;
+  replyIdList: ObjectId[];
   className?: string;
 };
 
 const UserReplies = async ({
   userId,
   userObjectId,
+  replyIdList,
   className,
 }: TUserRepliesProps) => {
-  const replies = await fetchUserReplyThreads({ userObjectId });
+  const replies = await fetchUserReplies({ replyIdList });
 
   return replies?.length ? (
     <section className={cn('user-replies flex flex-col gap-10', className)}>
@@ -33,7 +37,7 @@ const UserReplies = async ({
       ))}
     </section>
   ) : (
-    <p className="no-result">No replies yet</p>
+    <p className="no-result mt-9">No replies yet</p>
   );
 };
 

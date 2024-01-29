@@ -36,6 +36,11 @@ export type TCommunityDetails = Omit<
   requests: TCommunityDetailsRequestItem[];
 };
 
+export type TSuggestedCommunity = Pick<
+  TCommunity,
+  'id' | 'name' | 'username' | 'image' | 'members'
+>;
+
 export type TCreateCommunityParams = {
   id: string;
   name: string;

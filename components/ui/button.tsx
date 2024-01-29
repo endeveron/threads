@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'rounded-lg text-main bg-button max-xs:w-full',
+        default: 'rounded-lg text-main bg-button',
         secondary: 'bg-button-secondary', // 'bg-zinc-100 text-zinc-900 hover:bg-zinc-100/80 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-800/80',
         destructive: '', // 'bg-red-500 text-zinc-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90',
         outline: '', // 'border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-main dark:hover:bg-zinc-800 dark:hover:text-zinc-50',

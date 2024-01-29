@@ -134,7 +134,7 @@
   }
 
   .left-sidebar {
-    @apply bg-paper sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto pb-5 pt-28 border-r border-r-border max-md:hidden;
+    @apply pb-5 pt-24 bg-paper sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-border max-md:hidden;
   }
 
   .left-sidebar_main,
@@ -155,15 +155,15 @@
   }
 
   .right-sidebar {
-    @apply bg-paper sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto px-6 pb-6 pt-28 border-l border-l-border max-xl:hidden;
+    @apply px-6 pt-24 pb-6 gap-6 bg-paper sticky right-0 top-0 z-20 flex h-screen w-fit flex-col overflow-auto border-l border-l-border max-xl:hidden;
   }
 
   .right-sidebar_content-box {
-    @apply flex flex-1 flex-col justify-start;
+    @apply py-3;
   }
 
   .right-sidebar_title {
-    @apply text-heading4-semibold text-main;
+    @apply text-heading4-semibold text-main mb-8;
   }
 
   .search-bar {
@@ -196,6 +196,11 @@
     @apply w-full rounded-lg p-5;
   }
 
+  .user-item a,
+  .community-item a {
+    @apply flex items-center gap-4;
+  }
+
   .thread-card:not(.reply):not(.has-replies) .thread-card_bar,
   .thread-details_reply-list .thread-card.reply:last-child .thread-card_bar {
     display: none;
@@ -203,6 +208,10 @@
 
   .thread-details > .thread-card {
     @apply xs:mx-2 sm:mx-0 sm:paper sm:p-4;
+  }
+
+  .thread-details > .thread-card .thread-card_toolbar {
+    @apply mb-3;
   }
 
   .thread-details_reply-list {
@@ -292,7 +301,7 @@
   }
 
   .main-thread-list {
-    @apply flex flex-col gap-20;
+    @apply pt-1 flex flex-col gap-20;
   }
 }
 

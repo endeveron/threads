@@ -9,13 +9,13 @@ import UserModel from '@/lib/models/user.model';
 import { connectToDB } from '@/lib/mongoose';
 import {
   TFetchUsersParams,
+  TSuggestedUser,
   TUpdateUserParams,
   TUser,
 } from '@/lib/types/user.types';
 import { handleActionError } from '@/lib/utils/error';
 import {
-  TFetchReplyThreadsParams,
-  TThreadPopulated,
+  TFetchUserRepliesParams,
   TThreadReplyPopulated,
 } from '@/lib/types/thread.types';
 
@@ -162,6 +162,53 @@ export const fetchUsers = async ({
 };
 
 /**
+ * Retrieves a list of users from a database based on search criteria, pagination, and sorting options.
+ *
+ * @param {string} params.searchQuery a string representing the search query to filter the users. It is optional and defaults to an empty string.
+ * @param {number} params.pageNumber a number is used to specify the page number of the users to fetch. The default value is 1.
+ * @param {number} params.pageSize a number is used to specify the amount of users per page. The default value is 20.
+ * @param {Mongoose.SortOrder} params.sortBy is used to specify the sorting order of the fetched users. The default value is `'desc'` stands for descending order, meaning that the users will be sorted in reverse chronological order based on their `createdAt` property.
+ * @param {string} params.userId the user.id property in MongoDb user object.
+ *
+ * @returns an object { users, isNext }. The `users` property contains an array of user objects that match the search criteria and pagination settings. The `isNext` property is a boolean value indicating whether there are more users available to fetch.
+ */
+export const fetchSuggestedUsers = async ({
+  authUserId,
+  number = 10,
+}: {
+  number?: number;
+  authUserId?: string;
+}): Promise<TSuggestedUser[] | undefined> => {
+  try {
+    connectToDB();
+
+    // Fetch the users
+    const users = await UserModel.aggregate([
+      {
+        $project: {
+          id: 1,
+          name: 1,
+          username: 1,
+          image: 1,
+          threads: 1,
+          threadsLength: { $size: '$threads' },
+        },
+      },
+      // Sort users by number of created threads in descending order
+      { $sort: { threadsLength: -1 } },
+    ]).limit(number);
+
+    if (authUserId) {
+      return users.filter((user) => user.id !== authUserId);
+    }
+
+    return users;
+  } catch (err: any) {
+    handleActionError('Could not fetch users', err);
+  }
+};
+
+/**
  * Fetches user threads from a database, populating the threads with their children and the author information.
  *
  * @param {string} userId user.id property in MongoDb user object.
@@ -241,24 +288,19 @@ export const fetchActivity = async (userObjectId?: ObjectId) => {
  *
  * @returns a promise that resolves to an array of thread objects.
  */
-export const fetchUserReplyThreads = async ({
-  userObjectId,
-  pageNumber = 1,
-  pageSize = 20,
-}: TFetchReplyThreadsParams): Promise<TThreadReplyPopulated[] | undefined> => {
+export const fetchUserReplies = async ({
+  replyIdList,
+}: TFetchUserRepliesParams): Promise<TThreadReplyPopulated[] | undefined> => {
   try {
     connectToDB();
 
-    // Calculate the number of threads to skip based on the page number and page size
-    const skipAmount = (pageNumber - 1) * pageSize;
+    // // Calculate the number of threads to skip based on the page number and page size
+    // const skipAmount = (pageNumber - 1) * pageSize;
 
     return await ThreadModel.find({
-      author: userObjectId,
-      parent: { $nin: [null, undefined] },
+      _id: { $in: replyIdList },
     })
       .sort({ createdAt: 'desc' })
-      .skip(skipAmount)
-      .limit(pageSize)
       .select('-children')
       .populate({
         // TUserItemData

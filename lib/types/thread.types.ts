@@ -51,8 +51,8 @@ export type TFetchThreadsParams = {
   pageSize?: number;
 };
 
-export type TFetchReplyThreadsParams = TFetchThreadsParams & {
-  userObjectId: string;
+export type TFetchUserRepliesParams = TFetchThreadsParams & {
+  replyIdList: ObjectId[];
 };
 
 export type TAddCommentToThreadParams = TThreadActionBaseParams & {

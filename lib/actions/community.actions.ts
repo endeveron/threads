@@ -10,6 +10,7 @@ import {
   TAcceptJoinCommunityParams,
   TCreateCommunityParams,
   TRequestJoinCommunityParams,
+  TSuggestedCommunity,
   TUpdateCommunityParams,
 } from '@/lib/types/community.types';
 import { handleActionError } from '@/lib/utils/error';
@@ -138,8 +139,8 @@ export const fetchCommunityThreads = async (id: string) => {
 };
 
 /**
- * The function fetchCommunities fetches a list of communities based on search criteria, pagination,
- * and sorting options.
+ * Fetches a list of communities based on search criteria, pagination, and sorting options.
+ *
  * @param {number} params.searchQuery string used to search for communities. It is optional and defaults to an empty string.
  * @param {number} params.pageNumber a number is used to specify the page number of the communities to fetch. The default value is 1.
  * @param {number} params.pageSize a number is used to specify the amount of communities per page. The default value is 20.
@@ -197,6 +198,42 @@ export const fetchCommunities = async ({
     const isNext = totalCommunitiesCount > skipAmount + communities.length;
 
     return { communities, isNext };
+  } catch (err: any) {
+    handleActionError('Could not fetch communities', err);
+  }
+};
+
+/**
+ * Fetches a specified number of suggested communities from a database, sorted by the number of members.
+ *
+ * @param {number} params.number the number of suggested communities to fetch. It is an optional parameter and
+ * defaults to 10 if not provided.
+ *
+ * @returns a promise that resolves to an array of objects of type TSuggestedCommunity or undefined.
+ */
+export const fetchSuggestedCommunities = async ({
+  number = 10,
+}: {
+  number?: number;
+}): Promise<TSuggestedCommunity[] | undefined> => {
+  try {
+    connectToDB();
+
+    // Fetch the communities
+    return await CommunityModel.aggregate([
+      {
+        $project: {
+          id: 1,
+          name: 1,
+          username: 1,
+          image: 1,
+          members: 1,
+          membersLength: { $size: '$members' },
+        },
+      },
+      // Sort communities by number of members in descending order
+      { $sort: { membersLength: -1 } },
+    ]).limit(number);
   } catch (err: any) {
     handleActionError('Could not fetch communities', err);
   }
@@ -411,22 +448,20 @@ export const acceptJoinCommunity = async ({
   try {
     connectToDB();
 
-    throw new Error('Hello there');
+    // Find the user by objectId
+    const user = await UserModel.findById({ id: userId });
+    if (!user) throw new Error('User not found');
 
-    // // Find the user by objectId
-    // const user = await UserModel.findById({ id: userId });
-    // if (!user) throw new Error('User not found');
+    // Find the community by clerk id
+    const community = await CommunityModel.findOne({ id: communityId });
+    if (!community) throw new Error('Community not found');
 
-    // // Find the community by clerk id
-    // const community = await CommunityModel.findOne({ id: communityId });
-    // if (!community) throw new Error('Community not found');
-
-    // // Remove the user's _id from the `community.requests` array
-    // const reqIndex = community.requests.indexOf(user._id);
-    // if (reqIndex !== -1) {
-    //   community.requests = [...community.requests].splice(reqIndex, 1);
-    // }
-    // await community.save();
+    // Remove the user's _id from the `community.requests` array
+    const reqIndex = community.requests.indexOf(user._id);
+    if (reqIndex !== -1) {
+      community.requests = [...community.requests].splice(reqIndex, 1);
+    }
+    await community.save();
 
     revalidatePath(path);
   } catch (err: any) {

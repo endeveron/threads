@@ -260,7 +260,7 @@ export const addCommentToThread = async ({
   try {
     connectToDB();
 
-    // Find the original thread by its ObjectId
+    // Find an original thread by its ObjectId
     const originalThread = await ThreadModel.findById(threadId);
 
     if (!originalThread) {
@@ -280,7 +280,14 @@ export const addCommentToThread = async ({
     // Add the comment thread's ID to the original thread's children array
     originalThread.children.push(savedCommentThread._id);
 
-    // Save the updated original thread to the database
+    // Find an author by their ObjectId
+    const author = await UserModel.findById(userObjectId);
+
+    // Add the comment thread's ID to the author's replies array
+    author.replies.push(savedCommentThread._id);
+
+    // Save updated objects to the database
+    await author.save();
     await originalThread.save();
 
     revalidatePath(path);

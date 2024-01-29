@@ -9,8 +9,9 @@ export type TUser = {
   email: string;
   image: string;
   threads: [];
-  onboarded: boolean;
+  replies: [];
   communities: [];
+  onboarded: boolean;
   bio?: string;
 };
 
@@ -37,6 +38,8 @@ export type TUserCardType = 'community' | 'request' | 'user';
 export type TCommunityRequestData = {
   communityId: string;
 };
+
+export type TSuggestedUser = Pick<TUser, 'id' | 'name' | 'username' | 'image'>;
 
 export type TUserCardProps = {
   id: string; // userId or communityId
