@@ -172,7 +172,6 @@ module.exports = {
         'button-secondary': 'var(--button-secondary)',
 
         border: 'var(--border)',
-        line: 'var(--line)',
 
         accent: 'var(--accent)',
         error: 'var(--error)',

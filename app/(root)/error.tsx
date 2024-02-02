@@ -24,7 +24,7 @@ export default function Error({
 
   return (
     <div className="error-page flex w-full justify-center">
-      <div className="error-page_message rounded-xl bg-paper p-8 w-fit flex flex-col items-center">
+      <div className="error-page_message rounded-lg bg-paper p-8 w-fit flex flex-col items-center">
         <h1 className="head-text mb-4 text-accent">Ooops!</h1>
         <p className="text-base-regular text-secondary mb-10">
           {error?.message || 'Something went wrong.'}

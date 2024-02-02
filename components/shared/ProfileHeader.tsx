@@ -28,7 +28,7 @@ const ProfileHeader = ({
   community, // for community
 }: ProfileHeaderProps) => {
   return (
-    <div className="profile-header flex w-full flex-col justify-start">
+    <div className="profile-header mb-14 lg:mt-4 lg:mb-16 flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="relative h-20 w-20 object-cover">

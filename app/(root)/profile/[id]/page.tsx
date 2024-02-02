@@ -32,7 +32,9 @@ const Page = async ({ params }: TPageProps) => {
   const addTabHeaderCounter = (tab: TTab<TProfileTabValue>) => {
     if (tab.value === 'tagged') return null;
     const count = user[tab.value]?.length;
-    return !!count && <p className="ml-1 font-semibold text-accent">{count}</p>;
+    return (
+      !!count && <p className="ml-1 font-semibold text-tertiary">{count}</p>
+    );
   };
 
   return (
@@ -47,49 +49,47 @@ const Page = async ({ params }: TPageProps) => {
         bio={user.bio}
       />
 
-      <div className="mt-14">
-        <Tabs className="w-full" defaultValue="threads">
-          <TabsList className="tabs-list">
-            {profileTabs.map((tab) => (
-              <TabsTrigger
-                key={tab.label}
-                value={tab.value}
-                className="tabs-trigger"
-              >
-                <Image
-                  src={tab.icon}
-                  alt={tab.label}
-                  width={24}
-                  height={24}
-                  className="object-contain flex-shrink-0"
-                />
-                <p className="max-sm:hidden">{tab.label}</p>
+      <Tabs className="w-full" defaultValue="threads">
+        <TabsList className="tabs-list">
+          {profileTabs.map((tab) => (
+            <TabsTrigger
+              key={tab.label}
+              value={tab.value}
+              className="tabs-trigger"
+            >
+              <Image
+                src={tab.icon}
+                alt={tab.label}
+                width={24}
+                height={24}
+                className="object-contain flex-shrink-0"
+              />
+              <p className="max-sm:hidden">{tab.label}</p>
 
-                {/* `tagged` value hasn't been calculated */}
-                {addTabHeaderCounter(tab)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+              {/* `tagged` value hasn't been calculated */}
+              {addTabHeaderCounter(tab)}
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-          <TabsContent value="threads" className="tabs-content">
-            <ThreadsTab
-              userId={authUserId}
-              userObjectId={userObjectId}
-              id={user.id} // user ClerkId
-              contentType="userThreads"
-            />
-          </TabsContent>
+        <TabsContent value="threads" className="tabs-content">
+          <ThreadsTab
+            userId={authUserId}
+            userObjectId={userObjectId}
+            id={user.id} // user ClerkId
+            contentType="userThreads"
+          />
+        </TabsContent>
 
-          <TabsContent value="replies" className="tabs-content">
-            <UserReplies
-              className="mt-9"
-              userId={userId}
-              userObjectId={userObjectId}
-              replyIdList={user.replies}
-            />
-          </TabsContent>
-        </Tabs>
-      </div>
+        <TabsContent value="replies" className="tabs-content">
+          <UserReplies
+            className="mt-9"
+            userId={userId}
+            userObjectId={userObjectId}
+            replyIdList={user.replies}
+          />
+        </TabsContent>
+      </Tabs>
     </section>
   );
 };

@@ -39,12 +39,12 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <section>
-      <Searchbar routeType="search" className="mt-4" />
+      <Searchbar routeType="search" className="mb-8" />
 
       {result?.users.length === 0 ? (
         <p className="no-result">No Result</p>
       ) : (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           {result?.users.map((user) => (
             <UserCard
               key={user.id}

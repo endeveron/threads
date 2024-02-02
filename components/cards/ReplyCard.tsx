@@ -39,7 +39,7 @@ const ReplyCard = ({
               fill
             />
           </Link>
-          <div className="thread-card_bar" />
+          <div className="line" />
         </div>
 
         <div className="thread-card_column flex flex-col w-full pb-4 ">

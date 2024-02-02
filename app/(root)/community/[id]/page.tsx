@@ -77,7 +77,9 @@ const Page = async ({ params }: TPageProps) => {
   // Calculate the length of ('threads' | 'members' | 'requests')
   const addTabHeaderCounter = (tab: TTab<TCommunityTabValue>) => {
     const count = communityDetails[tab.value]?.length;
-    return !!count && <p className="ml-1 font-semibold text-accent">{count}</p>;
+    return (
+      !!count && <p className="ml-1 font-semibold text-tertiary">{count}</p>
+    );
   };
 
   return (
@@ -92,74 +94,72 @@ const Page = async ({ params }: TPageProps) => {
         community={communityData}
       />
 
-      <div className="mt-14">
-        <Tabs className="w-full" defaultValue="threads">
-          <TabsList className="tabs-list">
-            {communityTabs.map((tab) => (
-              <TabsTrigger
-                key={tab.label}
-                value={tab.value}
-                className="tabs-trigger"
-              >
-                <Image
-                  src={tab.icon}
-                  alt={tab.label}
-                  width={24}
-                  height={24}
-                  className="object-contain flex-shrink-0"
-                />
-                <p className="max-sm:hidden">{tab.label}</p>
+      <Tabs className="w-full" defaultValue="threads">
+        <TabsList className="tabs-list">
+          {communityTabs.map((tab) => (
+            <TabsTrigger
+              key={tab.label}
+              value={tab.value}
+              className="tabs-trigger"
+            >
+              <Image
+                src={tab.icon}
+                alt={tab.label}
+                width={24}
+                height={24}
+                className="object-contain flex-shrink-0"
+              />
+              <p className="max-sm:hidden">{tab.label}</p>
 
-                {addTabHeaderCounter(tab)}
-              </TabsTrigger>
+              {addTabHeaderCounter(tab)}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        <TabsContent value="threads" className="tabs-content">
+          <ThreadsTab
+            contentType="communityThreads"
+            id={communityDetails._id.toString()} // community ObjectId
+            userId={authUserId}
+            userObjectId={userObjectId}
+          />
+        </TabsContent>
+
+        <TabsContent value="members" className="tabs-content">
+          <section className="mt-9 grid sm:grid-cols-2 gap-5">
+            {communityDetails.members.map((member: any) => (
+              <UserCard
+                key={member.id}
+                id={member.id}
+                name={member.name}
+                username={member.username}
+                image={member.image}
+                type="user"
+              />
             ))}
-          </TabsList>
+          </section>
+        </TabsContent>
 
-          <TabsContent value="threads" className="tabs-content">
-            <ThreadsTab
-              contentType="communityThreads"
-              id={communityDetails._id.toString()} // community ObjectId
-              userId={authUserId}
-              userObjectId={userObjectId}
-            />
-          </TabsContent>
-
-          <TabsContent value="members" className="tabs-content">
-            <section className="mt-9 grid sm:grid-cols-2 gap-5">
-              {communityDetails.members.map((member: any) => (
-                <UserCard
-                  key={member.id}
-                  id={member.id}
-                  name={member.name}
-                  username={member.username}
-                  image={member.image}
-                  type="user"
+        <TabsContent value="requests" className="tabs-content">
+          <section className="mt-9 grid sm:grid-cols-2 gap-5">
+            {communityDetails.requests.map(
+              (request: TCommunityDetailsRequestItem) => (
+                <RequestCard
+                  key={request.id}
+                  userId={request.id}
+                  authUserId={authUserId}
+                  name={request.name}
+                  username={request.username}
+                  image={request.image}
+                  email={request.email}
+                  communityId={communityId}
+                  isCommunityCreator={isCommunityCreator}
                 />
-              ))}
-            </section>
-          </TabsContent>
-
-          <TabsContent value="requests" className="tabs-content">
-            <section className="mt-9 grid sm:grid-cols-2 gap-5">
-              {communityDetails.requests.map(
-                (request: TCommunityDetailsRequestItem) => (
-                  <RequestCard
-                    key={request.id}
-                    userId={request.id}
-                    authUserId={authUserId}
-                    name={request.name}
-                    username={request.username}
-                    image={request.image}
-                    email={request.email}
-                    communityId={communityId}
-                    isCommunityCreator={isCommunityCreator}
-                  />
-                )
-              )}
-            </section>
-          </TabsContent>
-        </Tabs>
-      </div>
+              )
+            )}
+          </section>
+        </TabsContent>
+      </Tabs>
     </section>
   );
 };

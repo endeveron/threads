@@ -50,7 +50,7 @@ const ThreadCard = ({
 
   return (
     <article
-      className={cn('thread-card flex w-full flex-col rounded-xl', {
+      className={cn('thread-card flex w-full flex-col rounded-lg', {
         'has-replies': !!replies?.length,
         reply: isReply,
       })}
@@ -71,7 +71,7 @@ const ThreadCard = ({
                 sizes="44px"
               />
             </Link>
-            <div className="thread-card_bar" />
+            <div className="line" />
           </div>
 
           <div className="thread-card_column flex flex-col w-full">
@@ -168,7 +168,7 @@ const ThreadCard = ({
         {/* Replies */}
         {replyImages.length > 0 && (
           <Link href={`/thread/${id}`}>
-            <div className="thread-card_replies flex items-center pl-1.5 mt-2">
+            <div className="thread-card_replies flex items-center pl-1.5">
               {replyImages.map((image, index) => (
                 <Image
                   key={index}
