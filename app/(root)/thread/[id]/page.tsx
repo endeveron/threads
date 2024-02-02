@@ -32,7 +32,7 @@ const Page = async ({ params }: PageProps) => {
   const thread = await fetchThreadById(params.id);
 
   return (
-    <div className="thread-details">
+    <div className="thread-details page">
       <ThreadCard
         id={thread._id}
         author={thread.author}

@@ -12,7 +12,10 @@ import Link from 'next/link';
 const TopBar = async () => {
   return (
     <nav className="top-bar">
-      <Link href="/" className="top-bar_logo flex items-center gap-3">
+      <Link
+        href="/"
+        className="top-bar_logo flex items-center gap-3 p-2 rounded-lg"
+      >
         <Image src="/assets/logo.svg" alt="logo" width={33} height={32} />
         <p className="text-heading3-bold text-heading-2">Threads</p>
       </Link>

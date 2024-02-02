@@ -9,7 +9,7 @@ type TActivityCardProps = {
 const ActivityCard = ({ activity }: TActivityCardProps) => {
   return (
     <Link href={`/thread/${activity.parent}`}>
-      <article className="activity-card paper">
+      <article className="activity-card card paper">
         <Image
           src={activity.author.image}
           alt="user avatar"

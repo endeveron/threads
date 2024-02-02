@@ -24,19 +24,19 @@ const Page = async (props: PageProps) => {
   const activities = await fetchActivity(user?._id);
 
   return (
-    <>
+    <section className="page">
       <h1 className="head-text">Activity</h1>
 
       {activities?.length ? (
-        <section className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           {activities.map((activity) => (
             <ActivityCard activity={activity} key={activity._id} />
           ))}
-        </section>
+        </div>
       ) : (
         <p className="no-result">No activity yet</p>
       )}
-    </>
+    </section>
   );
 };
 

@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/shared/Button';
 import { reactToThread } from '@/lib/actions/thread.actions';
 import { cn } from '@/lib/utils';
 import { useErrorHandler } from '@/lib/utils/hooks';
@@ -56,7 +57,11 @@ const LikeButton = ({ threadId, userObjectId, likes }: TLikeButtonProps) => {
   }, [likes]);
 
   return (
-    <div className="like-button" onClick={handleClick}>
+    <Button
+      variant="outline"
+      className="like-button action"
+      onClick={handleClick}
+    >
       <Image
         src={`/assets/heart${isLiked ? '-filled' : ''}.svg`}
         alt="heart"
@@ -66,7 +71,7 @@ const LikeButton = ({ threadId, userObjectId, likes }: TLikeButtonProps) => {
           stable: isLiked,
         })}
       />
-    </div>
+    </Button>
   );
 };
 

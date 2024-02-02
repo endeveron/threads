@@ -45,7 +45,7 @@ const DeleteThread = ({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger className="action">
         <Image
           src="/assets/delete.svg"
           alt="delte"

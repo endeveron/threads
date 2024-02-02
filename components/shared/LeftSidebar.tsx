@@ -10,7 +10,11 @@ const LeftSidebar = (props: LeftSidebarProps) => {
         <MainMenuLinks />
       </div>
       <div className="left-sidebar_bottom mt-10">
-        <SignOutButton callbackRoute="/" label="Logout" />
+        <SignOutButton
+          className="main-menu_link"
+          callbackRoute="/"
+          label="Logout"
+        />
       </div>
     </section>
   );

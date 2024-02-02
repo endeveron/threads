@@ -28,11 +28,11 @@ const Page = async (props: PageProps) => {
   };
 
   return (
-    <>
+    <section className="page">
       <h1 className="head-text">Edit User Profile</h1>
 
       <AccountProfile user={userData} btnTitle="Continue" />
-    </>
+    </section>
   );
 };
 

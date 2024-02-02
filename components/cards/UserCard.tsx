@@ -21,7 +21,7 @@ const UserCard = ({ id, name, username, image, type }: TUserCardProps) => {
   }
 
   return (
-    <article className="user-card">
+    <article className="user-card card">
       <div className="user-card_content">
         <div className="relative h-12 w-12">
           <Image

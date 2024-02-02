@@ -18,11 +18,11 @@ const Page = async () => {
   const userObjectId = user._id.toString();
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col justify-start">
+    <section className="page">
       <h1 className="head-text">Create a New Thread</h1>
 
       <PostThread userObjectId={userObjectId} />
-    </div>
+    </section>
   );
 };
 

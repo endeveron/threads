@@ -29,8 +29,8 @@ const MainMenuLinks = (props: MainMenuLinksProps) => {
       <Link
         href={route}
         key={link.label}
-        className={cn('main-menu_link hover:bg-paper-hover', {
-          'main-menu_link--active bg-button hover:bg-button': isActive,
+        className={cn('main-menu_link', {
+          'main-menu_link--active bg-button': isActive,
         })}
       >
         <Image src={link.imgURL} alt={link.label} width={24} height={24} />

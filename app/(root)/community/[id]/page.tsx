@@ -81,7 +81,7 @@ const Page = async ({ params }: TPageProps) => {
   };
 
   return (
-    <section>
+    <section className="page">
       <ProfileHeader
         authUserId={authUserId}
         authUserObjectId={userObjectId}
@@ -92,7 +92,7 @@ const Page = async ({ params }: TPageProps) => {
         community={communityData}
       />
 
-      <div className="mt-10">
+      <div className="mt-14">
         <Tabs className="w-full" defaultValue="threads">
           <TabsList className="tabs-list">
             {communityTabs.map((tab) => (

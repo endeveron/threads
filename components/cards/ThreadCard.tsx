@@ -58,7 +58,10 @@ const ThreadCard = ({
       <div className="thread-card_content-wrapper flex flex-col items-start justify-between">
         <div className="thread-card_content flex w-full flex-1 flex-row gap-4">
           <div className="thread-card_column flex flex-col items-center">
-            <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
+            <Link
+              href={`/profile/${author.id}`}
+              className="relative h-11 w-11 rounded-full"
+            >
               <Image
                 src={author.image}
                 className="cursor-pointer rounded-full object-cover"

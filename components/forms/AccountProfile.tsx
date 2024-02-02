@@ -120,7 +120,7 @@ const AccountProfile = ({ user, btnTitle }: TAccountProfileProps) => {
   return (
     <Form {...form}>
       <form
-        className={cn('form form-card mt-9', {
+        className={cn('form mt-9', {
           inactive: loading,
         })}
         onSubmit={form.handleSubmit(onSubmit)}

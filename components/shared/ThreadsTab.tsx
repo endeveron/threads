@@ -49,7 +49,7 @@ const ThreadsTab = async ({
 
   return (
     content && (
-      <section className="mt-9 flex flex-col gap-10">
+      <section className="tab mt-9 flex flex-col gap-10 sm:gap-4">
         {content.threads.map((thread) => (
           <ThreadCard
             key={thread._id.toString()}

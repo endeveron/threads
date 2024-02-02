@@ -24,8 +24,8 @@ const ReplyCard = ({
   //   : [];
 
   return (
-    <article className="reply-card">
-      <div className="reply-card_parent flex flex-row gap-4">
+    <article className="reply-card card rounded-lg">
+      <div className="reply-card_parent flex flex-row gap-4 mb-2">
         <div className="thread-card_column flex flex-col items-center">
           <Link
             href={`/profile/${parent.author.id}`}
@@ -42,7 +42,7 @@ const ReplyCard = ({
           <div className="thread-card_bar" />
         </div>
 
-        <div className="thread-card_column flex flex-col w-full pb-6">
+        <div className="thread-card_column flex flex-col w-full pb-4 ">
           <Link
             className="thread-card_profile-link w-fit"
             href={`/profile/${parent.author.id}`}

@@ -6,12 +6,14 @@ import { useEffect, useState } from 'react';
 
 import { Input } from '../ui/input';
 import { useDebouncedValue } from '@/lib/utils/hooks';
+import { cn } from '@/lib/utils';
 
 interface SearchbarProps {
   routeType: string;
+  className?: string;
 }
 
-const SearchBar = ({ routeType }: SearchbarProps) => {
+const SearchBar = ({ routeType, className }: SearchbarProps) => {
   const router = useRouter();
   const [search, setSearch] = useState('');
 
@@ -26,7 +28,7 @@ const SearchBar = ({ routeType }: SearchbarProps) => {
   }, [debouncedSearch, routeType]);
 
   return (
-    <div className="search-bar">
+    <div className={cn('search-bar', className)}>
       <Image
         src="/assets/search-gray.svg"
         alt="search"
@@ -41,7 +43,7 @@ const SearchBar = ({ routeType }: SearchbarProps) => {
         placeholder={`${
           routeType !== 'search' ? 'Search community' : 'Search creators'
         }`}
-        className="search-bar_input"
+        className="search-bar_input outline-none"
       />
     </div>
   );

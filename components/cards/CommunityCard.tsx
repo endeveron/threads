@@ -12,7 +12,7 @@ function CommunityCard({
   members,
 }: TCommunityCardProps) {
   return (
-    <article className="community-card paper">
+    <article className="community-card card paper">
       <div className="flex flex-wrap items-center gap-5">
         <Link href={`/community/${id}`} className="relative h-12 w-12">
           <Image

@@ -30,10 +30,10 @@ const Page = async ({ searchParams }: PageProps) => {
   });
 
   return (
-    <>
+    <section className="page">
       <Searchbar routeType="community" />
 
-      <section className="mt-8">
+      <div className="mt-8">
         {result?.communities.length === 0 ? (
           <p className="no-result">No Result</p>
         ) : (
@@ -51,14 +51,14 @@ const Page = async ({ searchParams }: PageProps) => {
             ))}
           </div>
         )}
-      </section>
+      </div>
 
       {/* <Pagination
         path='search'
         pageNumber={searchParams?.page ? +searchParams.page : 1}
         isNext={result.isNext}
       /> */}
-    </>
+    </section>
   );
 };
 

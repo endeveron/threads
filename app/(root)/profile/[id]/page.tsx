@@ -36,7 +36,7 @@ const Page = async ({ params }: TPageProps) => {
   };
 
   return (
-    <section>
+    <section className="page">
       <ProfileHeader
         userId={userId}
         authUserId={authUserId}
@@ -47,7 +47,7 @@ const Page = async ({ params }: TPageProps) => {
         bio={user.bio}
       />
 
-      <div className="mt-10 mb-6">
+      <div className="mt-14">
         <Tabs className="w-full" defaultValue="threads">
           <TabsList className="tabs-list">
             {profileTabs.map((tab) => (

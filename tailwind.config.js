@@ -163,8 +163,8 @@ module.exports = {
         background: 'var(--background)',
         'background-opac': 'var(--background-opac)',
         paper: 'var(--background-secondary)', // bar, tab, card
-        'paper-hover': 'var(--background-secondary-hover)',
-        'paper-blur': 'var(--background-secondary-opacity)',
+        'paper-hover': 'var(--background-thirty)',
+        'paper-blur': 'var(--background-opac)',
         overlay: 'var(--background-overlay)',
 
         button: 'var(--button)',
@@ -172,6 +172,7 @@ module.exports = {
         'button-secondary': 'var(--button-secondary)',
 
         border: 'var(--border)',
+        line: 'var(--line)',
 
         accent: 'var(--accent)',
         error: 'var(--error)',

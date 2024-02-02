@@ -38,34 +38,32 @@ const Page = async ({ searchParams }: PageProps) => {
   });
 
   return (
-    <>
-      <Searchbar routeType="search" />
+    <section>
+      <Searchbar routeType="search" className="mt-4" />
 
-      <section className="mt-8 flex flex-col gap-9">
-        {result?.users.length === 0 ? (
-          <p className="no-result">No Result</p>
-        ) : (
-          <div className="grid gap-5 sm:grid-cols-2">
-            {result?.users.map((user) => (
-              <UserCard
-                key={user.id}
-                id={user.id}
-                name={user.name}
-                username={user.username}
-                image={user.image}
-                type="user"
-              />
-            ))}
-          </div>
-        )}
-      </section>
+      {result?.users.length === 0 ? (
+        <p className="no-result">No Result</p>
+      ) : (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {result?.users.map((user) => (
+            <UserCard
+              key={user.id}
+              id={user.id}
+              name={user.name}
+              username={user.username}
+              image={user.image}
+              type="user"
+            />
+          ))}
+        </div>
+      )}
 
       {/* <Pagination
         path='search'
         pageNumber={searchParams?.page ? +searchParams.page : 1}
         isNext={result.isNext}
       /> */}
-    </>
+    </section>
   );
 };
 

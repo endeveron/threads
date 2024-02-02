@@ -85,7 +85,7 @@ const RequestCard = ({
   );
 
   return (
-    <article className={`user-card${loading ? ' loading' : ''}`}>
+    <article className={`user-card card${loading ? ' loading' : ''}`}>
       {isAuthor ? (
         contentEl
       ) : (

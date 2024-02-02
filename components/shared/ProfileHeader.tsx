@@ -80,8 +80,6 @@ const ProfileHeader = ({
           {bio}
         </p>
       )}
-
-      <div className="mt-10 border-b border-b-border" />
     </div>
   );
 };

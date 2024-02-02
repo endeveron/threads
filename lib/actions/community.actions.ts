@@ -94,6 +94,7 @@ export const fetchCommunityDetails = async (id: string) => {
       },
     ]);
   } catch (err: any) {
+    console.log('err', err);
     handleActionError('Could not fetch community details', err);
   }
 };
