@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://threads-eight-tan.vercel.app/assets/icons/icon-512.svg',
+        url: 'https://threads-eight-tan.vercel.app/icons/icon-512.svg',
         width: 512,
         height: 512,
       },
@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: {
-      url: 'https://threads-eight-tan.vercel.app/assets/icons/icon.svg',
+      url: 'https://threads-eight-tan.vercel.app/icons/icon.svg',
       type: 'image/svg+xml',
     },
     shortcut: {
-      url: 'https://threads-eight-tan.vercel.app/assets/icons/favicon.ico',
+      url: 'https://threads-eight-tan.vercel.app/icons/favicon.ico',
       type: 'image/ico',
     },
   },
