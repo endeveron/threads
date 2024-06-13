@@ -4,7 +4,6 @@ const nextConfig = {
     BASE_URL: process.env.BASE_URL,
   },
   experimental: {
-    // serverActions: true,
     serverComponentsExternalPackages: ['mongoose'],
   },
   images: {

@@ -19,17 +19,6 @@ import {
   TThreadReplyPopulated,
 } from '@/lib/types/thread.types';
 
-// export const getUserAuthDataById = async (
-//   userId: string
-// ): Promise<TUserAuthData> => {
-//   const user = await clerkClient.users.getUser(userId);
-//   const userEmailAdresses = user.emailAddresses;
-//   const email = userEmailAdresses[0];
-//   return {
-//     email,
-//   };
-// };
-
 /**
  * Updates a user's information in a database and revalidates the cache if the path is '/profile/edit'.
  *
@@ -52,8 +41,6 @@ export const updateUser = async ({
 }: TUpdateUserParams): Promise<void> => {
   try {
     connectToDB();
-
-    throw new Error('Asdf');
 
     await UserModel.findOneAndUpdate(
       { id: userId },

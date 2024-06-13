@@ -12,44 +12,14 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#9d174d',
     icons: [
       {
-        src: '/favicon.ico',
+        src: '/icons/favicon.ico',
+        sizes: '256x256 192x192 128x128 96x96 64x64 32x32 24x24 16x16',
+        type: 'image/ico',
+      },
+      {
+        src: '/icons/icon.svg',
         sizes: 'any',
-        type: 'image/x-icon',
-      },
-      {
-        src: '/icons/apple-touch-icon.png',
-        sizes: '180x180',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/icon.png',
-        sizes: '256x256',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/android-icon-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/android-icon-96x96.png',
-        sizes: '96x96',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/favicon-32x32.png',
-        sizes: '32x32',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/favicon-24x24.png',
-        sizes: '24x24',
-        type: 'image/png',
-      },
-      {
-        src: '/icons/favicon-16x16.png',
-        sizes: '16x16',
-        type: 'image/png',
+        type: 'image/svg+xml',
       },
     ],
   };

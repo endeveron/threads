@@ -1,6 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/shared/ThemeProvider';
@@ -10,6 +10,34 @@ import '../globals.css';
 export const metadata: Metadata = {
   title: 'Welcome to Threads',
   description: 'Threads Authorization',
+  openGraph: {
+    title: 'Threads - Share your thoughts',
+    description:
+      'Share your thoughts, follow interesting people and topics, engage in real-time discussions',
+    siteName: 'Threads APP',
+    type: 'website',
+    images: [
+      {
+        url: 'https://threads-eight-tan.vercel.app/assets/icons/icon-512.svg',
+        width: 512,
+        height: 512,
+      },
+    ],
+  },
+  icons: {
+    icon: {
+      url: 'https://threads-eight-tan.vercel.app/assets/icons/icon.svg',
+      type: 'image/svg+xml',
+    },
+    shortcut: {
+      url: 'https://threads-eight-tan.vercel.app/assets/icons/favicon.ico',
+      type: 'image/ico',
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  interactiveWidget: 'resizes-content',
 };
 
 const inter = Inter({ subsets: ['latin'] });
