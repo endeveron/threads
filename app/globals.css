@@ -215,6 +215,10 @@
     @apply max-xl:hidden z-20 px-6 pt-24 pb-6 w-fit md:w-[var(--right-sidebar-width-xl)] gap-6 sticky right-0 top-0 flex h-screen flex-col overflow-auto border-l border-l-border bg-paper;
   }
 
+  .right-sidebar .no-result {
+    @apply p-0 text-left;
+  }
+
   .right-sidebar_content-box {
     @apply py-3;
   }
